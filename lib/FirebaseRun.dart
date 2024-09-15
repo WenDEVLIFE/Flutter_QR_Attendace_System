@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class firebaserun {
+class FirebaseRun {
   static Future<void> run() async {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
