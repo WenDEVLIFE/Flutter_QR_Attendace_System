@@ -33,7 +33,12 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(left: 40.0), // Add 20 pixels of space on the left
                   child: Align(
                     alignment: Alignment(-1.00, 0.0), // Align to the left
-                    child: Text('Sign In', style: TextStyle(fontSize: 30, color: Color(0xFF212529))),
+                    child: Text('Sign In', style: TextStyle(
+                        fontSize: 30,
+                        color: Color(0xFF212529)
+                        ,fontFamily: 'Roboto'
+                    )
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -41,7 +46,9 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(left: 20.0), // Add 20 pixels of space on the left
                   child: Align(
                     alignment: Alignment(0.0, 0.0), // Center align
-                    child: Text('Sign in to attendance to the system', style: TextStyle(fontSize: 20, color: Color(0xFF212529))),
+                    child: Text('Sign in to proceed on scan attendance', style: TextStyle(fontSize: 20, color: Color(0xFF212529)
+                        ,fontFamily: 'Roboto'
+                    )),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -72,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Password',
-                      counterStyle: const TextStyle(color: Colors.black),
+                      counterStyle: const TextStyle(color: Colors.black    ,fontFamily: 'Roboto'),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -107,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
+                          fontFamily: 'Roboto'
                       )
                       ),
                     ),
@@ -124,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: const Text(
                         'Don\'t have an account? Sign up here',
-                        style: TextStyle(fontSize: 18, color: Color(0xFF212529)),
+                        style: TextStyle(fontSize: 18, color: Colors.white    ,fontFamily: 'Roboto'),
                       ),
                     ),
                   ),

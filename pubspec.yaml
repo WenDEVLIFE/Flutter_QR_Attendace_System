@@ -90,3 +90,11 @@ flutter:
   # see https://flutter.dev/to/font-from-package
   assets:
     - Assets/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: font/RobotoCondensed-Regular.ttf
+          weight: 500
+        - asset: font/RobotoCondensed-SemiBold.ttf
+          weight: 600

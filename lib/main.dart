@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.deepPurple,
+                    fontFamily: 'Roboto'
                 ),
               ),
               const SizedBox(height: 20), // Add some space between the text and the loading bar
