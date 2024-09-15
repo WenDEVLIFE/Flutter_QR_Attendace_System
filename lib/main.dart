@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'FirebaseRun.dart';
-import 'SplashPage.dart';
+import 'LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,25 +65,39 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'QR Code Scanner Attendance',
-            ),
-            const SizedBox(height: 20), // Add some space between the text and the loading bar
-            _isLoading
-                ? const CircularProgressIndicator(
-              color: Colors.deepPurple,
-            )
-                : const Text(''),
-          ],
+      body: Container(
+        color: Color(0xFFFFC8DD),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'QR Code Scanner Attendance',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              const SizedBox(height: 20), // Add some space between the text and the loading bar
+              _isLoading
+                  ? const SizedBox(
+                width: 50, // Adjust the width
+                height: 50, // Adjust the height
+                child: CircularProgressIndicator(
+                  color: Colors.deepPurple,
+                ),
+              )
+                  : const Text(''),
+            ],
+          ),
         ),
       ),
     );
   }
-
+  void closeActivity() {
+    Navigator.pop(context);
+  }
   void showToast() {
     Fluttertoast.showToast(
       msg: "This is a toast message",
