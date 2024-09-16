@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'FirebaseRun.dart';
-import 'LoginPage.dart';
+import 'activity/LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
