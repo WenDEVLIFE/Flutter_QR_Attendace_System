@@ -18,12 +18,14 @@ class _MaincontrollerState extends State<Maincontroller> {
     HomePage(username: 'meow'),
     HomePage(username: 'meow'),
     HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
     // Add other screens here
   ];
 
   void _onItemTapped(int index) {
+    if (index == 5) {
+      Logout();
+      return;
+    }
     setState(() {
       _selectedIndex = index;
     });
@@ -66,7 +68,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       case 2:
         return Icons.qr_code;
       case 3:
-        return Icons.home;
+        return Icons.document_scanner;
       case 4:
         return Icons.person;
       case 5:
@@ -93,5 +95,32 @@ class _MaincontrollerState extends State<Maincontroller> {
       default:
         return 'Home';
     }
+  }
+
+  void Logout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                Navigator.pop(context); // Perform the logout
+              },
+              child: const Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
