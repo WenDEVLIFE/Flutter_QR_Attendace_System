@@ -7,30 +7,33 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('Assets/bg1.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Welcome to the Home Page!', style: TextStyle(fontSize: 24)),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // Close the fragment-like popup
-                  showToast();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          ),
+    return WillPopScope(
+      onWillPop: () async {
+        // Prevent going back to the main page
+        return false;
+      },child: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('Assets/bg1.jpg'),
+          fit: BoxFit.cover,
         ),
       ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Welcome to the Home Page!', style: TextStyle(fontSize: 24)),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the fragment-like popup
+                showToast();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        ),
+      ),
+    ),
     );
   }
   void showToast() {

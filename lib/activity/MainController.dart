@@ -18,6 +18,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     HomePage(username: 'meow'),
     HomePage(username: 'meow'),
     HomePage(username: 'meow'),
+    HomePage(username: 'meow'),
     // Add other screens here
   ];
 
