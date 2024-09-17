@@ -38,7 +38,8 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text('Sign In', style: TextStyle(
                         fontSize: 30,
                         color: Color(0xFF212529)
-                        ,fontFamily: 'Roboto'
+                        ,fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold
                     )
                     ),
                   ),
@@ -49,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: Align(
                     alignment: Alignment(0.0, 0.0), // Center align
                     child: Text('Sign in to proceed on scan attendance', style: TextStyle(fontSize: 20, color: Color(0xFF212529)
-                        ,fontFamily: 'Roboto'
+                        ,fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w600
                     )),
                   ),
                 ),
@@ -134,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       child: const Text(
                         'Don\'t have an account? Sign up here',
-                        style: TextStyle(fontSize: 18, color: Colors.white    ,fontFamily: 'Roboto'),
+                        style: TextStyle(fontSize: 18, color: Colors.white,
+                            fontWeight: FontWeight.w600
+                            ,fontFamily: 'Roboto'),
                       ),
                     ),
                   ),
