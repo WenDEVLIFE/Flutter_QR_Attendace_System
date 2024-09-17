@@ -12,6 +12,7 @@ class _SignupState extends State<Signup> {
   bool  passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
+  // Function to toggle the password show status
   void _togglePasswordVisibility1() {
     setState(() {
       passwordVisibility1 = !passwordVisibility1;
