@@ -1,6 +1,8 @@
 import 'package:attendance_qr_system/activity/SignUpPage.dart';
 import 'package:flutter/material.dart';
 
+import 'MainController.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -108,6 +110,12 @@ class _LoginPageState extends State<LoginPage> {
                     height: 100, // Adjust the height as needed
                     child: ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Maincontroller(), // Use Maincontroller, not Maincon
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple, // Background color of the button
