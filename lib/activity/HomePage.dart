@@ -11,31 +11,40 @@ class HomePage extends StatelessWidget {
       onWillPop: () async {
         // Prevent going back to the main page
         return false;
-      },child: Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('Assets/bg1.jpg'),
-          fit: BoxFit.cover,
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Home, $username'),
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFF717491),
         ),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Welcome to the Home Page!', style: TextStyle(fontSize: 24)),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context); // Close the fragment-like popup
-                showToast();
-              },
-              child: const Text('Close'),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('Assets/bg1.jpg'),
+              fit: BoxFit.cover,
             ),
-          ],
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Welcome to the Home Page!', style: TextStyle(fontSize: 24)),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the fragment-like popup
+                    showToast();
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-    ),
     );
   }
+
   void showToast() {
     Fluttertoast.showToast(
       msg: "This is a toast message$username",
