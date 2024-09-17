@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/activity/SignUpPage.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +10,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: 300, // Adjust the width as needed
                   decoration: BoxDecoration(
                     color: Colors.transparent, // Background color of the TextField
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.transparent), // Border color
                   ),
                   child: ButtonTheme(
@@ -104,8 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                     height: 100, // Adjust the height as needed
                     child: ElevatedButton(
                       onPressed: () {
-                        // Go to the main page
-
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple, // Background color of the button
@@ -129,6 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         // Add your onTap function here
                         print('Sign up text clicked');
+                        // Go to the main page
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Signup()));
                       },
                       child: const Text(
                         'Don\'t have an account? Sign up here',

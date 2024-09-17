@@ -55,9 +55,30 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _isLoading = false;
 
-        //  Go to navigation
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-        showToast();
+        if (Firebase.apps.isEmpty) {
+          Fluttertoast.showToast(
+              msg: "Firebase initialization failed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        } else {
+          Fluttertoast.showToast(
+              msg: "Firebase is already initialized",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.black,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+          //  Go to navigation
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+          showToast();
+        }
       });
     });
   }
