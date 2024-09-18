@@ -46,7 +46,7 @@ class _MaincontrollerState extends State<Maincontroller> {
               onExit: (_) => setState(() => _hoveredIndex = -1),
               child: Icon(
                 _getIconForIndex(index),
-                color: _hoveredIndex == index ? Colors.blue : (_selectedIndex == index ? Colors.white : Colors.grey),
+                color: _hoveredIndex == index ? Colors.blue : (_selectedIndex == index ? Colors.white : Colors.black),
               ),
             ),
             label: _getLabelForIndex(index),
@@ -54,7 +54,7 @@ class _MaincontrollerState extends State<Maincontroller> {
         }),
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white, // Color for the selected item
-        unselectedItemColor: Colors.grey, // Color for the unselected items
+        unselectedItemColor: Colors.black, // Color for the unselected items
         onTap: _onItemTapped,
       ),
     );
@@ -67,7 +67,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       case 1:
         return Icons.settings;
       case 2:
-        return Icons.qr_code;
+        return Icons.qr_code_scanner;
       case 3:
         return Icons.document_scanner;
       case 4:
