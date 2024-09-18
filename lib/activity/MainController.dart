@@ -63,7 +63,7 @@ class _MaincontrollerState extends State<Maincontroller> {
   IconData _getIconForIndex(int index) {
     switch (index) {
       case 0:
-        return Icons.home;
+        return Icons.qr_code;
       case 1:
         return Icons.settings;
       case 2:
@@ -82,13 +82,13 @@ class _MaincontrollerState extends State<Maincontroller> {
   String _getLabelForIndex(int index) {
     switch (index) {
       case 0:
-        return 'Home';
+        return 'My Qr';
       case 1:
         return 'Profile';
       case 2:
         return 'Scan';
       case 3:
-        return 'Attendance';
+        return 'Attendance Logs';
       case 4:
         return 'User';
       case 5:
@@ -103,21 +103,29 @@ class _MaincontrollerState extends State<Maincontroller> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Logout'),
-          content: const Text('Are you sure you want to logout?'),
+          title: const Text('Confirm Logout',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Roboto' ,
+                  fontSize: 30)),
+          content: const Text('Are you sure you want to logout?',
+              style: TextStyle(color: Colors.white,
+                  fontFamily: 'Roboto',
+                  fontSize: 18)),
+          backgroundColor: const Color(0xFF6E738E),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: Colors.white, fontFamily: 'Roboto' )),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 Navigator.pop(context); // Perform the logout
               },
-              child: const Text('Logout'),
+              child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),
           ],
         );
