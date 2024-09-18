@@ -1,5 +1,4 @@
 import 'package:attendance_qr_system/activity/LoginPage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class  Signup extends StatefulWidget {

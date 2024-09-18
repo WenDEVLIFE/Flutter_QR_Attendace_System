@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
               fontSize: 16.0
           );
           //  Go to navigation
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
           showToast();
         }
       });
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFFFFC8DD),
+        color: const Color(0xFFFFC8DD),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

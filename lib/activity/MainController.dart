@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'QRPage.dart';
 
 class Maincontroller extends StatefulWidget {
-  Maincontroller({Key? key}) : super(key: key);
+  Maincontroller({super.key});
   String username = 'meow';
 
   @override
@@ -14,11 +14,11 @@ class _MaincontrollerState extends State<Maincontroller> {
   int _hoveredIndex = -1;
 
   List<Widget> screens = [
-    HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
-    HomePage(username: 'meow'),
+    const Qrpage(username: 'meow'),
+    const Qrpage(username: 'meow'),
+    const Qrpage(username: 'meow'),
+    const Qrpage(username: 'meow'),
+    const Qrpage(username: 'meow'),
     // Add other screens here
   ];
 
