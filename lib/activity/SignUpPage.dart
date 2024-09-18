@@ -11,6 +11,12 @@ class _SignupState extends State<Signup> {
   bool  passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
+  String? _selectedValue; // The selected value for the spinner
+
+  // List of items for the spinner
+  final List<String> _items = ['Select a year', '1st year', '2nd year', '3rd year', '4th year'];
+
+
   // Function to toggle the password show status
   void _togglePasswordVisibility1() {
     setState(() {
@@ -22,6 +28,13 @@ class _SignupState extends State<Signup> {
     setState(() {
       passwordVisibility2 = !passwordVisibility2;
     });
+  }
+
+  // This will auto select the drop down value
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
   }
 
   Future<bool> _onBackPressed() async {
@@ -157,18 +170,32 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: 300, // Adjust the width as needed
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
-                    ),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Year Level',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: Container(
+                      width: 300, // Adjust the width as needed
+                      decoration: BoxDecoration(
+                        color: Colors.white, // Background color of the TextField
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.deepPurple), // Border color
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true, // Makes the DropdownButton take the full width of its parent
+                          value: _selectedValue,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          items: _items.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value ,style: const TextStyle(color: Colors.black,fontFamily: 'Roboto')),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              _selectedValue = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

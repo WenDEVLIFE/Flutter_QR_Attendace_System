@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(left: 20.0), // Add 20 pixels of space on the left
                   child: Align(
                     alignment: Alignment(0.0, 0.0), // Center align
-                    child: Text('Sign in to proceed on scan attendance', style: TextStyle(fontSize: 20, color: Color(0xFF212529)
+                    child: Text('Sign in to proceed on scanning attendance', style: TextStyle(fontSize: 20, color: Color(0xFF212529)
                         ,fontFamily: 'Roboto',
                         fontWeight: FontWeight.w600
                     )),
