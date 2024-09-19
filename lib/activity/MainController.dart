@@ -18,11 +18,14 @@ class _MaincontrollerState extends State<Maincontroller> {
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
-    const Qrpage(username: 'meow'),
     // Add other screens here
   ];
 
   void _onItemTapped(int index) {
+    if (index == 1) {
+      ShowProfile();
+      return;
+    }
     if (index == 5) {
       Logout();
       return;
@@ -67,6 +70,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     );
   }
 
+  // This is for icon data method
   IconData _getIconForIndex(int index) {
     switch (index) {
       case 0:
@@ -86,6 +90,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     }
   }
 
+  // Used for logout function
   void Logout() {
     showDialog(
       context: context,
@@ -116,6 +121,54 @@ class _MaincontrollerState extends State<Maincontroller> {
               child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  // This will show Profile
+  void ShowProfile() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+            child: Container(
+              height: 200,
+              color: const Color(0xFF6E738E),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      const Center(
+                        child: Text(
+                          'Profile',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Roboto',
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 280),
+                      Center(
+                        child:GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context); // Close the modal bottom sheet
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                ],
+              ),
+            ),
         );
       },
     );
