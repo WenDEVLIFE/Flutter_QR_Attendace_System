@@ -15,6 +15,7 @@ class _MaincontrollerState extends State<Maincontroller> {
 
   List<Widget> screens = [
     const Qrpage(username: 'meow'),
+    Container(),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
@@ -130,6 +131,9 @@ class _MaincontrollerState extends State<Maincontroller> {
   void ShowProfile() {
     showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
       builder: (BuildContext context) {
         return SingleChildScrollView(
             child: Container(
@@ -151,7 +155,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 280),
+                      const SizedBox(width: 250),
                       Center(
                         child:GestureDetector(
                           onTap: () {
@@ -160,10 +164,10 @@ class _MaincontrollerState extends State<Maincontroller> {
                           child: const Icon(
                             Icons.close,
                             color: Colors.red,
+                            size: 50,
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
                     ],
                   ),
                 ],
