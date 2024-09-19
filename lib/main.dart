@@ -87,18 +87,30 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0xFFFFC8DD),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('Assets/bg1.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+             const Image(
+                image:AssetImage('Assets/logos.png'),
+                width: 200,
+                height: 200,
+              ),
               const Text(
-                'QR Code Scanner Attendance',
+                'QR CODE MANAGEMENT SYSTEM',
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 40,
+                  color: Colors.black,
+                  fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                    fontFamily: 'Roboto'
+
                 ),
               ),
               const SizedBox(height: 20), // Add some space between the text and the loading bar

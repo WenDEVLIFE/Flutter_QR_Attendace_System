@@ -268,12 +268,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                         height: 100, // Adjust the height as needed
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Maincontroller(), // Use Maincontroller, not Maincon
-                              ),
-                            );
+                            _selectedIndex = 0;
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
