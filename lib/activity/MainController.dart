@@ -19,6 +19,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
+    Container(),
     // Add other screens here
   ];
 
