@@ -137,43 +137,166 @@ class _MaincontrollerState extends State<Maincontroller> {
       ),
       builder: (BuildContext context) {
         return SingleChildScrollView(
-            child: Container(
-              height: 200,
-              color: const Color(0xFF6E738E),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      const Center(
-                        child: Text(
-                          'Profile',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Roboto',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 250),
-                      Center(
-                        child:GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context); // Close the modal bottom sheet
-                          },
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.red,
-                            size: 50,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Color(0xFF6E738E),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
             ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    const SizedBox(width: 10),
+                    const Center(
+                      child: Text(
+                        'Profile',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 250),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context); // Close the modal bottom sheet
+                        },
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 50,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const SizedBox(width: 10),
+                   Stack(
+                      children: [
+                        const CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 45,
+                            backgroundImage: AssetImage('Assets/fufu.jpg'),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                // Add your camera function here
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                   ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'Username: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Roboto',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20,
+                  width: 50),
+                Row(
+                  children: [
+                    Container(
+                      width: 200, // Adjust the width as needed
+                      decoration: BoxDecoration(
+                        color: Colors.transparent, // Background color of the TextField
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.transparent), // Border color
+                      ),
+                      child: ButtonTheme(
+                        minWidth: 100, // Adjust the width as needed
+                        height: 100, // Adjust the height as needed
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Maincontroller(), // Use Maincontroller, not Maincon
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
+                          ),
+                          child: const Text('Change Password',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: 'Roboto'
+                              )
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      width: 200, // Adjust the width as needed
+                      decoration: BoxDecoration(
+                        color: Colors.transparent, // Background color of the TextField
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.transparent), // Border color
+                      ),
+                      child: ButtonTheme(
+                        minWidth: 100, // Adjust the width as needed
+                        height: 100, // Adjust the height as needed
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Maincontroller(), // Use Maincontroller, not Maincon
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
+                          ),
+                          child: const Text('Change Email',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontFamily: 'Roboto'
+                              )
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 10,
+                  height: 50,
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

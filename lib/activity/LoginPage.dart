@@ -118,13 +118,15 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple, // Background color of the button
+                        backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
                       ),
                       child: const Text('Sign In',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.white,
-                          fontFamily: 'Roboto'
+                        color: Colors.black,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w600
+
                       )
                       ),
                     ),

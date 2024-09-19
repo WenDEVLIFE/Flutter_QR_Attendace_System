@@ -262,12 +262,12 @@ class _SignupState extends State<Signup> {
                         onPressed: () {
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple, // Background color of the button
+                          backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
                         ),
                         child: const Text('Sign up',
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white,
+                                color: Colors.black,
                                 fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold
                             )
