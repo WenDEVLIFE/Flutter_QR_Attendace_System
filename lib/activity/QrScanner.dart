@@ -21,33 +21,80 @@ class QrState extends State<QrScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QR Scanner'),
+        title: const Text(
+          'QR Scanner',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF6E738E),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 5, // Takes 5/6 of the screen height
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
-              overlay: QrScannerOverlayShape(
-                borderColor: Colors.red,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 300, // The size of the scan area
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('Assets/bg1.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 5, // Takes 5/6 of the screen height
+              child: QRView(
+                key: qrKey,
+                onQRViewCreated: _onQRViewCreated,
+                overlay: QrScannerOverlayShape(
+                  borderColor: Colors.red,
+                  borderRadius: 10,
+                  borderLength: 30,
+                  borderWidth: 10,
+                  cutOutSize: 300, // The size of the scan area
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 1, // Takes 1/6 of the screen height
-            child: Center(
-              child: (result != null)
-                  ? Text('Barcode Type: ${result!.format}   Data: ${result!.code}')
-                  : const Text('Scan a code'),
+            Expanded(
+              flex: 1, // Takes 1/6 of the screen height
+              child: Center(
+                child: Container(
+                  child: (result != null)
+                      ? Text('Barcode Type: ${result!.format}   Data: ${result!.code}')
+                      :  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent, // Background color of the button
+                      elevation: 0, // Elevation of the button
+                    ),
+                    onPressed: (){
+
+                    }, // call the show toast method
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.upload,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 10), // Space between the icon and the text
+                        Text(
+                          'Upload Qr',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'Roboto',
+                            fontSize: 30,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                ),
+              ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
