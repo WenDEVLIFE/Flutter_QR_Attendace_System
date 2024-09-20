@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/activity/QrScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'QRPage.dart';
@@ -16,7 +17,7 @@ class _MaincontrollerState extends State<Maincontroller> {
   List<Widget> screens = [
     const Qrpage(username: 'meow'),
     Container(),
-    const Qrpage(username: 'meow'),
+    QrScanner(),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
     Container(),
