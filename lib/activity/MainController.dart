@@ -17,7 +17,7 @@ class _MaincontrollerState extends State<Maincontroller> {
   List<Widget> screens = [
     const Qrpage(username: 'meow'),
     Container(),
-    QrScanner(),
+    const QrScanner(),
     const Qrpage(username: 'meow'),
     const Qrpage(username: 'meow'),
     Container(),

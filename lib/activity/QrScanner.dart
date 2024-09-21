@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanner extends StatefulWidget {
+  const QrScanner({super.key});
+
   @override
   QrState createState() => QrState();
 }
@@ -42,12 +44,12 @@ class QrState extends State<QrScanner> {
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 5, // Takes 5/6 of the screen height
+              flex: 6, // Takes 5/6 of the screen height
               child: QRView(
                 key: qrKey,
                 onQRViewCreated: _onQRViewCreated,
                 overlay: QrScannerOverlayShape(
-                  borderColor: Colors.red,
+                  borderColor: Colors.blue,
                   borderRadius: 10,
                   borderLength: 30,
                   borderWidth: 10,
