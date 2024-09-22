@@ -37,7 +37,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ShowProfile();
       return;
     }
-    if (index == 6) {
+    if (index == 5) {
       Logout();
       return;
     }
