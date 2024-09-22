@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/activity/AttendanceScreen.dart';
 import 'package:attendance_qr_system/activity/QrScanner.dart';
 import 'package:attendance_qr_system/activity/UserScreen.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,11 @@ class _MaincontrollerState extends State<Maincontroller> {
   void initState() {
     super.initState();
     screens = [
-      const Qrpage(username: 'meow'),
+      const Qrpage(username: 'username'),
       Container(),
       const QrScanner(),
-      const Qrpage(username: 'meow'),
+      const Attendancescreen(),
       Userscreen(GotoCreateUser:GotoCreateUser),
-      Container(),
       Container(),
       // Add other screens here
     ];
