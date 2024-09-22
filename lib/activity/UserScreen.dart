@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Userscreen extends StatefulWidget {
   @override
@@ -139,7 +140,7 @@ class UserState extends State<Userscreen> {
                     backgroundColor: const Color(0xFF6E738E),
                     children: [
                       SpeedDialChild(
-                        child: const Icon(Icons.add, color: Colors.white),
+                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Admin',
                         onTap: () {
@@ -147,7 +148,7 @@ class UserState extends State<Userscreen> {
                         },
                       ),
                       SpeedDialChild(
-                        child: const Icon(Icons.add, color: Colors.white),
+                        child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Teacher',
                         onTap: () {
@@ -155,7 +156,7 @@ class UserState extends State<Userscreen> {
                         },
                       ),
                       SpeedDialChild(
-                        child: const Icon(Icons.add, color: Colors.white),
+                        child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Student',
                         onTap: () {
