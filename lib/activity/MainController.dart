@@ -1,4 +1,5 @@
 import 'package:attendance_qr_system/activity/QrScanner.dart';
+import 'package:attendance_qr_system/activity/UserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'QRPage.dart';
@@ -15,21 +16,28 @@ class _MaincontrollerState extends State<Maincontroller> {
   int _selectedIndex = 0;
 
   List<Widget> screens = [
-    const Qrpage(username: 'meow'),
-    Container(),
-    const QrScanner(),
-    const Qrpage(username: 'meow'),
-    const Qrpage(username: 'meow'),
-    Container(),
-    // Add other screens here
   ];
+
+  void initState() {
+    super.initState();
+    screens = [
+      const Qrpage(username: 'meow'),
+      Container(),
+      const QrScanner(),
+      const Qrpage(username: 'meow'),
+      Userscreen(GotoCreateUser:GotoCreateUser),
+      Container(),
+      Container(),
+      // Add other screens here
+    ];
+  }
 
   void _onItemTapped(int index) {
     if (index == 1) {
       ShowProfile();
       return;
     }
-    if (index == 5) {
+    if (index == 6) {
       Logout();
       return;
     }
@@ -41,6 +49,12 @@ class _MaincontrollerState extends State<Maincontroller> {
     // Reset the scale after a short delay
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {});
+    });
+  }
+
+  void GotoCreateUser(){
+    setState(() {
+      _selectedIndex = 2;
     });
   }
 
@@ -72,6 +86,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ),
     );
   }
+
 
   // This is for icon data method
   IconData _getIconForIndex(int index) {

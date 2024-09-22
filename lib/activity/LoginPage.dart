@@ -165,5 +165,5 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _obscureText = !_obscureText;
     });
-  }
+  } // Add this method                                                                                                                                                
 }
