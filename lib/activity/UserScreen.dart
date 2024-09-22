@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,7 +7,7 @@ class Userscreen extends StatefulWidget {
   UserState createState() => UserState();
   final VoidCallback GotoCreateUser; // you can pass the function as a parameter to go to next index
 
-  const Userscreen({Key? key, required this.GotoCreateUser}) : super(key: key);
+  const Userscreen({super.key, required this.GotoCreateUser});
 }
 
 class UserState extends State<Userscreen> {
@@ -91,7 +90,7 @@ class UserState extends State<Userscreen> {
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
                     child: TextField(
-                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+                      style: const TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
                       controller: _searchController,
                       decoration: const InputDecoration(
                         labelText: 'Search a user',

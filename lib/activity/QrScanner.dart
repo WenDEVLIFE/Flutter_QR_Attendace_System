@@ -45,54 +45,57 @@ class QrState extends State<QrScanner> {
           children: <Widget>[
             Expanded(
               flex: 6, // Takes 5/6 of the screen height
-              child: QRView(
-                key: qrKey,
-                onQRViewCreated: _onQRViewCreated,
-                overlay: QrScannerOverlayShape(
-                  borderColor: Colors.blue,
-                  borderRadius: 10,
-                  borderLength: 30,
-                  borderWidth: 10,
-                  cutOutSize: 300, // The size of the scan area
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1, // Takes 1/6 of the screen height
-              child: Center(
-                child: Container(
-                  child: (result != null)
-                      ? Text('Barcode Type: ${result!.format}   Data: ${result!.code}')
-                      :  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent, // Background color of the button
-                      elevation: 0, // Elevation of the button
-                    ),
-                    onPressed: (){
-
-                    }, // call the show toast method
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.upload,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        SizedBox(width: 10), // Space between the icon and the text
-                        Text(
-                          'Upload Qr',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Roboto',
-                            fontSize: 30,
-                          ),
-                        ),
-                      ],
+              child: Stack(
+                children: [
+                  QRView(
+                    key: qrKey,
+                    onQRViewCreated: _onQRViewCreated,
+                    overlay: QrScannerOverlayShape(
+                      borderColor: Colors.blue,
+                      borderRadius: 10,
+                      borderLength: 30,
+                      borderWidth: 10,
+                      cutOutSize: 300, // The size of the scan area
                     ),
                   ),
-
-                ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent, // Background color of the button
+                        elevation: 0, // Elevation of the button
+                      ),
+                      onPressed: () {
+                        // Add your upload QR functionality here
+                        print('Upload QR');
+                      },
+                      child: const Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.upload,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10), // Space between the icon and the text
+                          Text(
+                            'Upload QR',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                              fontSize: 30,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
