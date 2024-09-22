@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class Userscreen extends StatefulWidget {
   @override
@@ -131,12 +132,37 @@ class UserState extends State<Userscreen> {
                 alignment: Alignment.bottomRight,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      //widget.GotoCreateUser();
-                    },
+                  child: SpeedDial(
+                    icon: Icons.edit,
+                    activeIcon: Icons.close,
+                    iconTheme: const IconThemeData(color: Colors.white),
                     backgroundColor: const Color(0xFF6E738E),
-                    child: const Icon(Icons.add, color: Colors.white),
+                    children: [
+                      SpeedDialChild(
+                        child: const Icon(Icons.add, color: Colors.white),
+                        backgroundColor: const Color(0xFF6E738E),
+                        label: 'Add Admin',
+                        onTap: () {
+                          // Add your onTap function here
+                        },
+                      ),
+                      SpeedDialChild(
+                        child: const Icon(Icons.add, color: Colors.white),
+                        backgroundColor: const Color(0xFF6E738E),
+                        label: 'Add Teacher',
+                        onTap: () {
+                          // Add your onTap function here
+                        },
+                      ),
+                      SpeedDialChild(
+                        child: const Icon(Icons.add, color: Colors.white),
+                        backgroundColor: const Color(0xFF6E738E),
+                        label: 'Add Student',
+                        onTap: () {
+                          // Add your onTap function here
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
