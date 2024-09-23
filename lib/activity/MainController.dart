@@ -1,5 +1,5 @@
 import 'package:attendance_qr_system/activity/AttendanceScreen.dart';
-import 'package:attendance_qr_system/activity/CreateAdminScreen.dart';
+import 'package:attendance_qr_system/activity/CreateUserScreen.dart';
 import 'package:attendance_qr_system/activity/QrScanner.dart';
 import 'package:attendance_qr_system/activity/UserScreen.dart';
 import 'package:flutter/material.dart';
@@ -28,17 +28,28 @@ class _MaincontrollerState extends State<Maincontroller> {
       Container(),
       const QrScanner(),
       const Attendancescreen(),
-      Userscreen(GotoCreateUser: GotoCreateUser),
+      Userscreen(navigateToCreateUserScreen: navigateToCreateUserScreen),
       Container(),
-      CreateAdminScreen(),
+      // Add more screens here
+      const CreateAdminScreen(),
     ];
   }
 
-  void GotoCreateUser() {
+  void goBackToUser() {
     setState(() {
-      _selectedIndex = 6; // Set to a valid index within the range of items
+      _selectedIndex = 4; // Set to a valid index within the range of items
     });
   }
+
+  void navigateToCreateUserScreen() {
+   Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Maincontroller(),
+      ),
+    );
+  }
+
 
   void navigateToIndex(int index) {
     setState(() {

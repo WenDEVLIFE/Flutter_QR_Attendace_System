@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/activity/CreateUserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,9 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class Userscreen extends StatefulWidget {
   @override
   UserState createState() => UserState();
-  final VoidCallback GotoCreateUser; // you can pass the function as a parameter to go to next index
+  final VoidCallback navigateToCreateUserScreen; // you can pass the function as a parameter to go to next index
 
-  const Userscreen({super.key, required this.GotoCreateUser});
+  const Userscreen({super.key, required this.navigateToCreateUserScreen});
 }
 
 class UserState extends State<Userscreen> {
@@ -142,19 +143,25 @@ class UserState extends State<Userscreen> {
                         child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Admin',
-                        onTap: () => widget.GotoCreateUser(),
+                        onTap: () {
+                        },
                       ),
                       SpeedDialChild(
                         child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Teacher',
-                        onTap: () => widget.GotoCreateUser(),
+                        onTap: () {
+                          widget.navigateToCreateUserScreen();
+
+                        },
                       ),
                       SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Student',
-                        onTap: () => widget.GotoCreateUser(),
+                          child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
+                          backgroundColor: const Color(0xFF6E738E),
+                          label: 'Add Student',
+                          onTap: () {
+
+                          }
                       ),
                     ],
                   ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class CreateAdminScreen extends StatefulWidget {
   @override
   _CreateAdminScreenState createState() => _CreateAdminScreenState();
+
+  const CreateAdminScreen({super.key});
 }
 
 class _CreateAdminScreenState extends State<CreateAdminScreen> {
@@ -37,7 +39,6 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
-
     return false; // Prevent the default back button action
   }
 
