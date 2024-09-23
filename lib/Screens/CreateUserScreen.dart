@@ -1,13 +1,15 @@
+import 'package:attendance_qr_system/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class CreateAdminScreen extends StatefulWidget {
+class CreateUserScreen extends StatefulWidget {
   @override
-  _CreateAdminScreenState createState() => _CreateAdminScreenState();
+  CreateUserState createState() => CreateUserState();
 
-  const CreateAdminScreen({super.key});
+  const CreateUserScreen({super.key});
 }
 
-class _CreateAdminScreenState extends State<CreateAdminScreen> {
+class CreateUserState extends State<CreateUserScreen> {
   bool  passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
@@ -39,6 +41,7 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
+    context.go('/MainController');
     return false; // Prevent the default back button action
   }
 
@@ -61,6 +64,7 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               print('Back button clicked');
+              context.go('/MainController');
 
             },
           ),
@@ -78,6 +82,7 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
+                  const SizedBox(height: 20),
                   const Padding(
                     padding: EdgeInsets.only(left: 40.0),
                     // Add 20 pixels of space on the left
@@ -263,7 +268,7 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
                         ),
-                        child: const Text('Sign up',
+                        child: const Text('Add User',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -275,26 +280,6 @@ class _CreateAdminScreenState extends State<CreateAdminScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    // Add 20 pixels of space on the left
-                    child: Align(
-                      alignment: const Alignment(0.0, 0.0), // Center align
-                      child: GestureDetector(
-                        onTap: () {
-                          // Add your onTap function here
-                          print('Sign up text clicked');
-                        },
-                        child: const Text(
-                          'Already have an account? Sign in here',
-                          style: TextStyle(
-                              fontSize: 18, color: Colors.white,
-                              fontWeight: FontWeight.w600
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

@@ -1,11 +1,13 @@
-import 'package:attendance_qr_system/activity/AttendanceScreen.dart';
-import 'package:attendance_qr_system/activity/CreateUserScreen.dart';
-import 'package:attendance_qr_system/activity/QrScanner.dart';
-import 'package:attendance_qr_system/activity/UserScreen.dart';
+import 'package:attendance_qr_system/Screens/CreateStudentScreen.dart';
+import 'package:attendance_qr_system/Screens/CreateUserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'QRPage.dart';
+
+import '../Screens/AttendanceScreen.dart';
+import '../Screens/QRPage.dart';
+import '../Screens/QrScanner.dart';
+import '../Screens/UserScreen.dart';
 
 class Maincontroller extends StatefulWidget {
   Maincontroller({super.key});
@@ -17,111 +19,98 @@ class Maincontroller extends StatefulWidget {
 
 class _MaincontrollerState extends State<Maincontroller> {
   int _selectedIndex = 0;
-
-  List<Widget> screens = [];
-
-  @override
-  void initState() {
-    super.initState();
-    screens = [
-      const Qrpage(username: 'meow'),
-      Container(),
-      const QrScanner(),
-      const Attendancescreen(),
-      Userscreen(navigateToCreateUserScreen: navigateToCreateUserScreen),
-      Container(),
-      // Add more screens here
-      const CreateAdminScreen(),
-    ];
-  }
-
-  void goBackToUser() {
-    setState(() {
-      _selectedIndex = 4; // Set to a valid index within the range of items
-    });
-  }
-
-  void navigateToCreateUserScreen() {
-   Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Maincontroller(),
-      ),
-    );
-  }
+  final PageController _pageController = PageController();
+  final List<bool> _isHovering = List<bool>.filled(6, false);
 
 
-  void navigateToIndex(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: screens[_selectedIndex],
-      ),
-      bottomNavigationBar: Offstage(
-        offstage: _selectedIndex >= 7,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Image.asset(
-                'Assets/bg1.jpg',
-                fit: BoxFit.cover,
-              ),
-            ),
-            CurvedNavigationBar(
-              backgroundColor: Colors.transparent,
-              color: const Color(0xFF6E738E),
-              items: [
-                Icon(
-                  Icons.qr_code,
-                  color: _selectedIndex == 0 ? Colors.white : Colors.black,
-                ),
-                Icon(
-                  Icons.settings,
-                  color: _selectedIndex == 1 ? Colors.white : Colors.black,
-                ),
-                Icon(
-                  Icons.qr_code_scanner,
-                  color: _selectedIndex == 2 ? Colors.white : Colors.black,
-                ),
-                Icon(
-                  Icons.document_scanner,
-                  color: _selectedIndex == 3 ? Colors.white : Colors.black,
-                ),
-                Icon(
-                  Icons.person,
-                  color: _selectedIndex == 4 ? Colors.white : Colors.black,
-                ),
-                Icon(
-                  const FaIcon(FontAwesomeIcons.powerOff).icon,
-                  color: _selectedIndex == 5 ? Colors.white : Colors.black,
-                ),
-              ],
-              index: _selectedIndex,
-              onTap: (index) {
+      body: Navigator(
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(
+            builder: (context) => PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
                 setState(() {
-                  if (index == 1) {
-                    ShowProfile();
-                    return;
-                  }
-                  if (index == 5) {
-                    Logout();
-                    return;
-                  } else {
-                    _selectedIndex = index;
-                  }
+                  _selectedIndex = index;
                 });
               },
+              children: [
+                const Qrpage(username: 'meow'),
+                Container(), // Placeholder for settings page
+                const QrScanner(),
+                const Attendancescreen(),
+                const Userscreen(),
+                const Center(child: Text('Logout Page')), // Placeholder for logout page
+                const CreateUserScreen(),
+                const CreateStudentScreen(),
+              ],
             ),
-          ],
-        ),
+          );
+        },
+      ),
+      bottomNavigationBar: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'Assets/bg1.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          CurvedNavigationBar(
+            backgroundColor: Colors.transparent,
+            color: const Color(0xFF6E738E),
+            items: List.generate(6, (index) {
+              return MouseRegion(
+                onEnter: (_) => _onHover(index, true),
+                onExit: (_) => _onHover(index, false),
+                child: Icon(
+                  _getIcon(index),
+                  color: _isHovering[index] ? Colors.grey : Colors.white,
+                ),
+              );
+            }),
+            onTap: (index) {
+              if (index == 1) {
+                ShowProfile();
+              }
+              if (index == 5) {
+                Logout();
+              } else {
+                _pageController.jumpToPage(index);
+              }
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  void _onHover(int index, bool hovering) {
+    setState(() {
+      _isHovering[index] = hovering;
+    });
+  }
+
+  IconData _getIcon(int index) {
+    switch (index) {
+      case 0:
+        return Icons.qr_code;
+      case 1:
+        return Icons.settings;
+      case 2:
+        return Icons.qr_code_scanner;
+      case 3:
+        return Icons.document_scanner;
+      case 4:
+        return Icons.person;
+      case 5:
+        return FontAwesomeIcons.powerOff;
+      default:
+        return Icons.help;
+    }
   }
 
   void Logout() {

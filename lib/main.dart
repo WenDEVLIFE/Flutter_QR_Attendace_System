@@ -1,28 +1,82 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:attendance_qr_system/Screens/AttendanceScreen.dart';
+import 'package:attendance_qr_system/Screens/CreateStudentScreen.dart';
+import 'package:attendance_qr_system/Screens/CreateUserScreen.dart';
+import 'package:attendance_qr_system/Screens/QRPage.dart';
+import 'package:attendance_qr_system/Screens/QrScanner.dart';
+import 'package:attendance_qr_system/Screens/SignUpPage.dart';
+import 'package:attendance_qr_system/Screens/UserScreen.dart';
+import 'package:attendance_qr_system/Screens/LoginPage.dart';
+import 'package:attendance_qr_system/NavigationMenu/MainController.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
-import 'activity/LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseRun.run();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final GoRouter _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const MyHomePage(title: 'QR CODE MANAGEMENT SYSTEM'),
+      ),
+      GoRoute(
+        path: '/Loginpage',
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/Signuppage',
+        builder: (context, state) => const Signup(),
+      ),
+      GoRoute(
+        path: '/QRPage',
+        builder: (context, state) => const Qrpage(username: 'username'),
+      ),
+      GoRoute(
+        path: '/Attendance',
+        builder: (context, state) => const Attendancescreen(),
+      ),
+      GoRoute(
+        path: '/Scanner',
+        builder: (context, state) => const QrScanner(),
+      ),
+      GoRoute(
+        path: '/UserScreen',
+        builder: (context, state) => const Userscreen(),
+      ),
+      GoRoute(
+        path: '/CreateUser',
+        builder: (context, state) => const CreateUserScreen(),
+      ),
+      GoRoute(
+        path: '/CreateStudent',
+        builder: (context, state) => const CreateStudentScreen(),
+      ),
+      GoRoute(
+        path: '/MainController',
+        builder: (context, state) => Maincontroller(),
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -97,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-             const Image(
+              const Image(
                 image:AssetImage('Assets/logos.png'),
                 width: 200,
                 height: 200,
@@ -131,6 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   void closeActivity() {
     Navigator.pop(context);
+    context.go('/Loginpage');
   }
   void showToast() {
     Fluttertoast.showToast(

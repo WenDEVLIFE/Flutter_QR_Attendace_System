@@ -1,13 +1,14 @@
+import 'package:attendance_qr_system/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class CreateStudentScreen extends StatefulWidget {
+class  Signup extends StatefulWidget {
+  const Signup({super.key});
   @override
-  StudentState createState() => StudentState();
-
-  const CreateStudentScreen({super.key});
+  _SignupState createState() => _SignupState();
 }
 
-class StudentState extends State<CreateStudentScreen> {
+class _SignupState extends State<Signup> {
   bool  passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
@@ -34,11 +35,15 @@ class StudentState extends State<CreateStudentScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = _items.isNotEmpty ? _items [0] : null; // Auto-select the first item if the list is not empty
+    _selectedValue = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
   }
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
     return false; // Prevent the default back button action
   }
 
@@ -48,25 +53,6 @@ class StudentState extends State<CreateStudentScreen> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Create User',
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              print('Back button clicked');
-
-            },
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF6E738E),
-        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -83,9 +69,9 @@ class StudentState extends State<CreateStudentScreen> {
                     // Add 20 pixels of space on the left
                     child: Align(
                       alignment: Alignment(-1.00, 0.0), // Align to the left
-                      child: Text('Create Student Account', style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.black,
+                      child: Text('Create Account', style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.black,
                           fontWeight: FontWeight.bold
                       )),
                     ),
@@ -97,7 +83,7 @@ class StudentState extends State<CreateStudentScreen> {
                     child: Align(
                       alignment: Alignment(0.0, 0.0), // Center align
                       child: Text(
-                          'Enter user details to create an account            ',
+                          'Sign up to create an account                  ',
                           style: TextStyle(
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
@@ -275,6 +261,8 @@ class StudentState extends State<CreateStudentScreen> {
                       height: 100, // Adjust the height as needed
                       child: ElevatedButton(
                         onPressed: () {
+
+                          context.go('/Loginpage');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -300,15 +288,15 @@ class StudentState extends State<CreateStudentScreen> {
                         onTap: () {
                           // Add your onTap function here
                           print('Sign up text clicked');
-
+                          context.go('/Loginpage');
                         },
-                        child: const Text(
-                          'Already have an account? Sign in here',
-                          style: TextStyle(
-                              fontSize: 18, color: Colors.white,
-                              fontWeight: FontWeight.w600
+                          child: const Text(
+                            'Already have an account? Sign in here',
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.white,
+                                fontWeight: FontWeight.w600
+                            ),
                           ),
-                        ),
                       ),
                     ),
                   )
@@ -320,4 +308,5 @@ class StudentState extends State<CreateStudentScreen> {
       ),
     );
   }
+
 }

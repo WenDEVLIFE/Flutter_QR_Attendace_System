@@ -1,14 +1,14 @@
-import 'package:attendance_qr_system/activity/CreateUserScreen.dart';
+import 'package:attendance_qr_system/Screens/CreateUserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class Userscreen extends StatefulWidget {
   @override
   UserState createState() => UserState();
-  final VoidCallback navigateToCreateUserScreen; // you can pass the function as a parameter to go to next index
 
-  const Userscreen({super.key, required this.navigateToCreateUserScreen});
+  const Userscreen({super.key});
 }
 
 class UserState extends State<Userscreen> {
@@ -144,15 +144,15 @@ class UserState extends State<Userscreen> {
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Admin',
                         onTap: () {
-                        },
+                          context.go('/CreateUser');
+                        }
                       ),
                       SpeedDialChild(
                         child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Teacher',
                         onTap: () {
-                          widget.navigateToCreateUserScreen();
-
+                          context.go('/CreateUser');
                         },
                       ),
                       SpeedDialChild(
@@ -160,7 +160,7 @@ class UserState extends State<Userscreen> {
                           backgroundColor: const Color(0xFF6E738E),
                           label: 'Add Student',
                           onTap: () {
-
+                            context.go('/CreateStudent');
                           }
                       ),
                     ],

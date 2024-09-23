@@ -1,7 +1,7 @@
-import 'package:attendance_qr_system/activity/SignUpPage.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import 'MainController.dart';
+import '../NavigationMenu/MainController.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -110,12 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 100, // Adjust the height as needed
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Maincontroller(), // Use Maincontroller, not Maincon
-                          ),
-                        );
+                        context.go("/MainController");
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -142,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Add your onTap function here
                         print('Sign up text clicked');
                         // Go to the main page
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const Signup()));
+                        context.go('/Signuppage');
                       },
                       child: const Text(
                         'Don\'t have an account? Sign up here',

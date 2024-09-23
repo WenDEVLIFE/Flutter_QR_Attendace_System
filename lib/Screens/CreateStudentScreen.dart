@@ -1,13 +1,13 @@
-import 'package:attendance_qr_system/activity/LoginPage.dart';
 import 'package:flutter/material.dart';
 
-class  Signup extends StatefulWidget {
-  const Signup({super.key});
+class CreateStudentScreen extends StatefulWidget {
   @override
-  _SignupState createState() => _SignupState();
+  StudentState createState() => StudentState();
+
+  const CreateStudentScreen({super.key});
 }
 
-class _SignupState extends State<Signup> {
+class StudentState extends State<CreateStudentScreen> {
   bool  passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
@@ -34,15 +34,11 @@ class _SignupState extends State<Signup> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
+    _selectedValue = _items.isNotEmpty ? _items [0] : null; // Auto-select the first item if the list is not empty
   }
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
     return false; // Prevent the default back button action
   }
 
@@ -52,6 +48,25 @@ class _SignupState extends State<Signup> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Create User',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              print('Back button clicked');
+
+            },
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFF6E738E),
+        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -68,9 +83,9 @@ class _SignupState extends State<Signup> {
                     // Add 20 pixels of space on the left
                     child: Align(
                       alignment: Alignment(-1.00, 0.0), // Align to the left
-                      child: Text('Create Account', style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.black,
+                      child: Text('Create Student Account', style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold
                       )),
                     ),
@@ -82,7 +97,7 @@ class _SignupState extends State<Signup> {
                     child: Align(
                       alignment: Alignment(0.0, 0.0), // Center align
                       child: Text(
-                          'Sign up to create an account                  ',
+                          'Enter user details to create an account            ',
                           style: TextStyle(
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
@@ -264,7 +279,7 @@ class _SignupState extends State<Signup> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
                         ),
-                        child: const Text('Sign up',
+                        child: const Text('Add Student',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -276,27 +291,6 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    // Add 20 pixels of space on the left
-                    child: Align(
-                      alignment: const Alignment(0.0, 0.0), // Center align
-                      child: GestureDetector(
-                        onTap: () {
-                          // Add your onTap function here
-                          print('Sign up text clicked');
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-                        },
-                          child: const Text(
-                            'Already have an account? Sign in here',
-                            style: TextStyle(
-                                fontSize: 18, color: Colors.white,
-                                fontWeight: FontWeight.w600
-                            ),
-                          ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -305,5 +299,4 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
-
 }
