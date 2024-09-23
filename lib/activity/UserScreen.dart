@@ -90,7 +90,7 @@ class UserState extends State<Userscreen> {
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
                     child: TextField(
-                      style: const TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+                      style: const TextStyle(color: Colors.black, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
                       controller: _searchController,
                       decoration: const InputDecoration(
                         labelText: 'Search a user',
@@ -142,25 +142,19 @@ class UserState extends State<Userscreen> {
                         child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Admin',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
+                        onTap: () => widget.GotoCreateUser(),
                       ),
                       SpeedDialChild(
                         child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Teacher',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
+                        onTap: () => widget.GotoCreateUser(),
                       ),
                       SpeedDialChild(
                         child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Student',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
+                        onTap: () => widget.GotoCreateUser(),
                       ),
                     ],
                   ),

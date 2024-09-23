@@ -1,8 +1,10 @@
 import 'package:attendance_qr_system/activity/AttendanceScreen.dart';
+import 'package:attendance_qr_system/activity/CreateAdminScreen.dart';
 import 'package:attendance_qr_system/activity/QrScanner.dart';
 import 'package:attendance_qr_system/activity/UserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'QRPage.dart';
 
 class Maincontroller extends StatefulWidget {
@@ -16,121 +18,121 @@ class Maincontroller extends StatefulWidget {
 class _MaincontrollerState extends State<Maincontroller> {
   int _selectedIndex = 0;
 
-  List<Widget> screens = [
-  ];
+  List<Widget> screens = [];
 
   @override
   void initState() {
     super.initState();
     screens = [
-      const Qrpage(username: 'username'),
+      const Qrpage(username: 'meow'),
       Container(),
       const QrScanner(),
       const Attendancescreen(),
-      Userscreen(GotoCreateUser:GotoCreateUser),
+      Userscreen(GotoCreateUser: GotoCreateUser),
       Container(),
-      // Add other screens here
+      CreateAdminScreen(),
     ];
   }
 
-  void _onItemTapped(int index) {
-    if (index == 1) {
-      ShowProfile();
-      return;
-    }
-    if (index == 5) {
-      Logout();
-      return;
-    }
-
+  void GotoCreateUser() {
     setState(() {
-      _selectedIndex = index;
-    });
-
-    // Reset the scale after a short delay
-    Future.delayed(const Duration(milliseconds: 200), () {
-      setState(() {});
+      _selectedIndex = 6; // Set to a valid index within the range of items
     });
   }
 
-  void GotoCreateUser(){
+  void navigateToIndex(int index) {
     setState(() {
-      _selectedIndex = 2;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[_selectedIndex],
-      bottomNavigationBar: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'Assets/bg1.jpg',
-              fit: BoxFit.cover,
+      body: Center(
+        child: screens[_selectedIndex],
+      ),
+      bottomNavigationBar: Offstage(
+        offstage: _selectedIndex >= 7,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                'Assets/bg1.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          CurvedNavigationBar(
-            backgroundColor: Colors.transparent,
-            color: const Color(0xFF6E738E),
-            items: List.generate(6, (index) {
-              return Icon(
-                _getIconForIndex(index),
-                color: _selectedIndex == index ? Colors.white : Colors.black,
-              );
-            }),
-            index: _selectedIndex,
-            onTap: _onItemTapped,
-          ),
-        ],
+            CurvedNavigationBar(
+              backgroundColor: Colors.transparent,
+              color: const Color(0xFF6E738E),
+              items: [
+                Icon(
+                  Icons.qr_code,
+                  color: _selectedIndex == 0 ? Colors.white : Colors.black,
+                ),
+                Icon(
+                  Icons.settings,
+                  color: _selectedIndex == 1 ? Colors.white : Colors.black,
+                ),
+                Icon(
+                  Icons.qr_code_scanner,
+                  color: _selectedIndex == 2 ? Colors.white : Colors.black,
+                ),
+                Icon(
+                  Icons.document_scanner,
+                  color: _selectedIndex == 3 ? Colors.white : Colors.black,
+                ),
+                Icon(
+                  Icons.person,
+                  color: _selectedIndex == 4 ? Colors.white : Colors.black,
+                ),
+                Icon(
+                  const FaIcon(FontAwesomeIcons.powerOff).icon,
+                  color: _selectedIndex == 5 ? Colors.white : Colors.black,
+                ),
+              ],
+              index: _selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  if (index == 1) {
+                    ShowProfile();
+                    return;
+                  }
+                  if (index == 5) {
+                    Logout();
+                    return;
+                  } else {
+                    _selectedIndex = index;
+                  }
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-
-  // This is for icon data method
-  IconData _getIconForIndex(int index) {
-    switch (index) {
-      case 0:
-        return Icons.qr_code;
-      case 1:
-        return Icons.settings;
-      case 2:
-        return Icons.qr_code_scanner;
-      case 3:
-        return Icons.document_scanner;
-      case 4:
-        return Icons.person;
-      case 5:
-        return Icons.logout;
-      default:
-        return Icons.home;
-    }
-  }
-
-  // Used for logout function
   void Logout() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirm Logout',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Roboto' ,
-                  fontSize: 30)),
-          content: const Text('Are you sure you want to logout?',
-              style: TextStyle(color: Colors.white,
-                  fontFamily: 'Roboto',
-                  fontSize: 18)),
+          title: const Text(
+            'Confirm Logout',
+            style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 30),
+          ),
+          content: const Text(
+            'Are you sure you want to logout?',
+            style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 18),
+          ),
           backgroundColor: const Color(0xFF6E738E),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: const Text('Cancel', style: TextStyle(color: Colors.white, fontFamily: 'Roboto' )),
+              child: const Text('Cancel', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),
             TextButton(
               onPressed: () {
@@ -145,7 +147,6 @@ class _MaincontrollerState extends State<Maincontroller> {
     );
   }
 
-  // This will show Profile
   void ShowProfile() {
     showModalBottomSheet(
       context: context,
@@ -194,7 +195,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                 Row(
                   children: [
                     const SizedBox(width: 10),
-                   Stack(
+                    Stack(
                       children: [
                         const CircleAvatar(
                           radius: 50,
@@ -221,7 +222,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                           ),
                         ),
                       ],
-                   ),
+                    ),
                     const SizedBox(width: 10),
                     const Text(
                       'Username: ',
@@ -234,8 +235,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20,
-                  width: 50),
+                const SizedBox(height: 20, width: 50),
                 Row(
                   children: [
                     Container(
@@ -264,15 +264,11 @@ class _MaincontrollerState extends State<Maincontroller> {
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
-                                  fontFamily: 'Roboto'
-                              )
-                          ),
+                                  fontFamily: 'Roboto')),
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Container(
                       width: 200, // Adjust the width as needed
                       decoration: BoxDecoration(
@@ -285,7 +281,9 @@ class _MaincontrollerState extends State<Maincontroller> {
                         height: 100, // Adjust the height as needed
                         child: ElevatedButton(
                           onPressed: () {
-                            _selectedIndex = 0;
+                            setState(() {
+                              _selectedIndex = 0;
+                            });
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -294,18 +292,13 @@ class _MaincontrollerState extends State<Maincontroller> {
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.black,
-                                  fontFamily: 'Roboto'
-                              )
-                          ),
+                                  fontFamily: 'Roboto')),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  width: 10,
-                  height: 50,
-                ),
+                const SizedBox(width: 10, height: 50),
               ],
             ),
           ),
