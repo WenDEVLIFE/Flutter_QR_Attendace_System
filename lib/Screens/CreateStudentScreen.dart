@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateStudentScreen extends StatefulWidget {
   @override
@@ -61,6 +62,7 @@ class StudentState extends State<CreateStudentScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               print('Back button clicked');
+              context.go('/MainController');
 
             },
           ),

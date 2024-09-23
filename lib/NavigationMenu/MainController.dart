@@ -12,17 +12,79 @@ import '../Screens/UserScreen.dart';
 class Maincontroller extends StatefulWidget {
   Maincontroller({super.key});
   String username = 'meow';
+  String role = 'admin'; // Change this to 'admin' to test admin role
 
   @override
   _MaincontrollerState createState() => _MaincontrollerState();
 }
 
 class _MaincontrollerState extends State<Maincontroller> {
-  int _selectedIndex = 0;
   final PageController _pageController = PageController();
   final List<bool> _isHovering = List<bool>.filled(6, false);
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
+  List<Widget> _getNavBarItems() {
+    List<Widget> items = [];
+    if (widget.role == 'admin') {
+      items = [
+        _buildNavItem(0, Icons.qr_code),
+        _buildNavItem(1, Icons.settings),
+        _buildNavItem(2, Icons.qr_code_scanner),
+        _buildNavItem(3, Icons.document_scanner),
+        _buildNavItem(4, Icons.person),
+        _buildNavItem(5, FontAwesomeIcons.powerOff),
+      ];
+    } else {
+      items = [
+        _buildNavItem(0, Icons.qr_code),
+        _buildNavItem(1, Icons.settings),
+        _buildNavItem(2, Icons.qr_code_scanner),
+        _buildNavItem(3, FontAwesomeIcons.powerOff),
+      ];
+    }
+    return items;
+  }
+
+  List<Widget> _getPageViewChildren() {
+    List<Widget> pages = [];
+    if (widget.role == 'admin') {
+      pages = [
+        const Qrpage(username: 'meow'),
+        Container(), // Placeholder for settings page
+        const QrScanner(),
+        const Attendancescreen(),
+        const Userscreen(),
+        const Center(child: Text('Logout Page')), // Placeholder for logout page
+      ];
+    } else {
+      pages = [
+        const Qrpage(username: 'meow'),
+        Container(), // Placeholder for settings page
+        const QrScanner(),
+        const Center(child: Text('Logout Page')), // Placeholder for logout page
+      ];
+    }
+    return pages;
+  }
+
+  Widget _buildNavItem(int index, IconData icon) {
+    return InkWell(
+      onHover: (hovering) {
+        setState(() {
+          _isHovering[index] = hovering;
+        });
+      },
+      child: Icon(
+        icon,
+        color: _isHovering[index] ? Colors.grey : Colors.white,
+        size: 30,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +96,10 @@ class _MaincontrollerState extends State<Maincontroller> {
               controller: _pageController,
               onPageChanged: (index) {
                 setState(() {
-                  _selectedIndex = index;
+                  _isHovering[index] = false;
                 });
               },
-              children: [
-                const Qrpage(username: 'meow'),
-                Container(), // Placeholder for settings page
-                const QrScanner(),
-                const Attendancescreen(),
-                const Userscreen(),
-                const Center(child: Text('Logout Page')), // Placeholder for logout page
-                const CreateUserScreen(),
-                const CreateStudentScreen(),
-              ],
+              children: _getPageViewChildren(),
             ),
           );
         },
@@ -62,55 +115,36 @@ class _MaincontrollerState extends State<Maincontroller> {
           CurvedNavigationBar(
             backgroundColor: Colors.transparent,
             color: const Color(0xFF6E738E),
-            items: List.generate(6, (index) {
-              return MouseRegion(
-                onEnter: (_) => _onHover(index, true),
-                onExit: (_) => _onHover(index, false),
-                child: Icon(
-                  _getIcon(index),
-                  color: _isHovering[index] ? Colors.grey : Colors.white,
-                ),
-              );
-            }),
+            items: _getNavBarItems(),
             onTap: (index) {
-              if (index == 1) {
-                ShowProfile();
-              }
-              if (index == 5) {
-                Logout();
+              if (widget.role == 'admin') {
+                if (index == 1) {
+                  ShowProfile();
+                  return;
+                }
+                if (index == 5) {
+                  Logout();
+                  return;
+                } else {
+                  _pageController.jumpToPage(index);
+                }
               } else {
-                _pageController.jumpToPage(index);
+                if (index == 1) {
+                  ShowProfile();
+                  return;
+                }
+                if (index == 3) {
+                  Logout();
+                  return;
+                } else {
+                  _pageController.jumpToPage(index);
+                }
               }
             },
           ),
         ],
       ),
     );
-  }
-
-  void _onHover(int index, bool hovering) {
-    setState(() {
-      _isHovering[index] = hovering;
-    });
-  }
-
-  IconData _getIcon(int index) {
-    switch (index) {
-      case 0:
-        return Icons.qr_code;
-      case 1:
-        return Icons.settings;
-      case 2:
-        return Icons.qr_code_scanner;
-      case 3:
-        return Icons.document_scanner;
-      case 4:
-        return Icons.person;
-      case 5:
-        return FontAwesomeIcons.powerOff;
-      default:
-        return Icons.help;
-    }
   }
 
   void Logout() {
@@ -281,9 +315,6 @@ class _MaincontrollerState extends State<Maincontroller> {
                         height: 100, // Adjust the height as needed
                         child: ElevatedButton(
                           onPressed: () {
-                            setState(() {
-                              _selectedIndex = 0;
-                            });
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
