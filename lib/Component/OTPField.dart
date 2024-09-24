@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import this for FilteringTextInputFormatter
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,6 +33,7 @@ class OTPField extends StatelessWidget {
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         maxLength: 1,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Add this line
         decoration: const InputDecoration(
           counterText: '',
           border: OutlineInputBorder(),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../Function/VerifyData.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
   @override
@@ -316,172 +318,20 @@ class _SignupState extends State<Signup> {
 
 
   // This will check if the data is valid
-  void VerifyData(){
+  void VerifyData() {
     // Get the values from the TextFields
     final email = _emailController.text;
+    final Map<String, dynamic> UserData = {
+      'username': _usernameController.text,
+      'email': email,
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
+      'course': _courseController.text,
+      'year': _selectedValue,
+      'password': _passwordController.text,
+      'confirmPassword': _confirmPasswordController.text,
+    };
 
-    // Email pattern or regex
-    final emailPattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-
-    if (_usernameController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Username is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_emailController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Email is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_firstNameController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "First name is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_lastNameController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Last name is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_courseController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Course is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } else if (_selectedValue == _items[0]) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Please select a year",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_passwordController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Password is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_confirmPasswordController.text.isEmpty) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Confirm password is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    } else if (_passwordController.text != _confirmPasswordController.text) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Passwords do not match",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    }
-
-    else if (_emailController.text.isEmpty) {
-      // Validate the email address
-      Fluttertoast.showToast(
-        msg: "Email is empty",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    }
-
-    else if (!emailPattern.hasMatch(email)) {
-      // Show an error message
-      Fluttertoast.showToast(
-        msg: "Invalid email address",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-
-      return;
-    }
-
-    else {
-      // Proceed to the next screen
-      context.push('/Otp', extra: {
-        'username': _usernameController.text,
-        'email': _emailController.text,
-        'firstName': _firstNameController.text,
-        'lastName': _lastNameController.text,
-        'course': _courseController.text,
-        'year': _selectedValue,
-        'password': _passwordController.text,
-      });
-    }
+    VerifyDataClass().CheckData(UserData,context);
   }
 }
