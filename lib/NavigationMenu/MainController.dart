@@ -3,10 +3,14 @@ import 'package:attendance_qr_system/Screens/CreateUserScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../Screens/AttendanceScreen.dart';
 import '../Screens/QRPage.dart';
 import '../Screens/QrScanner.dart';
+import '../Screens/ShowProfile.dart';
+import '../Screens/ShowProfile.dart';
+import '../Screens/ShowProfile.dart';
 import '../Screens/UserScreen.dart';
 
 class Maincontroller extends StatefulWidget {
@@ -119,7 +123,7 @@ class _MaincontrollerState extends State<Maincontroller> {
             onTap: (index) {
               if (widget.role == 'admin') {
                 if (index == 1) {
-                  ShowProfile();
+                  ShowProfile(context).showProfile();
                   return;
                 }
                 if (index == 5) {
@@ -130,7 +134,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                 }
               } else {
                 if (index == 1) {
-                  ShowProfile();
+                  ShowProfile(context).showProfile();
                   return;
                 }
                 if (index == 3) {
@@ -170,8 +174,7 @@ class _MaincontrollerState extends State<Maincontroller> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.pop(context); // Perform the logout
+                context.go('/Loginpage');
               },
               child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),
@@ -181,160 +184,4 @@ class _MaincontrollerState extends State<Maincontroller> {
     );
   }
 
-  void ShowProfile() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-      ),
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF6E738E),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    const Center(
-                      child: Text(
-                        'Profile',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Roboto',
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 250),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context); // Close the modal bottom sheet
-                        },
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                          size: 50,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    const SizedBox(width: 10),
-                    Stack(
-                      children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white,
-                          child: CircleAvatar(
-                            radius: 45,
-                            backgroundImage: AssetImage('Assets/fufu.jpg'),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                // Add your camera function here
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      'Username: ',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Roboto',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20, width: 50),
-                Row(
-                  children: [
-                    Container(
-                      width: 200, // Adjust the width as needed
-                      decoration: BoxDecoration(
-                        color: Colors.transparent, // Background color of the TextField
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.transparent), // Border color
-                      ),
-                      child: ButtonTheme(
-                        minWidth: 100, // Adjust the width as needed
-                        height: 100, // Adjust the height as needed
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Maincontroller(), // Use Maincontroller, not Maincon
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
-                          ),
-                          child: const Text('Change Password',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontFamily: 'Roboto')),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      width: 200, // Adjust the width as needed
-                      decoration: BoxDecoration(
-                        color: Colors.transparent, // Background color of the TextField
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.transparent), // Border color
-                      ),
-                      child: ButtonTheme(
-                        minWidth: 100, // Adjust the width as needed
-                        height: 100, // Adjust the height as needed
-                        child: ElevatedButton(
-                          onPressed: () {
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
-                          ),
-                          child: const Text('Change Email',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontFamily: 'Roboto')),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 10, height: 50),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
