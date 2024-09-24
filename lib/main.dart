@@ -13,6 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
+import 'Screens/OTPScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,6 +66,10 @@ class MyApp extends StatelessWidget {
         path: '/MainController',
         builder: (context, state) => Maincontroller(),
       ),
+      GoRoute(
+        path: '/Otp',
+        builder: (context, state) => EmailScreen(),
+      )
     ],
   );
 

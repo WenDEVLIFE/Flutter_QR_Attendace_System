@@ -288,7 +288,7 @@ class _SignupState extends State<Signup> {
                         onTap: () {
                           // Add your onTap function here
                           print('Sign up text clicked');
-                          context.go('/Loginpage');
+                          context.go('/Otp');
                         },
                           child: const Text(
                             'Already have an account? Sign in here',
