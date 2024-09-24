@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/DatabaseController/LoginVerification.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,7 +12,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
-
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +66,9 @@ class _LoginPageState extends State<LoginPage> {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(color: Colors.deepPurple), // Border color
                   ),
-                  child: const TextField(
-                    decoration: InputDecoration(
+                  child: TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Username',
                       contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -81,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                     border: Border.all(color: Colors.deepPurple), // Border color
                   ),
                   child: TextField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText: 'Password',
@@ -109,7 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                     height: 100, // Adjust the height as needed
                     child: ElevatedButton(
                       onPressed: () {
-                        context.go("/MainController");
+
+                        // call the controller
+                       LoginVerification().Login(username: _usernameController.text, password: _passwordController.text, context: context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -159,5 +165,6 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _obscureText = !_obscureText;
     });
-  } // Add this method                                                                                                                                                
+  } // Add this method
+
 }

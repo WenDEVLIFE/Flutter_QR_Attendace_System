@@ -105,12 +105,7 @@ class ShowProfile {
                       width: 200, // Adjust the width as needed
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Maincontroller(),
-                            ),
-                          );
+                         Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Button background color

@@ -4,7 +4,8 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class Qrpage extends StatelessWidget {
   final String username;
-  const Qrpage({super.key, required this.username});
+  final String firstname;
+  const Qrpage({super.key, required this.username, required this.firstname});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class Qrpage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center, // Aligns items to the start of the column
                   children: [
                     Text(
-                      '  ${_getGreeting()}, $username',
+                      '  ${_getGreeting()}, $firstname',
                       style: const TextStyle(
                         color: Colors.black,
                         fontFamily: 'Roboto',

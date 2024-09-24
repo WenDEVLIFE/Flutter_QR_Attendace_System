@@ -8,13 +8,11 @@ import '../Screens/AttendanceScreen.dart';
 import '../Screens/QRPage.dart';
 import '../Screens/QrScanner.dart';
 import '../Screens/ShowProfile.dart';
-import '../Screens/ShowProfile.dart';
 import '../Screens/UserScreen.dart';
 
 class Maincontroller extends StatefulWidget {
-  Maincontroller({super.key});
-  String username = 'meow';
-  String role = 'admin'; // Change this to 'admin' to test admin role
+  Maincontroller({super.key, required this.userInfo});
+  final Map<String, dynamic> userInfo;
 
   @override
   _MaincontrollerState createState() => _MaincontrollerState();
@@ -23,15 +21,21 @@ class Maincontroller extends StatefulWidget {
 class _MaincontrollerState extends State<Maincontroller> {
   final PageController _pageController = PageController();
   final List<bool> _isHovering = List<bool>.filled(6, false);
+  late String username;
+  late String role;
+  late String firstName;
 
   @override
   void initState() {
     super.initState();
+    role = widget.userInfo['role'];
+    username = widget.userInfo['username'];
+    firstName =widget.userInfo['firstname'];
   }
 
   List<Widget> _getNavBarItems() {
     List<Widget> items = [];
-    if (widget.role == 'admin') {
+    if (role == 'Admin') {
       items = [
         _buildNavItem(0, Icons.qr_code),
         _buildNavItem(1, Icons.settings),
@@ -53,9 +57,9 @@ class _MaincontrollerState extends State<Maincontroller> {
 
   List<Widget> _getPageViewChildren() {
     List<Widget> pages = [];
-    if (widget.role == 'admin') {
+    if (role == 'admin') {
       pages = [
-        const Qrpage(username: 'meow'),
+        Qrpage(username: username, firstname: firstName),
         Container(), // Placeholder for settings page
         const QrScanner(),
         const Attendancescreen(),
@@ -64,7 +68,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ];
     } else {
       pages = [
-        const Qrpage(username: 'meow'),
+        Qrpage(username: username, firstname: firstName),
         Container(), // Placeholder for settings page
         const QrScanner(),
         const Center(child: Text('Logout Page')), // Placeholder for logout page
@@ -119,7 +123,7 @@ class _MaincontrollerState extends State<Maincontroller> {
             color: const Color(0xFF6E738E),
             items: _getNavBarItems(),
             onTap: (index) {
-              if (widget.role == 'admin') {
+              if (role == 'admin') {
                 if (index == 1) {
                   ShowProfile(context).showProfile();
                   return;

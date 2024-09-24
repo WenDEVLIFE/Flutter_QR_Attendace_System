@@ -24,6 +24,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+
+  // There are the routes for the app screens
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
@@ -40,7 +42,11 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/QRPage',
-        builder: (context, state) => const Qrpage(username: 'username'),
+        builder: (context, state) {
+          final username = state.extra as String;
+          final firstname = state.extra as String;
+         return Qrpage(username: username , firstname: firstname);
+        },
       ),
       GoRoute(
         path: '/Attendance',
@@ -64,7 +70,10 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/MainController',
-        builder: (context, state) => Maincontroller(),
+        builder: (context, state) {
+          final userInfo = state.extra as Map<String, dynamic>;
+          return Maincontroller(userInfo: userInfo);
+          },
       ),
       GoRoute(
         path: '/Otp',

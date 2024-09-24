@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class InsertStudent {
   InsertStudent({required this.extra});
+
+  // get the received data from the previous page
   Map<String, dynamic> extra;
 
   void InsertFirebase() async {
