@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../NavigationMenu/MainController.dart';
+
+import '../Component/MainController.dart';
 
 class ShowProfile {
   final BuildContext context;

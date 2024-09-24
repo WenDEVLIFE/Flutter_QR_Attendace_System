@@ -8,7 +8,7 @@ import 'package:attendance_qr_system/Screens/QrScanner.dart';
 import 'package:attendance_qr_system/Screens/SignUpPage.dart';
 import 'package:attendance_qr_system/Screens/UserScreen.dart';
 import 'package:attendance_qr_system/Screens/LoginPage.dart';
-import 'package:attendance_qr_system/NavigationMenu/MainController.dart';
+import 'package:attendance_qr_system/Component/MainController.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
