@@ -1,26 +1,126 @@
-import 'package:attendance_qr_system/EmailAPI/YahooAPI.dart';
 import 'package:flutter/material.dart';
-import 'package:mailer/smtp_server.dart';
+import 'package:go_router/go_router.dart';
 
-class EmailScreen extends StatelessWidget {
+class OTPScreen extends StatefulWidget {
+  @override
+  _OTPScreenState createState() => _OTPScreenState();
+}
+
+class _OTPScreenState extends State<OTPScreen> {
+  final List<TextEditingController> _controllers = List.generate(6, (index) => TextEditingController());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Send Email Example'),
-        ),
-        body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              YahooMail().sendEmail();
-            },
-            child: Text('Send Email'),
+    return WillPopScope(
+        onWillPop: () async {
+      // Prevent going back to the main page
+      return false;
+    },
+     child:Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Enter the OTP',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                print('Back button clicked');
+                context.go('/Signuppage');
+
+              },
+            ),
+            automaticallyImplyLeading: false,
+            backgroundColor: const Color(0xFF6E738E),
+          ),
+          body:Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('Assets/bg1.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Please enter the OTP sent to your email',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(6, (index) {
+                      return _buildOTPField(index);
+                    }),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: 300, // Adjust the width as needed
+                    decoration: BoxDecoration(
+                      color: Colors.transparent, // Background color of the TextField
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.transparent), // Border color
+                    ),
+                    child: ButtonTheme(
+                      minWidth: 300, // Adjust the width as needed
+                      height: 100, // Adjust the height as needed
+                      child: ElevatedButton(
+                        onPressed: () {
+                          String otp = _controllers.map((controller) => controller.text).join();
+                          print('Entered OTP: $otp');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
+                        ),
+                        child: const Text('Verify OTP',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w600
+
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
     );
   }
 
-
+  Widget _buildOTPField(int index) {
+    return Container(decoration:
+      BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      width: 40,
+      child: TextField(
+        controller: _controllers[index],
+        keyboardType: TextInputType.number,
+        textAlign: TextAlign.center,
+        maxLength: 1,
+        decoration: const InputDecoration(
+          counterText: '',
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (value) {
+          if (value.length == 1 && index < 5) {
+            FocusScope.of(context).nextFocus();
+          }
+        },
+      ),
+    );
+  }
 }
