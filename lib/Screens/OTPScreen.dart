@@ -1,15 +1,42 @@
+import 'package:attendance_qr_system/DatabaseController/InsertStudent.dart';
+import 'package:attendance_qr_system/EmailAPI/YahooAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OTPScreen extends StatefulWidget {
 
-  final String email; // Email to which the OTP is sent
-  const OTPScreen({super.key, required this.email});
+  final Map<String, dynamic> extra;
+
+  const OTPScreen({super.key, required this.extra});
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
-
 class _OTPScreenState extends State<OTPScreen> {
+
+  bool _isLoading = false;
+  int otp = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    GenerateOTP();
+  }
+
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
+
+  void GenerateOTP() {
+    // Generate a random 6-digit OTP
+    int min = 100000;
+    int max = 999999;
+    otp = min + (DateTime.now().millisecond % (max - min));
+     YahooMail().sendEmail(otp, widget.extra['email'] ,_setLoading );
+  }
+
   final List<TextEditingController> _controllers = List.generate(6, (index) => TextEditingController());
 
   @override
@@ -33,7 +60,8 @@ class _OTPScreenState extends State<OTPScreen> {
               icon: const Icon(Icons.arrow_back, color: Colors.white),
               onPressed: () {
                 print('Back button clicked');
-                context.go('/Signuppage');
+                VerifyOTP();
+
               },
             ),
             automaticallyImplyLeading: false,
@@ -77,6 +105,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         onPressed: () {
                           String otp = _controllers.map((controller) => controller.text).join();
                           print('Entered OTP: $otp');
+                          VerifyOTP();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -106,6 +135,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       height: 100, // Adjust the height as needed
                       child: ElevatedButton(
                         onPressed: () {
+                          GenerateOTP();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -153,5 +183,17 @@ class _OTPScreenState extends State<OTPScreen> {
         },
       ),
     );
+  }
+
+  void VerifyOTP() {
+    String enteredOTP = _controllers.map((controller) => controller.text).join();
+    if (enteredOTP == otp.toString()) {
+      print('OTP is correct');
+      InsertStudent(extra: widget.extra).InsertFirebase();
+      context.go('/Loginpage');
+    } else {
+      print('OTP is incorrect');
+
+    }
   }
 }
