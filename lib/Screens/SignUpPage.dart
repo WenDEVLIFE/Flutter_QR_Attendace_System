@@ -261,8 +261,7 @@ class _SignupState extends State<Signup> {
                       height: 100, // Adjust the height as needed
                       child: ElevatedButton(
                         onPressed: () {
-
-                          context.go('/Loginpage');
+                          context.go('/Otp');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -288,7 +287,7 @@ class _SignupState extends State<Signup> {
                         onTap: () {
                           // Add your onTap function here
                           print('Sign up text clicked');
-                          context.go('/Otp');
+                          context.go('/Loginpage');
                         },
                           child: const Text(
                             'Already have an account? Sign in here',

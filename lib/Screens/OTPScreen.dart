@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OTPScreen extends StatefulWidget {
+
+  final String email; // Email to which the OTP is sent
+  const OTPScreen({super.key, required this.email});
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }
@@ -31,7 +34,6 @@ class _OTPScreenState extends State<OTPScreen> {
               onPressed: () {
                 print('Back button clicked');
                 context.go('/Signuppage');
-
               },
             ),
             automaticallyImplyLeading: false,
@@ -80,6 +82,35 @@ class _OTPScreenState extends State<OTPScreen> {
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
                         ),
                         child: const Text('Verify OTP',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.w600
+
+                            )
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    width: 300, // Adjust the width as needed
+                    decoration: BoxDecoration(
+                      color: Colors.transparent, // Background color of the TextField
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.transparent), // Border color
+                    ),
+                    child: ButtonTheme(
+                      minWidth: 300, // Adjust the width as needed
+                      height: 100, // Adjust the height as needed
+                      child: ElevatedButton(
+                        onPressed: () {
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
+                        ),
+                        child: const Text('Resend OTP',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,

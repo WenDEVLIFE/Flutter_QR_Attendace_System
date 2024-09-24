@@ -68,7 +68,10 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/Otp',
-        builder: (context, state) => OTPScreen(),
+        builder: (context, state){
+          final email = state.pathParameters['email']!;
+          return OTPScreen(email: email);
+        },
       )
     ],
   );
