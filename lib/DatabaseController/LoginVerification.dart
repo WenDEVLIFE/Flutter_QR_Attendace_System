@@ -1,11 +1,13 @@
-import 'package:attendance_qr_system/Component/MainController.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:attendance_qr_system/Function/SessionManager.dart';
 
 class LoginVerification {
+  final SessionManager _sessionManager = SessionManager();
+
   Future<void> Login({required String username, required String password, required BuildContext context}) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -31,6 +33,10 @@ class LoginVerification {
             'role': roles,
             'firstname': Firstname,
           };
+
+          // Save user info in session
+          await _sessionManager.saveUserInfo(userInfo);
+
           context.go('/MainController/', extra: userInfo);
 
           Fluttertoast.showToast(

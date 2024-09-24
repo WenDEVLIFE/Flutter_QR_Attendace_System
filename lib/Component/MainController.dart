@@ -4,6 +4,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
+import '../Function/SessionManager.dart';
 import '../Screens/AttendanceScreen.dart';
 import '../Screens/QRPage.dart';
 import '../Screens/QrScanner.dart';
@@ -21,6 +22,7 @@ class Maincontroller extends StatefulWidget {
 class _MaincontrollerState extends State<Maincontroller> {
   final PageController _pageController = PageController();
   final List<bool> _isHovering = List<bool>.filled(6, false);
+  final SessionManager sessionManager = SessionManager();
   late String username;
   late String role;
   late String firstName;
@@ -176,6 +178,7 @@ class _MaincontrollerState extends State<Maincontroller> {
             TextButton(
               onPressed: () {
                 context.go('/Loginpage');
+                sessionManager.clearUserInfo();
               },
               child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),

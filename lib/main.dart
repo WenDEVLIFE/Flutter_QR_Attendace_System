@@ -13,80 +13,82 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
+import 'Function/SessionManager.dart';
 import 'Screens/OTPScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseRun.run();
-  runApp(MyApp());
+  final SessionManager sessionManager = SessionManager();
+  final userInfo = await sessionManager.getUserInfo();
+  runApp(MyApp(userInfo: userInfo));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-
-  // There are the routes for the app screens
-  final GoRouter _router = GoRouter(
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const MyHomePage(title: 'QR CODE MANAGEMENT SYSTEM'),
-      ),
-      GoRoute(
-        path: '/Loginpage',
-        builder: (context, state) => const LoginPage(),
-      ),
-      GoRoute(
-        path: '/Signuppage',
-        builder: (context, state) => const Signup(),
-      ),
-      GoRoute(
-        path: '/QRPage',
-        builder: (context, state) {
-          final username = state.extra as String;
-          final firstname = state.extra as String;
-         return Qrpage(username: username , firstname: firstname);
-        },
-      ),
-      GoRoute(
-        path: '/Attendance',
-        builder: (context, state) => const Attendancescreen(),
-      ),
-      GoRoute(
-        path: '/Scanner',
-        builder: (context, state) => const QrScanner(),
-      ),
-      GoRoute(
-        path: '/UserScreen',
-        builder: (context, state) => const Userscreen(),
-      ),
-      GoRoute(
-        path: '/CreateUser',
-        builder: (context, state) => const CreateUserScreen(),
-      ),
-      GoRoute(
-        path: '/CreateStudent',
-        builder: (context, state) => const CreateStudentScreen(),
-      ),
-      GoRoute(
-        path: '/MainController',
-        builder: (context, state) {
-          final userInfo = state.extra as Map<String, dynamic>;
-          return Maincontroller(userInfo: userInfo);
-          },
-      ),
-      GoRoute(
-        path: '/Otp',
-        builder: (context, state){
-          final extra = state.extra as Map<String, dynamic>;
-          return OTPScreen( extra: extra);
-        },
-      )
-    ],
-  );
+  final Map<String, dynamic>? userInfo;
+  MyApp({super.key, this.userInfo});
 
   @override
   Widget build(BuildContext context) {
+    final GoRouter _router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => MyHomePage(title: 'QR CODE MANAGEMENT SYSTEM', userInfo: userInfo),
+        ),
+        GoRoute(
+          path: '/Loginpage',
+          builder: (context, state) => const LoginPage(),
+        ),
+        GoRoute(
+          path: '/Signuppage',
+          builder: (context, state) => const Signup(),
+        ),
+        GoRoute(
+          path: '/QRPage',
+          builder: (context, state) {
+            final username = state.extra as String;
+            final firstname = state.extra as String;
+            return Qrpage(username: username, firstname: firstname);
+          },
+        ),
+        GoRoute(
+          path: '/Attendance',
+          builder: (context, state) => const Attendancescreen(),
+        ),
+        GoRoute(
+          path: '/Scanner',
+          builder: (context, state) => const QrScanner(),
+        ),
+        GoRoute(
+          path: '/UserScreen',
+          builder: (context, state) => const Userscreen(),
+        ),
+        GoRoute(
+          path: '/CreateUser',
+          builder: (context, state) => const CreateUserScreen(),
+        ),
+        GoRoute(
+          path: '/CreateStudent',
+          builder: (context, state) => const CreateStudentScreen(),
+        ),
+        GoRoute(
+          path: '/MainController',
+          builder: (context, state) {
+            final userInfo = state.extra as Map<String, dynamic>;
+            return Maincontroller(userInfo: userInfo);
+          },
+        ),
+        GoRoute(
+          path: '/Otp',
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+            return OTPScreen(extra: extra);
+          },
+        )
+      ],
+    );
+
     return MaterialApp.router(
       routerConfig: _router,
       title: 'Flutter Demo',
@@ -100,9 +102,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
+  final Map<String, dynamic>? userInfo;
   final String title;
+
+  const MyHomePage({super.key, required this.title, this.userInfo});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -121,7 +124,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _isLoading = true;
     });
-    // Simulate a delay for demonstration purposes
     Future.delayed(const Duration(seconds: 5), () {
       setState(() {
         _isLoading = false;
@@ -146,9 +148,20 @@ class _MyHomePageState extends State<MyHomePage> {
               textColor: Colors.white,
               fontSize: 16.0
           );
-          //  Go to navigation
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-          showToast();
+          if (widget.userInfo != null) {
+            context.go('/MainController', extra: widget.userInfo);
+          } else {
+            context.go('/Loginpage');
+            Fluttertoast.showToast(
+                msg: "userinfo is null",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          }
         }
       });
     });
@@ -169,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Image(
-                image:AssetImage('Assets/logos.png'),
+                image: AssetImage('Assets/logos.png'),
                 width: 200,
                 height: 200,
               ),
@@ -181,14 +194,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.black,
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold,
-
                 ),
               ),
-              const SizedBox(height: 20), // Add some space between the text and the loading bar
+              const SizedBox(height: 20),
               _isLoading
                   ? const SizedBox(
-                width: 50, // Adjust the width
-                height: 50, // Adjust the height
+                width: 50,
+                height: 50,
                 child: CircularProgressIndicator(
                   color: Colors.deepPurple,
                 ),
