@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../Function/QrCodeInit.dart';
+
 class Qrpage extends StatefulWidget {
   final String username;
   final String firstname;
@@ -21,7 +23,13 @@ class QrState extends State<Qrpage> {
   void initState() {
     super.initState();
     username = widget.username;
-    LoadQr();
+    QrCodeInit().LoadQr(username, updateQrData, context);
+  }
+
+  void updateQrData(int data) {
+    setState(() {
+      qrData = data;
+    });
   }
 
   @override
@@ -170,51 +178,4 @@ class QrState extends State<Qrpage> {
     );
   }
 
-  Future<void> LoadQr() async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .where('username', isEqualTo: username)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        var userDoc = querySnapshot.docs.first;
-        var userID = userDoc['ID'].toInt();
-        setState(() {
-          qrData = userID;
-        });
-
-        Fluttertoast.showToast(
-          msg: "QR code loaded successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-
-      } else {
-        Fluttertoast.showToast(
-          msg: "User not found",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'An error occurred. Please try again.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
-  }
 }
