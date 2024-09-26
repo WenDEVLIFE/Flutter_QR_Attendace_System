@@ -47,4 +47,8 @@ class QrCodeInit {
       );
     }
   }
+
+  void DownloadQr(){
+
+  }
 }
