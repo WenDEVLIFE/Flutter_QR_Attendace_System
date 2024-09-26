@@ -1,6 +1,5 @@
 import 'package:attendance_qr_system/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../Function/VerifyData.dart';

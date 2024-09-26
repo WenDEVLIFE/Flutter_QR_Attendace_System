@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'package:attendance_qr_system/DatabaseController/InsertStudent.dart';
 import 'package:attendance_qr_system/EmailAPI/YahooAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 
 import '../Component/OTPField.dart'; // Import the OTPField class
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../Component/MainController.dart';
 
 class ShowProfile {
   final BuildContext context;
@@ -101,7 +100,7 @@ class ShowProfile {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 200, // Adjust the width as needed
                       child: ElevatedButton(
                         onPressed: () {
@@ -120,7 +119,7 @@ class ShowProfile {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 200, // Adjust the width as needed
                       child: ElevatedButton(
                         onPressed: () {

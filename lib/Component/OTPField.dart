@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import this for FilteringTextInputFormatter
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,7 +8,7 @@ import '../DatabaseController/InsertStudent.dart';
 class OTPField extends StatelessWidget {
   final List<TextEditingController> controllers;
 
-  OTPField({required this.controllers});
+  const OTPField({super.key, required this.controllers});
 
   @override
   Widget build(BuildContext context) {

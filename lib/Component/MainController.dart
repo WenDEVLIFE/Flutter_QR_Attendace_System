@@ -1,4 +1,3 @@
-import 'package:attendance_qr_system/Screens/CreateStudentScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,7 +11,7 @@ import '../Screens/ShowProfile.dart';
 import '../Screens/UserScreen.dart';
 
 class Maincontroller extends StatefulWidget {
-  Maincontroller({super.key, required this.userInfo});
+  const Maincontroller({super.key, required this.userInfo});
   final Map<String, dynamic> userInfo;
 
   @override

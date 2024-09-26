@@ -26,11 +26,11 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final Map<String, dynamic>? userInfo;
-  MyApp({super.key, this.userInfo});
+  const MyApp({super.key, this.userInfo});
 
   @override
   Widget build(BuildContext context) {
-    final GoRouter _router = GoRouter(
+    final GoRouter router = GoRouter(
       routes: [
         GoRoute(
           path: '/',
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp.router(
-      routerConfig: _router,
+      routerConfig: router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
