@@ -19,31 +19,37 @@ class Maincontroller extends StatefulWidget {
 }
 
 class _MaincontrollerState extends State<Maincontroller> {
-  final PageController _pageController = PageController();
+  final PageController _pageController = PageController(initialPage: 1); // Set initial page to index 1
   final List<bool> _isHovering = List<bool>.filled(6, false);
   final SessionManager sessionManager = SessionManager();
   late String username;
   late String role;
   late String firstName;
+  int _currentIndex = 1; // Initialize to index 1
 
   @override
   void initState() {
     super.initState();
     role = widget.userInfo['role'];
     username = widget.userInfo['username'];
-    firstName =widget.userInfo['firstname'];
+    firstName = widget.userInfo['firstname'];
+
+    // Automatically select index 1 on load
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _pageController.jumpToPage(1); // Load index 1 on start
+      });
+    });
   }
 
   List<Widget> _getNavBarItems() {
     List<Widget> items = [];
     if (role == 'Admin') {
       items = [
-        _buildNavItem(0, Icons.qr_code),
-        _buildNavItem(1, Icons.settings),
-        _buildNavItem(2, Icons.qr_code_scanner),
-        _buildNavItem(3, Icons.document_scanner),
-        _buildNavItem(4, Icons.person),
-        _buildNavItem(5, FontAwesomeIcons.powerOff),
+        _buildNavItem(0, Icons.settings),
+        _buildNavItem(1, Icons.document_scanner),
+        _buildNavItem(2, Icons.person),
+        _buildNavItem(3, FontAwesomeIcons.powerOff),
       ];
     } else {
       items = [
@@ -58,21 +64,19 @@ class _MaincontrollerState extends State<Maincontroller> {
 
   List<Widget> _getPageViewChildren() {
     List<Widget> pages = [];
-    if (role == 'admin') {
+    if (role == 'Admin') {
       pages = [
-        Qrpage(username: username, firstname: firstName),
         Container(), // Placeholder for settings page
-        const QrScanner(),
-        const Attendancescreen(),
+        const Attendancescreen(), // Automatically select this for Admin
         const Userscreen(),
-        const Center(child: Text('Logout Page')), // Placeholder for logout page
+        Container(), // Placeholder for settings page
       ];
     } else {
       pages = [
         Qrpage(username: username, firstname: firstName),
-        Container(), // Placeholder for settings page
+        Container(), // Automatically select this for Student
         const QrScanner(),
-        const Center(child: Text('Logout Page')), // Placeholder for logout page
+        Container(), // Placeholder for settings page
       ];
     }
     return pages;
@@ -103,7 +107,7 @@ class _MaincontrollerState extends State<Maincontroller> {
               controller: _pageController,
               onPageChanged: (index) {
                 setState(() {
-                  _isHovering[index] = false;
+                  _currentIndex = index; // Track current index
                 });
               },
               children: _getPageViewChildren(),
@@ -123,13 +127,18 @@ class _MaincontrollerState extends State<Maincontroller> {
             backgroundColor: Colors.transparent,
             color: const Color(0xFF6E738E),
             items: _getNavBarItems(),
+            index: _currentIndex, // Set the initial index
             onTap: (index) {
-              if (role == 'admin') {
-                if (index == 1) {
-                  ShowProfile(context).showProfile();
+              setState(() {
+                _currentIndex = index; // Update current index on tap
+              });
+
+              if (role == 'Admin') {
+                if (index == 0) {
+                  ShowProfile(context).showProfile(username: username, firstname: firstName, role: role);
                   return;
                 }
-                if (index == 5) {
+                if (index == 3) {
                   Logout();
                   return;
                 } else {
@@ -137,7 +146,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                 }
               } else {
                 if (index == 1) {
-                  ShowProfile(context).showProfile();
+                  ShowProfile(context).showProfile(username: username, firstname: firstName, role: role);
                   return;
                 }
                 if (index == 3) {
@@ -153,6 +162,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ),
     );
   }
+
   void Logout() {
     showDialog(
       context: context,
@@ -186,5 +196,4 @@ class _MaincontrollerState extends State<Maincontroller> {
       },
     );
   }
-
 }

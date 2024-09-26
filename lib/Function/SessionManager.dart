@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SessionManager {
@@ -25,5 +28,10 @@ class SessionManager {
     prefs.remove('username');
     prefs.remove('role');
     prefs.remove('firstname');
+    Fluttertoast.showToast(msg: 'Logged out successfully',
+        backgroundColor: const Color(0xFF6E738E),
+        textColor: const Color(0xFFFFFFFF),
+        fontSize: 16.0,
+    );
   }
 }
