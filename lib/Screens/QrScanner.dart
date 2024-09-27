@@ -1,14 +1,13 @@
+import 'package:attendance_qr_system/Function/ScanQR.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_ml_kit/google_ml_kit.dart' as mlkit; // Alias for google_ml_kit
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart' as qr; // Alias for qr_code_scanner
 import 'dart:io';
 
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-
 class QrScanner extends StatefulWidget {
-  const QrScanner({super.key});
+  const QrScanner({Key? key}) : super(key: key);
 
   @override
   QrState createState() => QrState();
@@ -17,7 +16,7 @@ class QrScanner extends StatefulWidget {
 class QrState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   qr.Barcode? result; // Use the alias for qr_code_scanner
-  QRViewController? controller;
+  qr.QRViewController? controller;
   String? _selectedValue;
 
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
@@ -60,10 +59,10 @@ class QrState extends State<QrScanner> {
           children: <Widget>[
             Expanded(
               flex: 6,
-              child: QRView(
+              child: qr.QRView(
                 key: qrKey,
                 onQRViewCreated: _onQRViewCreated,
-                overlay: QrScannerOverlayShape(
+                overlay: qr.QrScannerOverlayShape(
                   borderColor: Colors.blue,
                   borderRadius: 10,
                   borderLength: 30,
@@ -153,20 +152,21 @@ class QrState extends State<QrScanner> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  void _onQRViewCreated(qr.QRViewController controller) {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        print('Scanned QR Code: ${scanData.code}'); // Debug statement
       });
       _processQRCode(scanData.code);
     });
   }
 
   Future<void> _scanQRCodeFromImage(File image) async {
-    final inputImage = InputImage.fromFile(image);
+    final inputImage = mlkit.InputImage.fromFile(image);
     final mlkit.BarcodeScanner barcodeScanner = mlkit.GoogleMlKit.vision.barcodeScanner();
 
     try {
@@ -183,24 +183,76 @@ class QrState extends State<QrScanner> {
 
   void _processQRCode(String? code) {
     if (code != null) {
-      print('Scanned QR Code: $code');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('QR Code Scanned'),
-            content: Text('Scanned QR Code: $code'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
+      print('Processing QR Code: $code'); // Debug statement
+      if (_selectedValue == 'Select to attendance') {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF6E738E),
+              title: const Text(
+                'Select to attendance',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 30),
               ),
-            ],
-          );
-        },
-      );
+              content: const Text(
+                'Please select the attendance type',
+                style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedValue = _items[1]; // Time in
+                    });
+                    Navigator.pop(context);
+                    ScanQr().Attendance(code); // Process time in
+                  },
+                  child: const Text(
+                    'Time in',
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedValue = _items[2]; // Time out
+                    });
+                    Navigator.pop(context);
+                    ScanQr().Attendance(code); // Process time out
+                  },
+                  child: const Text(
+                    'Time out',
+                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('Scanned QR Code: $code');
+        Fluttertoast.showToast(
+          msg: 'Scanned QR Code: $code',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        ScanQr().Attendance(code);
+      }
+    } else {
+      print('QR Code is null');
     }
   }
 
