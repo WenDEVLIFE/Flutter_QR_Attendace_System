@@ -214,7 +214,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[1]; // Time in
                     });
                     Navigator.pop(context);
-                    ScanQr().Attendance(code); // Process time in
+                    ScanQr().CheckAttendance(code, _selectedValue!); // Process time in
                   },
                   child: const Text(
                     'Time in',
@@ -227,7 +227,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[2]; // Time out
                     });
                     Navigator.pop(context);
-                    ScanQr().Attendance(code); // Process time out
+                    ScanQr().CheckAttendance(code, _selectedValue!); // Process time out
                   },
                   child: const Text(
                     'Time out',
@@ -249,7 +249,7 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        ScanQr().Attendance(code);
+        ScanQr().CheckAttendance(code, _selectedValue!);
       }
     } else {
       print('QR Code is null');

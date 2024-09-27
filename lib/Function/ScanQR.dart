@@ -6,7 +6,7 @@ import 'dart:math';
 import '../DatabaseController/FirebaseRun.dart';
 
 class ScanQr {
-  Future<void> Attendance(String id) async {
+  Future<void> CheckAttendance(String id, String selectedValue) async {
     try {
       print("Starting Attendance method with ID: $id");
 
@@ -42,7 +42,7 @@ class ScanQr {
         var firstname = userDoc['firstName'];
         var lastname = userDoc['lastName'];
         print("User: $firstname $lastname");
-        InsertAttendance( ID, attendanceID, firstname, lastname, formattedDate, hour, minute);
+        InsertAttendance( ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue);
 
 
 
@@ -55,6 +55,7 @@ class ScanQr {
       _showToast("Error: ${e.toString()}", Colors.red);
     }
   }
+
 
   void _showToast(String message, Color backgroundColor) {
     print("Showing toast: $message");
@@ -69,7 +70,8 @@ class ScanQr {
     );
   }
 
-  Future <void> InsertAttendance(int id , int attendanceID, String firstname, String lastname, String formattedDate, int hour, int minute) async {
+  Future <void> InsertAttendance(int id , int attendanceID, String firstname, String lastname, String formattedDate, int hour, int minute, String selectedValue) async {
+  if (selectedValue == 'Time in') {
     QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
         .collection('Attendance')
         .where('ID', isEqualTo: id)
@@ -96,5 +98,35 @@ class ScanQr {
       print("Attendance added successfully");
       _showToast("Time in successful: $firstname $lastname", Colors.green);
     }
+
+  } else if (selectedValue == 'Time out') {
+    QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
+        .collection('Attendance')
+        .where('ID', isEqualTo: id)
+        .where('Date', isEqualTo: formattedDate)
+        .where("Status", isEqualTo: "Time out")
+        .get();
+
+    if (checkSnapshot.docs.isNotEmpty) {
+      print("Attendance already exists");
+      _showToast("You have already timed out", Colors.red);
+    } else {
+      print("Adding new attendance");
+      // Add attendance
+      await FirebaseFirestore.instance.collection('Attendance').add({
+        'AttendanceID': attendanceID,
+        'ID': id,
+        'firstName': firstname,
+        'lastName': lastname,
+        'Date': formattedDate,
+        'Status': 'Time out',
+        'TimeIn': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
+      });
+
+      print("Attendance added successfully");
+      _showToast("Time out successful: $firstname $lastname", Colors.green);
+    }
+  }
+
   }
 }
