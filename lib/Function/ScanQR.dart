@@ -41,8 +41,9 @@ class ScanQr {
         var userDoc = query.docs.first;
         var firstname = userDoc['firstName'];
         var lastname = userDoc['lastName'];
+        var role = userDoc['role'];
         print("User: $firstname $lastname");
-        InsertAttendance( ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue);
+        InsertAttendance( ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue, role);
 
 
 
@@ -70,7 +71,7 @@ class ScanQr {
     );
   }
 
-  Future <void> InsertAttendance(int id , int attendanceID, String firstname, String lastname, String formattedDate, int hour, int minute, String selectedValue) async {
+  Future <void> InsertAttendance(int id , int attendanceID, String firstname, String lastname, String formattedDate, int hour, int minute, String selectedValue, String role) async {
   if (selectedValue == 'Time in') {
     QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
         .collection('Attendance')
@@ -91,6 +92,7 @@ class ScanQr {
         'firstName': firstname,
         'lastName': lastname,
         'Date': formattedDate,
+        'UserType': role,
         'Status': 'Time In',
         'TimeIn': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
       });
@@ -119,6 +121,7 @@ class ScanQr {
         'firstName': firstname,
         'lastName': lastname,
         'Date': formattedDate,
+        'UserType': role,
         'Status': 'Time out',
         'TimeIn': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
       });
