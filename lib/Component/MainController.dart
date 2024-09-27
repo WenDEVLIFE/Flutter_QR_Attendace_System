@@ -37,7 +37,11 @@ class _MaincontrollerState extends State<Maincontroller> {
     // Automatically select index 1 on load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _pageController.jumpToPage(1); // Load index 1 on start
+      if (role == 'Admin') {
+        _pageController.jumpToPage(1);
+      } else {
+        _pageController.jumpToPage(0);
+      }
       });
     });
   }
