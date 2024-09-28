@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 import '../Function/SessionManager.dart';
 import '../Screens/AttendanceScreen.dart';
@@ -190,34 +191,27 @@ class _MaincontrollerState extends State<Maincontroller> {
             ),
             TextButton(
               onPressed: () {
+                // Show the progress dialog
+                ProgressDialog pd = ProgressDialog(context: context);
+                pd.show(
+                  max: 100,
+                  msg: 'Logging out...',
+                  backgroundColor: const Color(0xFF6E738E),
+                  progressBgColor: Colors.transparent,
+                  progressValueColor: Colors.blue,
+                  msgColor: Colors.white,
+                  valueColor: Colors.white,
+                );
                 try {
-                  // Show the progress dialog
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return const Dialog(
-                        child: Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CircularProgressIndicator(),
-                              SizedBox(width: 20,),
-                              Text("Logging out...", style: TextStyle(fontSize: 20, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
                   context.go('/Loginpage');
                   sessionManager.clearUserInfo();
                 } catch (e) {
                   print("Error in Logout method: $e");
                 }
                 finally {
-                  Navigator.of(context).pop(); // Close the dialog
+                  Future.delayed(const Duration(seconds: 2), () {
+                    pd.close();
+                  });
                 }
               },
               child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),

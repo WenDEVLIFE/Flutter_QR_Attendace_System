@@ -143,7 +143,7 @@ class UserState extends State<Userscreen> {
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Admin',
                         onTap: () {
-                          context.go('/CreateUser');
+                          context.push('/CreateUser');
                         }
                       ),
                       SpeedDialChild(
@@ -151,7 +151,7 @@ class UserState extends State<Userscreen> {
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Add Teacher',
                         onTap: () {
-                          context.go('/CreateUser');
+                          context.push('/CreateUser');
                         },
                       ),
                       SpeedDialChild(
@@ -159,7 +159,7 @@ class UserState extends State<Userscreen> {
                           backgroundColor: const Color(0xFF6E738E),
                           label: 'Add Student',
                           onTap: () {
-                            context.go('/CreateStudent');
+                            context.push('/CreateStudent');
                           }
                       ),
                     ],

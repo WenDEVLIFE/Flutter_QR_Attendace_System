@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../Function/VerifyData.dart';
+
 class CreateUserScreen extends StatefulWidget {
   @override
   CreateUserState createState() => CreateUserState();
@@ -16,6 +18,14 @@ class CreateUserState extends State<CreateUserScreen> {
 
   // List of items for the spinner
   final List<String> _items = ['Select a role', 'Admin', 'Teacher'];
+
+  final TextEditingController username = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController firstName= TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+
 
 
   // Function to toggle the password show status
@@ -40,7 +50,7 @@ class CreateUserState extends State<CreateUserScreen> {
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
-    context.go('/MainController');
+    Navigator.pop(context);
     return false; // Prevent the default back button action
   }
 
@@ -63,7 +73,7 @@ class CreateUserState extends State<CreateUserScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               print('Back button clicked');
-              context.go('/MainController');
+              Navigator.pop(context);
 
             },
           ),
@@ -116,8 +126,9 @@ class CreateUserState extends State<CreateUserScreen> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: username,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Username',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -132,8 +143,9 @@ class CreateUserState extends State<CreateUserScreen> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                       controller: email,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Email',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -148,8 +160,9 @@ class CreateUserState extends State<CreateUserScreen> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: firstName,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'First Name',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -164,8 +177,9 @@ class CreateUserState extends State<CreateUserScreen> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: lastName,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Last Name',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -211,6 +225,7 @@ class CreateUserState extends State<CreateUserScreen> {
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
                     child: TextField(
+                      controller: password,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Password',
@@ -235,6 +250,7 @@ class CreateUserState extends State<CreateUserScreen> {
                       border: Border.all(color: Colors.deepPurple), // Border color
                     ),
                     child: TextField(
+                      controller: confirmPassword,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Confirm Password',
@@ -263,6 +279,8 @@ class CreateUserState extends State<CreateUserScreen> {
                       height: 100, // Adjust the height as needed
                       child: ElevatedButton(
                         onPressed: () {
+
+                          CheckData();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
@@ -286,5 +304,39 @@ class CreateUserState extends State<CreateUserScreen> {
         ),
       ),
     );
+  }
+
+  void CheckData(){
+    var username = this.username.text;
+    var email = this.email.text;
+    var firstName = this.firstName.text;
+    var lastName = this.lastName.text;
+    var password = this.password.text;
+    var confirmPassword = this.confirmPassword.text;
+    var role = _selectedValue;
+
+
+    Map <String, dynamic> userData = {
+      'username': username,
+      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+      'role': role,
+      'password': password,
+      'confirmPassword': confirmPassword,
+    };
+
+    VerifyDataClass().CheckData2(userData , context, ClearData);
+
+  }
+
+  void ClearData(){
+    username.clear();
+    email.clear();
+    firstName.clear();
+    lastName.clear();
+    password.clear();
+    confirmPassword.clear();
+    _selectedValue = _items.isNotEmpty ? _items [0] : null;
   }
 }

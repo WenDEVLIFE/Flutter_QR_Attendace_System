@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'dart:math';
 
 import '../DatabaseController/FirebaseRun.dart';
 
 class ScanQr {
-  Future<void> CheckAttendance(String id, String selectedValue) async {
+  Future<void> CheckAttendance(String id, String selectedValue, BuildContext context) async {
     try {
       print("Starting Attendance method with ID: $id");
-
-      await FirebaseRun.run();
-      print("Firebase initialized");
-
       DateTime now = DateTime.now();
       int hour = now.hour;
       int minute = now.minute;
@@ -43,8 +40,7 @@ class ScanQr {
         var lastname = userDoc['lastName'];
         var role = userDoc['role'];
         print("User: $firstname $lastname");
-        InsertAttendance( ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue, role);
-
+        await InsertAttendance(ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue, role);
 
 
       } else {
@@ -54,7 +50,9 @@ class ScanQr {
     } catch (e) {
       print("Error in Attendance method: $e");
       _showToast("Error: ${e.toString()}", Colors.red);
+
     }
+
   }
 
 

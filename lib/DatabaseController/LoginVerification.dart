@@ -4,30 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:attendance_qr_system/Function/SessionManager.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class LoginVerification {
   final SessionManager _sessionManager = SessionManager();
 
   Future<void> Login({required String username, required String password, required BuildContext context}) async {
     // Show the progress dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Dialog(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 20,),
-                Text("Logging in...", style: TextStyle(fontSize: 20, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
-              ],
-            ),
-          ),
-        );
-      },
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      max: 100,
+      msg: 'Logging in...',
+      backgroundColor: const Color(0xFF6E738E),
+      progressBgColor: Colors.transparent,
+      progressValueColor: Colors.blue,
+      msgColor: Colors.white,
+      valueColor: Colors.white,
     );
 
     try {
@@ -85,7 +77,7 @@ class LoginVerification {
       );
     } finally {
       // Dismiss the progress dialog
-      Navigator.of(context).pop();
+      pd.close();
     }
   }
 }

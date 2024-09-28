@@ -40,6 +40,7 @@ class StudentState extends State<CreateStudentScreen> {
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
+    Navigator.pop(context);
     return false; // Prevent the default back button action
   }
 
@@ -62,7 +63,7 @@ class StudentState extends State<CreateStudentScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               print('Back button clicked');
-              context.go('/MainController');
+              Navigator.pop(context);
 
             },
           ),
@@ -301,4 +302,5 @@ class StudentState extends State<CreateStudentScreen> {
       ),
     );
   }
+
 }

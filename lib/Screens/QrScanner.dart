@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart' as qr; // Alias for qr_code_scanner
 import 'dart:io';
 
+import 'package:sn_progress_dialog/progress_dialog.dart';
+
 class QrScanner extends StatefulWidget {
   const QrScanner({Key? key}) : super(key: key);
 
@@ -214,7 +216,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[1]; // Time in
                     });
                     Navigator.pop(context);
-                    RunScann(code: code, SelectedValue: _selectedValue! , context: context);
+                    ScanQr().CheckAttendance(code, _selectedValue!, context); // Process time out
                   },
                   child: const Text(
                     'Time in',
@@ -227,7 +229,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[2]; // Time out
                     });
                     Navigator.pop(context);
-                    RunScann(code: code, SelectedValue: _selectedValue! , context: context);
+                    ScanQr().CheckAttendance(code, _selectedValue!, context); // Process time out
                   },
                   child: const Text(
                     'Time out',
@@ -249,7 +251,21 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        RunScann(code: code, SelectedValue: _selectedValue! , context: context);
+        ScanQr().CheckAttendance(code, _selectedValue!, context);
+        ProgressDialog pd = ProgressDialog(context: context);
+        pd.show(
+          max: 100,
+          msg: 'Scanning...',
+          backgroundColor: const Color(0xFF6E738E),
+          progressBgColor: Colors.transparent,
+          progressValueColor: Colors.blue,
+          msgColor: Colors.white,
+          valueColor: Colors.white,
+        );
+
+        Future.delayed(const Duration(seconds: 3), () {
+          pd.close();
+        });
       }
     } else {
       print('QR Code is null');
@@ -265,44 +281,4 @@ class QrState extends State<QrScanner> {
     }
   }
 
-  void RunScann({required String code, required String SelectedValue, required BuildContext context}) async {
-    // Store the original context in a variable
-    final originalContext = context;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Dialog(
-          child: Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(width: 20),
-                Text(
-                  "Scanning...",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-
-    try {
-      await ScanQr().CheckAttendance(code, SelectedValue); // Ensure this completes before closing the dialog
-    } catch (e) {
-      print('Error scanning QR code from image: $e');
-    } finally {
-      // Use the original context to close the dialog
-      Navigator.of(originalContext).pop();
-    }
-  }
 }

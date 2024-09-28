@@ -127,44 +127,6 @@ class AttendanceState extends State<Attendancescreen> {
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SpeedDial(
-                    icon: Icons.edit,
-                    activeIcon: Icons.close,
-                    iconTheme: const IconThemeData(color: Colors.white),
-                    backgroundColor: const Color(0xFF6E738E),
-                    children: [
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Admin',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
-                      ),
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Teacher',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
-                      ),
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Student',
-                        onTap: () {
-                          // Add your onTap function here
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ),
