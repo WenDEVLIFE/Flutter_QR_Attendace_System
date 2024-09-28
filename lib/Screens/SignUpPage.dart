@@ -331,6 +331,7 @@ class _SignupState extends State<Signup> {
       'confirmPassword': _confirmPasswordController.text,
     };
 
-    VerifyDataClass().CheckData(UserData,context);
+    var send ="OTP";
+    VerifyDataClass().CheckData(UserData,context,send);
   }
 }

@@ -1,5 +1,8 @@
+import 'package:attendance_qr_system/DatabaseController/InsertStudent.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../Function/VerifyData.dart';
 
 class CreateStudentScreen extends StatefulWidget {
   @override
@@ -17,6 +20,14 @@ class StudentState extends State<CreateStudentScreen> {
   // List of items for the spinner
   final List<String> _items = ['Select a year', '1st year', '2nd year', '3rd year', '4th year'];
 
+  // TextEditingControllers for each TextField
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _courseController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   // Function to toggle the password show status
   void _togglePasswordVisibility1() {
@@ -109,14 +120,15 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Username',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -125,14 +137,15 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Email',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -141,14 +154,15 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _firstNameController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'First Name',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -157,14 +171,15 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _lastNameController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Last Name',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -173,14 +188,15 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
-                    child: const TextField(
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: _courseController,
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Course',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -191,21 +207,21 @@ class StudentState extends State<CreateStudentScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 0.0),
                     child: Container(
-                      width: 300, // Adjust the width as needed
+                      width: 300,
                       decoration: BoxDecoration(
-                        color: Colors.white, // Background color of the TextField
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.deepPurple), // Border color
+                        border: Border.all(color: Colors.deepPurple),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
-                          isExpanded: true, // Makes the DropdownButton take the full width of its parent
+                          isExpanded: true,
                           value: _selectedValue,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           items: _items.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value ,style: const TextStyle(color: Colors.black,fontFamily: 'Roboto')),
+                              child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
                             );
                           }).toList(),
                           onChanged: (String? value) {
@@ -219,17 +235,18 @@ class StudentState extends State<CreateStudentScreen> {
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
                     child: TextField(
+                      controller: _passwordController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Password',
-                        counterStyle: const TextStyle(color: Colors.black    ,fontFamily: 'Roboto'),
+                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -238,22 +255,23 @@ class StudentState extends State<CreateStudentScreen> {
                           onPressed: _togglePasswordVisibility1,
                         ),
                       ),
-                      obscureText: passwordVisibility1, // To obscure the password input
+                      obscureText: passwordVisibility1,
                     ),
                   ),
                   const SizedBox(height: 20),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
+                      border: Border.all(color: Colors.deepPurple),
                     ),
                     child: TextField(
+                      controller: _confirmPasswordController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Confirm Password',
-                        counterStyle: const TextStyle(color: Colors.black    ,fontFamily: 'Roboto'),
+                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -262,25 +280,26 @@ class StudentState extends State<CreateStudentScreen> {
                           onPressed: _togglePasswordVisibility2,
                         ),
                       ),
-                      obscureText: passwordVisibility2, // To obscure the password input
+                      obscureText: passwordVisibility2,
                     ),
                   ),
                   const SizedBox(height: 40),
                   Container(
-                    width: 300, // Adjust the width as needed
+                    width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.transparent, // Background color of the TextField
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.transparent), // Border color
+                      border: Border.all(color: Colors.transparent),
                     ),
                     child: ButtonTheme(
-                      minWidth: 300, // Adjust the width as needed
-                      height: 100, // Adjust the height as needed
+                      minWidth: 300,
+                      height: 100,
                       child: ElevatedButton(
                         onPressed: () {
+                          VerifyData();
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE9ECEF), // Background color of the button
+                          backgroundColor: const Color(0xFFE9ECEF),
                         ),
                         child: const Text('Add Student',
                             style: TextStyle(
@@ -301,6 +320,25 @@ class StudentState extends State<CreateStudentScreen> {
         ),
       ),
     );
+  }
+
+  // This will check if the data is valid
+  void VerifyData() {
+    // Get the values from the TextFields
+    final email = _emailController.text;
+    final Map<String, dynamic> UserData = {
+      'username': _usernameController.text,
+      'email': email,
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
+      'course': _courseController.text,
+      'year': _selectedValue,
+      'password': _passwordController.text,
+      'confirmPassword': _confirmPasswordController.text,
+    };
+
+    var send ="CreateStudent";
+   VerifyDataClass().CheckData(UserData, context, send);
   }
 
 }
