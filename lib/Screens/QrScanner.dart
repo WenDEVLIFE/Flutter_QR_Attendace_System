@@ -214,7 +214,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[1]; // Time in
                     });
                     Navigator.pop(context);
-                    ScanQr().CheckAttendance(code, _selectedValue!); // Process time in
+                    RunScann(code: code, SelectedValue: _selectedValue! , context: context);
                   },
                   child: const Text(
                     'Time in',
@@ -227,7 +227,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[2]; // Time out
                     });
                     Navigator.pop(context);
-                    ScanQr().CheckAttendance(code, _selectedValue!); // Process time out
+                    RunScann(code: code, SelectedValue: _selectedValue! , context: context);
                   },
                   child: const Text(
                     'Time out',
@@ -249,7 +249,7 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        ScanQr().CheckAttendance(code, _selectedValue!);
+        RunScann(code: code, SelectedValue: _selectedValue! , context: context);
       }
     } else {
       print('QR Code is null');
@@ -262,6 +262,47 @@ class QrState extends State<QrScanner> {
     if (controller != null) {
       controller!.pauseCamera();
       controller!.resumeCamera();
+    }
+  }
+
+  void RunScann({required String code, required String SelectedValue, required BuildContext context}) async {
+    // Store the original context in a variable
+    final originalContext = context;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20),
+                Text(
+                  "Scanning...",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    try {
+      await ScanQr().CheckAttendance(code, SelectedValue); // Ensure this completes before closing the dialog
+    } catch (e) {
+      print('Error scanning QR code from image: $e');
+    } finally {
+      // Use the original context to close the dialog
+      Navigator.of(originalContext).pop();
     }
   }
 }

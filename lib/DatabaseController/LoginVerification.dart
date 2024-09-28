@@ -9,6 +9,27 @@ class LoginVerification {
   final SessionManager _sessionManager = SessionManager();
 
   Future<void> Login({required String username, required String password, required BuildContext context}) async {
+    // Show the progress dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 20,),
+                Text("Logging in...", style: TextStyle(fontSize: 20, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
@@ -62,6 +83,9 @@ class LoginVerification {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('An error occurred: $e')),
       );
+    } finally {
+      // Dismiss the progress dialog
+      Navigator.of(context).pop();
     }
   }
 }

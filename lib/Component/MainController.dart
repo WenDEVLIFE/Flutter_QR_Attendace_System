@@ -190,8 +190,35 @@ class _MaincontrollerState extends State<Maincontroller> {
             ),
             TextButton(
               onPressed: () {
-                context.go('/Loginpage');
-                sessionManager.clearUserInfo();
+                try {
+                  // Show the progress dialog
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (BuildContext context) {
+                      return const Dialog(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(width: 20,),
+                              Text("Logging out...", style: TextStyle(fontSize: 20, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                  context.go('/Loginpage');
+                  sessionManager.clearUserInfo();
+                } catch (e) {
+                  print("Error in Logout method: $e");
+                }
+                finally {
+                  Navigator.of(context).pop(); // Close the dialog
+                }
               },
               child: const Text('Logout', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
             ),
