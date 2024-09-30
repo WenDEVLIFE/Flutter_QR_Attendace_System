@@ -1,134 +1,174 @@
+import 'package:attendance_qr_system/model/AttendanceModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../DatabaseController/RetrieveController.dart'; // Adjust the import path as needed
 
 class Attendancescreen extends StatefulWidget {
   @override
-  AttendanceState createState() => AttendanceState();// you can pass the function as a parameter to go to next index
+  AttendanceState createState() => AttendanceState();
 
   const Attendancescreen({super.key});
 }
 
 class AttendanceState extends State<Attendancescreen> {
-  final List<String> _users = [
-    'Alice',
-    'Bob',
-    'Charlie',
-    'David',
-    'Eve',
-    'Frank',
-    'Grace',
-    'Hank',
-    'Ivy',
-    'Jack'
-  ];
-  List<String> _filteredUsers = [];
+  List<AttendanceModel> _attendances = [];
+  List<AttendanceModel> _filteredAttendances = [];
   final TextEditingController _searchController = TextEditingController();
+  final RetrieveController _retrieveController = RetrieveController();
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _filteredUsers = _users;
-    _searchController.addListener(_filterUsers);
+    _fetchAttendances();
+    _searchController.addListener(_filterAttendances);
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_filterUsers);
+    _searchController.removeListener(_filterAttendances);
     _searchController.dispose();
     super.dispose();
   }
 
-  void _filterUsers() {
+  Future<void> _fetchAttendances() async {
+    List<AttendanceModel> attendances = await _retrieveController.fetchAttendances();
+    setState(() {
+      _attendances = attendances;
+      _filteredAttendances = attendances;
+      _isLoading = false;
+    });
+  }
+
+  void _filterAttendances() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredUsers = _users.where((user) {
-        return user.toLowerCase().contains(query);
+      _filteredAttendances = _attendances.where((attendance) {
+        final fullName = '${attendance.firstName} ${attendance.lastName}'.toLowerCase();
+        return fullName.contains(query);
       }).toList();
     });
   }
 
+  Future<void> _deleteAttendance(String id) async {
+    try {
+      await FirebaseFirestore.instance.collection('Attendance').doc(id).delete();
+      _showToast('Attendance deleted successfully', Colors.green);
+      _fetchAttendances(); // Refresh the list
+    } catch (e) {
+      print('Error deleting attendance: $e');
+      _showToast('Error deleting attendance', Colors.red);
+    }
+  }
+
+  void _showToast(String message, Color backgroundColor) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Prevent going back to the main page
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Attendance Logs',
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Attendance Logs',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Roboto',
+            fontWeight: FontWeight.w600,
           ),
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF6E738E),
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('Assets/bg1.jpg'),
-              fit: BoxFit.cover,
-            ),
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF6E738E),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('Assets/bg1.jpg'),
+            fit: BoxFit.cover,
           ),
-          child: Stack(
-            children: [
-              Column(
-                children: [
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    width: 400, // Adjust the width as needed
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              width: 400, // Adjust the width as needed
+              decoration: BoxDecoration(
+                color: Colors.white, // Background color of the TextField
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.deepPurple), // Border color
+              ),
+              child: TextField(
+                style: const TextStyle(color: Colors.black, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  labelText: 'Search a user',
+                  prefixIcon: Icon(Icons.search, color: Colors.black),
+                  labelStyle: TextStyle(color: Colors.black),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : _filteredAttendances.isEmpty
+                  ? Center(child: Text('No attendance found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                  : ListView.builder(
+                itemCount: _filteredAttendances.length,
+                itemBuilder: (context, index) {
+                  final attendance = _filteredAttendances[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
                     ),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        labelText: 'Search a user',
-                        prefixIcon: Icon(Icons.search, color: Colors.black),
-                        labelStyle: TextStyle(color: Colors.black),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        errorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                    child: ListTile(
+                      title: Text(
+                        'Name: ${attendance.firstName} ${attendance.lastName}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
                         ),
                       ),
+                      subtitle: Text(
+                        'Date: ${attendance.date}\nStatus: ${attendance.status}\nTimeIn: ${attendance.timeIn}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteAttendance(attendance.id),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _filteredUsers.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            _filteredUsers[index],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Roboto',
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
