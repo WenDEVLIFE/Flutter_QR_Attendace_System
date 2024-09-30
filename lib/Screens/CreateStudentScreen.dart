@@ -338,7 +338,18 @@ class StudentState extends State<CreateStudentScreen> {
     };
 
     var send ="CreateStudent";
-   VerifyDataClass().CheckData(UserData, context, send);
+   VerifyDataClass().CheckData(UserData, context, send, ClearData);
+  }
+
+  void ClearData(){
+    _usernameController.clear();
+    _emailController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _courseController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+    _selectedValue = _items.isNotEmpty ? _items [0] : null;
   }
 
 }

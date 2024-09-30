@@ -50,7 +50,7 @@ class OTPField extends StatelessWidget {
     String enteredOTP = controllers.map((controller) => controller.text).join();
     if (enteredOTP == otp.toString()) {
       print('OTP is correct');
-      InsertStudent(extra: extra).InsertFirebase();
+      InsertStudent(extra: extra).InsertFirebase(clearData: clearData);
       context.go('/Loginpage');
     } else {
       Fluttertoast.showToast(
@@ -63,5 +63,8 @@ class OTPField extends StatelessWidget {
           fontSize: 16.0
       );
     }
+  }
+  void clearData() {
+    controllers.forEach((controller) => controller.clear());
   }
 }

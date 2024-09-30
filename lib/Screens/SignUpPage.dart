@@ -332,6 +332,16 @@ class _SignupState extends State<Signup> {
     };
 
     var send ="OTP";
-    VerifyDataClass().CheckData(UserData,context,send);
+    VerifyDataClass().CheckData(UserData,context,send,clearData);
+  }
+
+  void clearData() {
+    _usernameController.clear();
+    _emailController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _courseController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
   }
 }

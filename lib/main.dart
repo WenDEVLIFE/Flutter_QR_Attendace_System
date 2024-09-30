@@ -14,6 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
 import 'Function/SessionManager.dart';
+import 'Screens/EditPasswordScreen.dart';
 import 'Screens/OTPScreen.dart';
 
 void main() async {
@@ -85,6 +86,12 @@ class MyApp extends StatelessWidget {
             final extra = state.extra as Map<String, dynamic>;
             return OTPScreen(extra: extra);
           },
+        ),
+        GoRoute(path: '/EditPassword',
+            builder: (context, state) {
+          final username = state.extra as String;
+          return EditPasswordScreen(username: username);
+    },
         )
       ],
     );

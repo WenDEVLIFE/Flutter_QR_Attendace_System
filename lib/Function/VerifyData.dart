@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class VerifyDataClass {
-  void CheckData(Map<String, dynamic> userData, BuildContext context, String send) {
+  void CheckData(Map<String, dynamic> userData, BuildContext context, String send, void Function() clearData) {
     // Email pattern or regex
     final emailPattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
@@ -97,7 +97,7 @@ class VerifyDataClass {
       }
 
       else if (send=="CreateStudent"){
-        InsertStudent(extra: userData).InsertFirebase();
+        InsertStudent(extra: userData).InsertFirebase(clearData: clearData);
       }
     }
   }

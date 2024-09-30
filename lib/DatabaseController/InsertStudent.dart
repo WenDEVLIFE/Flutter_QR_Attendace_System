@@ -9,7 +9,7 @@ class InsertStudent {
   // get the received data from the previous page
   Map<String, dynamic> extra;
 
-  void InsertFirebase() async {
+  void InsertFirebase({required void Function() clearData}) async {
     try {
       // Generate a random 9-digit ID
       int min = 100000000;
@@ -39,6 +39,9 @@ class InsertStudent {
         });
 
         FlutterSuccess('Student added successfully');
+
+        // Clear the data
+        clearData();
 
       } else {
         Fluttertoast.showToast(
