@@ -7,10 +7,11 @@ class FirebaseRun {
   static Future<void> run() async {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
-        apiKey: 'AIzaSyBVhVZIGWKvPagJgX0QW7to_U7FcjqVpXo',
-        appId: '914861841567',
-        messagingSenderId: '914861841567',
-        projectId: 'qr-attendance-database',
+          apiKey: 'AIzaSyBVhVZIGWKvPagJgX0QW7to_U7FcjqVpXo',
+          appId: '914861841567',
+          messagingSenderId: '914861841567',
+          projectId: 'qr-attendance-database',
+          storageBucket: 'gs://qr-attendance-database.appspot.com',  // Add this line
     ),
     );
 

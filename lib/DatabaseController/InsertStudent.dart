@@ -1,8 +1,11 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:uuid/uuid.dart';
 
 class InsertStudent {
   InsertStudent({required this.extra});
@@ -27,6 +30,21 @@ class InsertStudent {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
+
+        // Get Image from Assets
+        ByteData data = await rootBundle.load('Assets/nature.jpg');
+        Uint8List bytes = data.buffer.asUint8List();
+
+        var fileid = Uuid();
+        // Upload Image to Firebase Storage
+        String fileName = '${fileid.v1()}.jpg';
+        Reference reference = FirebaseStorage.instance.ref().child('profile').child(fileName);
+        UploadTask uploadTask = reference.putData(bytes);
+        TaskSnapshot storageTaskSnapshot = await uploadTask;
+
+        // Get the download URL after upload is complete
+        String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+
         // Add the student to the database
         await FirebaseFirestore.instance.collection('Users').add({
           'ID': ID,
@@ -37,7 +55,10 @@ class InsertStudent {
           'course': extra['course'],
           'year': extra['year'],
           'password': hashedPassword,
-          "role": "Student"
+          "role": "Student",
+        'imageURL': downloadUrl,
+        'imageFileName': fileName,
+
         });
 
         FlutterSuccess('Student added successfully');
@@ -89,6 +110,21 @@ class InsertStudent {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
+
+        // Get Image from Assets
+        ByteData data = await rootBundle.load('Assets/nature.jpg');
+        Uint8List bytes = data.buffer.asUint8List();
+
+        var fileid = Uuid();
+        // Upload Image to Firebase Storage
+        String fileName = '${fileid.v1()}.jpg';
+        Reference reference = FirebaseStorage.instance.ref().child('profile').child(fileName);
+        UploadTask uploadTask = reference.putData(bytes);
+        TaskSnapshot storageTaskSnapshot = await uploadTask;
+
+        // Get the download URL after upload is complete
+        String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+
         // Add the student to the database
         await FirebaseFirestore.instance.collection('Users').add({
           'ID': ID,
@@ -99,7 +135,9 @@ class InsertStudent {
           'course': extra['course'],
           'year': extra['year'],
           'password': hashedPassword,
-          "role": "Student"
+          "role": "Student",
+        'imageURL': downloadUrl,
+        'imageFileName': fileName,
         });
 
         FlutterSuccess('Student added successfully');

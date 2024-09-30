@@ -1,4 +1,5 @@
 import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
+import 'package:attendance_qr_system/DatabaseController/TestInsertImageToFireStorage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,6 +46,7 @@ class ShowProfile {
                           padding: const EdgeInsets.all(10.0),
                           child: GestureDetector(
                             onTap: () {
+                              TestInsertImageToFireStorage().insertImageToFireStorage();
                               Navigator.pop(context); // Close the modal bottom sheet
                             },
                             child: const Icon(
