@@ -44,6 +44,7 @@ class ShowProfile {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pop(context); // Close the modal bottom sheet
+                              context.push('/ChangeProfile');
                             },
                             child: const Icon(
                               Icons.close,

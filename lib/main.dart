@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Screens/UpdateProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:attendance_qr_system/Screens/AttendanceScreen.dart';
@@ -100,6 +101,13 @@ class MyApp extends StatelessWidget {
               return EditEmailScreen(username: username);
             },
         ),
+        GoRoute(
+          path: '/ChangeProfile',
+          builder: (context, state) {
+            final username = state.extra as String;
+            return UpdateProfileScreen(username: username);
+          },
+        )
       ],
     );
 
