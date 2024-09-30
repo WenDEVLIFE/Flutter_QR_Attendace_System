@@ -9,7 +9,7 @@ import 'dart:io';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class QrScanner extends StatefulWidget {
-  const QrScanner({Key? key}) : super(key: key);
+  const QrScanner({super.key});
 
   @override
   QrState createState() => QrState();

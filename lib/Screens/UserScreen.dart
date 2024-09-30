@@ -1,5 +1,9 @@
+import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
+import 'package:attendance_qr_system/model/UserDataModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,25 +15,16 @@ class Userscreen extends StatefulWidget {
 }
 
 class UserState extends State<Userscreen> {
-  final List<String> _users = [
-    'Alice',
-    'Bob',
-    'Charlie',
-    'David',
-    'Eve',
-    'Frank',
-    'Grace',
-    'Hank',
-    'Ivy',
-    'Jack'
-  ];
-  List<String> _filteredUsers = [];
+  List<UserDataModel> _users = [];
+  List<UserDataModel> _filteredUsers = [];
   final TextEditingController _searchController = TextEditingController();
+  final RetrieveController _retrieveController = RetrieveController();
+  bool _isloading = true;
 
   @override
   void initState() {
     super.initState();
-    _filteredUsers = _users;
+    _fetchUsers();
     _searchController.addListener(_filterUsers);
   }
 
@@ -44,9 +39,41 @@ class UserState extends State<Userscreen> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredUsers = _users.where((user) {
-        return user.toLowerCase().contains(query);
+        return user.username.toLowerCase().contains(query);
       }).toList();
     });
+  }
+
+  Future<void> _fetchUsers() async {
+    List<UserDataModel> users = await _retrieveController.fetchUser();
+    setState(() {
+      _users = users;
+      _filteredUsers = users;
+      _isloading = false;
+    });
+  }
+
+  Future<void> _deleteUser(String id) async {
+    try {
+      await FirebaseFirestore.instance.collection('Users').doc(id).delete();
+      _showToast('User deleted successfully', Colors.green);
+      _fetchUsers(); // Refresh the list
+    } catch (e) {
+      print('Error deleting user: $e');
+      _showToast('Error deleting user', Colors.red);
+    }
+  }
+
+  void _showToast(String message, Color backgroundColor) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   @override
@@ -111,15 +138,39 @@ class UserState extends State<Userscreen> {
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                    child: ListView.builder(
+                    child: _isloading
+                        ? const Center(child: CircularProgressIndicator(backgroundColor: Colors.white))
+                        : _filteredUsers.isEmpty
+                        ? const Center(child: Text('No user found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                        : ListView.builder(
                       itemCount: _filteredUsers.length,
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            _filteredUsers[index],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontFamily: 'Roboto',
+                        final user = _filteredUsers[index];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              'Username: ${user.username}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Status: ${user.status}',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => _deleteUser(user.id),
                             ),
                           ),
                         );
@@ -144,7 +195,7 @@ class UserState extends State<Userscreen> {
                         label: 'Add Admin',
                         onTap: () {
                           context.push('/CreateUser');
-                        }
+                        },
                       ),
                       SpeedDialChild(
                         child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
@@ -155,12 +206,12 @@ class UserState extends State<Userscreen> {
                         },
                       ),
                       SpeedDialChild(
-                          child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
-                          backgroundColor: const Color(0xFF6E738E),
-                          label: 'Add Student',
-                          onTap: () {
-                            context.push('/CreateStudent');
-                          }
+                        child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
+                        backgroundColor: const Color(0xFF6E738E),
+                        label: 'Add Student',
+                        onTap: () {
+                          context.push('/CreateStudent');
+                        },
                       ),
                     ],
                   ),

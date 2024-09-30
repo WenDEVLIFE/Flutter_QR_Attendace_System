@@ -1,5 +1,4 @@
 import 'package:attendance_qr_system/Function/VerifyData.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -21,6 +20,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   final TextEditingController oldpassword = TextEditingController();
   final TextEditingController newpassword = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     username = widget.username;

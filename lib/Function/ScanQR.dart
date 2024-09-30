@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'dart:math';
 
-import '../DatabaseController/FirebaseRun.dart';
 
 class ScanQr {
   Future<void> CheckAttendance(String id, String selectedValue, BuildContext context) async {

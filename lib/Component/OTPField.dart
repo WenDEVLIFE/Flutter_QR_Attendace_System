@@ -65,6 +65,8 @@ class OTPField extends StatelessWidget {
     }
   }
   void clearData() {
-    controllers.forEach((controller) => controller.clear());
+    for (var controller in controllers) {
+      controller.clear();
+    }
   }
 }
