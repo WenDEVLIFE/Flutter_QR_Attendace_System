@@ -1,4 +1,6 @@
+import 'package:attendance_qr_system/Screens/LoginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ShowProfile {
   final BuildContext context;
@@ -120,6 +122,7 @@ class ShowProfile {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.pop(context);
+                              context.push('/EditPassword', extra: username);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFE9ECEF), // Button background color
@@ -139,6 +142,7 @@ class ShowProfile {
                           child: ElevatedButton(
                             onPressed: () {
                               // Add change email functionality
+                              Navigator.pop(context);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFE9ECEF), // Button background color

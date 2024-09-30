@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../Function/CheckPassword.dart';
 
 class EditPasswordScreen extends StatefulWidget {
 
@@ -22,6 +25,15 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   void initState() {
     super.initState();
     username = widget.username;
+    Fluttertoast.showToast(
+        msg: 'Username: $username',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 
   Future<bool> _onBackPressed() async {
@@ -170,7 +182,28 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Add your onPressed code here!
-                          VerifyPassword();
+
+                          if (oldpassword.text.isEmpty || newpassword.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: 'Please fill in all fields',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            return;
+                          }
+
+                          else{
+                            Map data = {
+                              'username': username,
+                              'oldpassword': oldpassword.text,
+                              'newpassword': newpassword.text
+                            };
+                            CheckPassword().checkPassword(data,clearData, context);
+                          }
 
                         },
                         style: ElevatedButton.styleFrom(
@@ -196,8 +229,9 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
       ),
     );
   }
-}
 
-void VerifyPassword(){
-
+  void clearData() {
+    oldpassword.clear();
+    newpassword.clear();
+  }
 }
