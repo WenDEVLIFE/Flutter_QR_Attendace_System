@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key, required this.username});
-  final  String username;
+  final String username;
 
   @override
   UpdateProfileState createState() => UpdateProfileState();
@@ -63,10 +63,10 @@ class UpdateProfileState extends State<UpdateProfileScreen> {
                   Stack(
                     children: [
                       const CircleAvatar(
-                        radius: 50,
+                        radius: 100,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
-                          radius: 45,
+                          radius: 95,
                           backgroundImage: AssetImage('Assets/fufu.jpg'),
                         ),
                       ),

@@ -26,6 +26,31 @@ class RetrieveController {
       print('Error fetching users: $e');
       return [];
     }
-
   }
+
+  Future<Map<String, String>> LoadUserProfile(String username) async {
+    String fullname = '';
+    String role = '';
+
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('Users')
+          .where('username', isEqualTo: username) // Use the variable `username` instead of the string 'username'
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var userDoc = querySnapshot.docs.first;
+        role = userDoc['role'];
+        fullname = '${userDoc['firstName']} ${userDoc['lastName']}'; // Construct fullname
+      }
+    } catch (e) {
+      print('Error fetching users: $e');
+    }
+
+    return {
+      'fullname': fullname,
+      'role': role,
+    };
+  }
+
 }

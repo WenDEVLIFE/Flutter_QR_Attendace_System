@@ -7,7 +7,7 @@ class YahooMail {
   String username = 'newbie_gwapo@yahoo.com';
   String password = 'mpmeoscumtccejps';
 
-  void sendEmail(int otp, String recipient, Function(bool) setLoading) async {
+  void sendEmail(int otp, String recipient, Function(bool) setLoading, BuildContext context) async {
     setLoading(true); // Start loading
 
     final smtpServer = SmtpServer('smtp.mail.yahoo.com',

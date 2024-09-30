@@ -9,6 +9,7 @@ class SessionManager {
     prefs.setString('username', userInfo['username']);
     prefs.setString('role', userInfo['role']);
     prefs.setString('firstname', userInfo['firstname']);
+    prefs.setString('lastName', userInfo['lastname']);
   }
 
   Future<Map<String, dynamic>?> getUserInfo() async {
@@ -18,6 +19,7 @@ class SessionManager {
         'username': prefs.getString('username'),
         'role': prefs.getString('role'),
         'firstname': prefs.getString('firstname'),
+        'lastName': prefs.getString('lastname'),
       };
     }
     return null;
@@ -28,6 +30,7 @@ class SessionManager {
     prefs.remove('username');
     prefs.remove('role');
     prefs.remove('firstname');
+    prefs.remove('lastName');
     Fluttertoast.showToast(msg: 'Logged out successfully',
         backgroundColor: const Color(0xFF6E738E),
         textColor: const Color(0xFFFFFFFF),

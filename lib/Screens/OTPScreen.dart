@@ -47,7 +47,7 @@ class _OTPScreenState extends State<OTPScreen> {
     int min = 100000;
     int max = 999999;
     otp = min + (DateTime.now().millisecond % (max - min));
-    YahooMail().sendEmail(otp, widget.extra['email'], _setLoading);
+    YahooMail().sendEmail(otp, widget.extra['email'], _setLoading, context);
   }
 
   void startTimer() {
@@ -150,11 +150,23 @@ class _OTPScreenState extends State<OTPScreen> {
                     height: 100, // Adjust the height as needed
                     child: ElevatedButton(
                       onPressed: () {
-                        GenerateOTP();
-                        setState(() {
-                          time = 60;
-                        });
-                        startTimer();
+                        if (time == 0) {
+                          GenerateOTP();
+                          setState(() {
+                            time = 60;
+                          });
+                          startTimer();
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Please wait for the timer to finish',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFE9ECEF), // Background color of the button

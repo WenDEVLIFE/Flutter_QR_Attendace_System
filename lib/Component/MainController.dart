@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
+import '../DatabaseController/RetrieveController.dart';
 import '../Function/SessionManager.dart';
 import '../Screens/AttendanceScreen.dart';
 import '../Screens/QRPage.dart';
@@ -26,24 +27,40 @@ class _MaincontrollerState extends State<Maincontroller> {
   late String username;
   late String role;
   late String firstName;
+  late String fullname = ''; // Initialize fullname
   int _currentIndex = 1; // Initialize to index 1
 
   @override
   void initState() {
     super.initState();
-    role = widget.userInfo['role'];
     username = widget.userInfo['username'];
     firstName = widget.userInfo['firstname'];
+    role = widget.userInfo['role'];
+
+    // Load the user profile and set the state accordingly
+    Load().then((_) {
+      setState(() {
+
+      });
+    });
 
     // Automatically select index 1 on load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-      if (role == 'Admin') {
-        _pageController.jumpToPage(1);
-      } else {
-        _pageController.jumpToPage(0);
-      }
+        if (role == 'Admin') {
+          _pageController.jumpToPage(1);
+        } else {
+          _pageController.jumpToPage(0);
+        }
       });
+    });
+  }
+
+  Future<void> Load() async {
+    Map<String, String> userProfile = await RetrieveController().LoadUserProfile(username);
+    setState(() {
+      fullname = userProfile['fullname'] ?? ''; // Set fullname
+      role = userProfile['role'] ?? ''; // Set role
     });
   }
 
@@ -140,7 +157,7 @@ class _MaincontrollerState extends State<Maincontroller> {
 
               if (role == 'Admin') {
                 if (index == 0) {
-                  ShowProfile(context).showProfile(username: username, firstname: firstName, role: role);
+                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role);
                   return;
                 }
                 if (index == 3) {
@@ -151,7 +168,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                 }
               } else {
                 if (index == 1) {
-                  ShowProfile(context).showProfile(username: username, firstname: firstName, role: role);
+                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role);
                   return;
                 }
                 if (index == 3) {

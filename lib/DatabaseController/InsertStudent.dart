@@ -2,6 +2,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class InsertStudent {
   InsertStudent({required this.extra});
@@ -10,6 +11,7 @@ class InsertStudent {
   Map<String, dynamic> extra;
 
   void InsertFirebase({required void Function() clearData}) async {
+
     try {
       // Generate a random 9-digit ID
       int min = 100000000;
@@ -60,6 +62,18 @@ class InsertStudent {
   }
 
   Future <void> AddStudent(BuildContext context) async {
+
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      max: 100,
+      msg: 'Creating user...',
+      backgroundColor: const Color(0xFF6E738E),
+      progressBgColor: Colors.transparent,
+      progressValueColor: Colors.blue,
+      msgColor: Colors.white,
+      valueColor: Colors.white,
+    );
+
     try {
       // Generate a random 9-digit ID
       int min = 100000000;
@@ -95,6 +109,9 @@ class InsertStudent {
       }
     } catch (e) {
      FlutterError('An error occurred. Please try again.');
+    }
+    finally {
+      pd.close();
     }
 
   }

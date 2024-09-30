@@ -33,6 +33,7 @@ class LoginVerification {
         var RetrievePassword = userDoc['password'];
         var roles = userDoc['role'];
         var Firstname = userDoc['firstName'];
+        var Lastname = userDoc['lastName'];
 
         final bool checkpassword = BCrypt.checkpw(password, RetrievePassword);
 
@@ -43,8 +44,9 @@ class LoginVerification {
 
           Map<String, dynamic> userInfo = {
             'username': username,
+            'firstname':Firstname,
+            'lastname': Lastname,
             'role': roles,
-            'firstname': Firstname,
           };
 
           // Save user info in session

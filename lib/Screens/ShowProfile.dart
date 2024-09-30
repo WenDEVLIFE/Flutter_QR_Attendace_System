@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,7 +8,8 @@ class ShowProfile {
   // Constructor for ShowProfile
   ShowProfile(this.context);
 
-  void showProfile({required String username, required String firstname, required String role}) {
+
+  Future<void> showProfile({required String username, required String fullname, required String role}) async {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -44,7 +46,6 @@ class ShowProfile {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pop(context); // Close the modal bottom sheet
-                              context.push('/ChangeProfile');
                             },
                             child: const Icon(
                               Icons.close,
@@ -81,6 +82,7 @@ class ShowProfile {
                                   icon: const Icon(Icons.edit),
                                   onPressed: () {
                                     // Add your camera function here
+                                    context.push('/ChangeProfile',extra: username);
                                   },
                                 ),
                               ),
@@ -93,6 +95,15 @@ class ShowProfile {
                           children: [
                             Text(
                               'Username : $username',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Name : $fullname' ,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Roboto',
