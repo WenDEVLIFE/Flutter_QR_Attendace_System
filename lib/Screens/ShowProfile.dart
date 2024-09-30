@@ -1,5 +1,6 @@
 import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
 import 'package:attendance_qr_system/DatabaseController/TestInsertImageToFireStorage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,8 +10,13 @@ class ShowProfile {
   // Constructor for ShowProfile
   ShowProfile(this.context);
 
-
-  Future<void> showProfile({required String username, required String fullname, required String role}) async {
+  Future<void> showProfile( {
+    required String username,
+    required String fullname,
+    required String role,
+    required String imageURL,
+    required Future<void> Function() Load
+  }) async {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -46,8 +52,8 @@ class ShowProfile {
                           padding: const EdgeInsets.all(10.0),
                           child: GestureDetector(
                             onTap: () {
-                              TestInsertImageToFireStorage().insertImageToFireStorage();
                               Navigator.pop(context); // Close the modal bottom sheet
+                              Load(); // Reload the data
                             },
                             child: const Icon(
                               Icons.close,
@@ -64,13 +70,15 @@ class ShowProfile {
                         const SizedBox(width: 10),
                         Stack(
                           children: [
-                            const CircleAvatar(
-                              radius: 50,
+                            CircleAvatar(
+                              radius: 60,
                               backgroundColor: Colors.white,
                               child: CircleAvatar(
-                                radius: 45,
-                                backgroundImage: AssetImage('Assets/fufu.jpg'),
-                              ),
+                                radius: 55,
+                                backgroundImage: imageURL.isNotEmpty
+                                    ? CachedNetworkImageProvider(imageURL)
+                                    : const AssetImage('assets/fufu.png') as ImageProvider,
+                              )
                             ),
                             Positioned(
                               bottom: 0,
@@ -82,9 +90,12 @@ class ShowProfile {
                                 ),
                                 child: IconButton(
                                   icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    // Add your camera function here
-                                    context.push('/ChangeProfile',extra: username);
+                                  onPressed: () async {
+                                    Map<String, String> profileData = {
+                                      'username': username,
+                                      'imageURL': imageURL,
+                                    };
+                                    context.push('/ChangeProfile', extra: profileData);
                                   },
                                 ),
                               ),
@@ -105,7 +116,7 @@ class ShowProfile {
                               ),
                             ),
                             Text(
-                              'Name : $fullname' ,
+                              'Name : $fullname',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Roboto',
@@ -154,7 +165,6 @@ class ShowProfile {
                           width: constraints.maxWidth * 0.4, // Adjust the width as needed
                           child: ElevatedButton(
                             onPressed: () {
-                              // Add change email functionality
                               Navigator.pop(context);
                               context.push('/EditEmail', extra: username);
                             },
@@ -182,5 +192,9 @@ class ShowProfile {
         );
       },
     );
+  }
+
+  Future <void> executeLoad() async {
+
   }
 }

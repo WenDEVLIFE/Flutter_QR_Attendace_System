@@ -31,6 +31,7 @@ class RetrieveController {
   Future<Map<String, String>> LoadUserProfile(String username) async {
     String fullname = '';
     String role = '';
+    String imageURL = '';
 
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -42,6 +43,7 @@ class RetrieveController {
         var userDoc = querySnapshot.docs.first;
         role = userDoc['role'];
         fullname = '${userDoc['firstName']} ${userDoc['lastName']}'; // Construct fullname
+        imageURL = userDoc['imageURL'];
       }
     } catch (e) {
       print('Error fetching users: $e');
@@ -50,6 +52,7 @@ class RetrieveController {
     return {
       'fullname': fullname,
       'role': role,
+      'imageURL': imageURL,
     };
   }
 

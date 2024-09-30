@@ -65,7 +65,10 @@ class MyApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/UserScreen',
-          builder: (context, state) => const Userscreen(),
+          builder: (context, state){
+            final username = state.extra as String;
+            return Userscreen(username: username);
+          },
         ),
         GoRoute(
           path: '/CreateUser',
@@ -104,8 +107,8 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/ChangeProfile',
           builder: (context, state) {
-            final username = state.extra as String;
-            return UpdateProfileScreen(username: username);
+            final profileData = state.extra as Map<String, dynamic>;
+            return UpdateProfileScreen(profileData:profileData);
           },
         )
       ],

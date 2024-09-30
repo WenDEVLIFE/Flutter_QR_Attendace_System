@@ -28,6 +28,7 @@ class _MaincontrollerState extends State<Maincontroller> {
   late String role;
   late String firstName;
   late String fullname = ''; // Initialize fullname
+  late String ImageUrl = ''; // Initialize ImageUrl
   int _currentIndex = 1; // Initialize to index 1
 
   @override
@@ -61,6 +62,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     setState(() {
       fullname = userProfile['fullname'] ?? ''; // Set fullname
       role = userProfile['role'] ?? ''; // Set role
+      ImageUrl = userProfile['imageURL'] ?? ''; // Set ImageUrl
     });
   }
 
@@ -90,7 +92,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       pages = [
         Container(), // Placeholder for settings page
         const Attendancescreen(), // Automatically select this for Admin
-        const Userscreen(),
+        Userscreen(username: username),
         Container(), // Placeholder for settings page
       ];
     } else {
@@ -157,7 +159,7 @@ class _MaincontrollerState extends State<Maincontroller> {
 
               if (role == 'Admin') {
                 if (index == 0) {
-                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role);
+                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role, imageURL: ImageUrl, Load: Load);
                   return;
                 }
                 if (index == 3) {
@@ -168,7 +170,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                 }
               } else {
                 if (index == 1) {
-                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role);
+                  ShowProfile(context).showProfile(username: username, fullname: fullname, role: role, imageURL: ImageUrl, Load: Load);
                   return;
                 }
                 if (index == 3) {

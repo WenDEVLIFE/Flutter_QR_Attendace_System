@@ -1,21 +1,40 @@
+import 'dart:io'; // Import this for File usage
+import 'package:attendance_qr_system/DatabaseController/ProfileDatabaseController.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({super.key, required this.username});
-  final String username;
+  const UpdateProfileScreen({super.key, required this.profileData});
+  final Map<String, dynamic> profileData;
 
   @override
   UpdateProfileState createState() => UpdateProfileState();
 }
 
 class UpdateProfileState extends State<UpdateProfileScreen> {
-
   late String username;
+  late String imageUrl;
+  late String newImagePath; // Store the new image path
+  final ImagePicker imagePicker = ImagePicker();
 
+  @override
   void initState() {
     super.initState();
-    username = widget.username;
+    username = widget.profileData['username'];
+    imageUrl = widget.profileData['imageURL'];
+    newImagePath = ''; // Initialize new image path
+  }
+
+  Future<void> _pickImage() async {
+    // Open the image picker
+    final XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        newImagePath = pickedFile.path; // Update new image path to the selected file
+      });
+    }
   }
 
   Future<bool> _onBackPressed() async {
@@ -62,12 +81,16 @@ class UpdateProfileState extends State<UpdateProfileScreen> {
                   const SizedBox(height: 20),
                   Stack(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 100,
                         backgroundColor: Colors.white,
                         child: CircleAvatar(
                           radius: 95,
-                          backgroundImage: AssetImage('Assets/fufu.jpg'),
+                          backgroundImage: newImagePath.isNotEmpty
+                              ? FileImage(File(newImagePath)) // Use FileImage for local files
+                              : imageUrl.isNotEmpty
+                              ? CachedNetworkImageProvider(imageUrl)
+                              : const AssetImage('assets/fufu.png') as ImageProvider,
                         ),
                       ),
                       Positioned(
@@ -79,10 +102,8 @@ class UpdateProfileState extends State<UpdateProfileScreen> {
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              // Add your camera function here
-                            },
+                            icon: const Icon(Icons.photo_camera),
+                            onPressed: _pickImage,
                           ),
                         ),
                       ),
@@ -93,7 +114,8 @@ class UpdateProfileState extends State<UpdateProfileScreen> {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add your update profile logic here
+                        // Call the update profile logic here
+                        ProfileDatabaseController().UpdateProfile(username, newImagePath, context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFE9ECEF),
