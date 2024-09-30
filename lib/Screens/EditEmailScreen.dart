@@ -1,25 +1,27 @@
-import 'package:attendance_qr_system/Function/VerifyData.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../Function/VerifyData.dart';
 
-class EditPasswordScreen extends StatefulWidget {
+class EditEmailScreen extends StatefulWidget {
 
   @override
-  _EditPasswordScreenState createState() => _EditPasswordScreenState();
-  const EditPasswordScreen({super.key, required this.username});
+  _EditEmailScreenState createState() => _EditEmailScreenState();
+  const EditEmailScreen({super.key, required this.username});
 
   final String username;
 
 }
 
-class _EditPasswordScreenState extends State<EditPasswordScreen> {
+class _EditEmailScreenState extends State<EditEmailScreen> {
   bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
   late String username;
 
-  final TextEditingController oldpassword = TextEditingController();
-  final TextEditingController newpassword = TextEditingController();
+  final TextEditingController oldEmail = TextEditingController();
+  final TextEditingController newEmail = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController confirmpassword = TextEditingController();
 
   void initState() {
     super.initState();
@@ -126,10 +128,44 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                       border: Border.all(color: Colors.deepPurple),
                     ),
                     child: TextField(
-                      controller: oldpassword,
+                      controller: oldEmail,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'Enter your old email',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.deepPurple),
+                    ),
+                    child: TextField(
+                      controller: newEmail,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'Enter your new email',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.deepPurple),
+                    ),
+                    child: TextField(
+                      controller: password,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Enter your old password',
+                        labelText: 'Enter your password',
                         counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon: IconButton(
@@ -151,10 +187,10 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                       border: Border.all(color: Colors.deepPurple),
                     ),
                     child: TextField(
-                      controller: newpassword,
+                      controller: confirmpassword,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Enter your new password',
+                        labelText: 'Enter your confirm password',
                         counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                         suffixIcon: IconButton(
@@ -182,7 +218,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                         onPressed: () {
                           // Add your onPressed code here!
 
-                          if (oldpassword.text.isEmpty || newpassword.text.isEmpty) {
+                          if (password.text.isEmpty || confirmpassword.text.isEmpty) {
                             Fluttertoast.showToast(
                                 msg: 'Please fill in all fields',
                                 toastLength: Toast.LENGTH_SHORT,
@@ -198,17 +234,19 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
                           else{
                             Map data = {
                               'username': username,
-                              'oldpassword': oldpassword.text,
-                              'newpassword': newpassword.text
+                              'password': password.text,
+                              'confirmpassword': confirmpassword.text,
+                              'oldEmail': oldEmail.text,
+                              'newEmail': newEmail.text
                             };
-                            VerifyDataClass().CheckPassword(data,clearData, context);
+                            VerifyDataClass().checkEmail(data,clearData, context);
                           }
 
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF),
                         ),
-                        child: const Text('Update Password',
+                        child: const Text('Update Email',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -230,7 +268,9 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
   }
 
   void clearData() {
-    oldpassword.clear();
-    newpassword.clear();
+    oldEmail.clear();
+    newEmail.clear();
+    password.clear();
+    confirmpassword.clear();
   }
 }

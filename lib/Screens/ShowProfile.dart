@@ -143,6 +143,7 @@ class ShowProfile {
                             onPressed: () {
                               // Add change email functionality
                               Navigator.pop(context);
+                              context.push('/EditEmail', extra: username);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFE9ECEF), // Button background color

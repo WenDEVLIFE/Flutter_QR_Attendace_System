@@ -14,6 +14,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
 import 'Function/SessionManager.dart';
+import 'Screens/EditEmailScreen.dart';
 import 'Screens/EditPasswordScreen.dart';
 import 'Screens/OTPScreen.dart';
 
@@ -92,7 +93,13 @@ class MyApp extends StatelessWidget {
           final username = state.extra as String;
           return EditPasswordScreen(username: username);
     },
-        )
+        ),
+        GoRoute(path: '/EditEmail',
+            builder: (context, state) {
+              final username = state.extra as String;
+              return EditEmailScreen(username: username);
+            },
+        ),
       ],
     );
 

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../DatabaseController/EmailController.dart';
+import '../DatabaseController/PasswordController.dart';
+
 class VerifyDataClass {
   void CheckData(Map<String, dynamic> userData, BuildContext context, String send, void Function() clearData) {
     // Email pattern or regex
@@ -185,6 +188,67 @@ class VerifyDataClass {
       };
 
       InsertUser().InsertUsersDatabase(extra : extra, context: context, clearData: clearData);
+    }
+
+  }
+
+  void CheckPassword(Map data, void Function() clearData, BuildContext context){
+    if (data['oldpassword'] == data['newpassword']) {
+      print('Old password and new password cannot be the same');
+    } else if (data['newpassword'].length < 8) {
+      print('Password must be at least 8 characters long');
+    } else if (!hasUpperCase(data['newpassword'])) {
+      print('Password must contain at least one uppercase letter');
+    } else if (!hasSpecialCharacters(data['newpassword'])) {
+      print('Password must contain at least one special character');
+    } else {
+      PasswordController().PasswordDatabase(data, clearData, context);
+
+    }
+  }
+
+  void checkEmail(Map data, void Function() clearData, BuildContext context){
+    final emailPattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (data['oldEmail'].isEmpty || data['newEmail'].isEmpty) {
+      // Show an error message
+      FlutterToastError("Email is empty");
+      return;
+    }
+    else if (!emailPattern.hasMatch(data['oldEmail']) || !emailPattern.hasMatch(data['newEmail'])) {
+      // Validate the email address
+      FlutterToastError("Invalid email address");
+      return;
+    }
+
+    if (data['password'].isEmpty) {
+      // Show an error message
+      FlutterToastError("Password is empty");
+      return;
+    }
+    else if (data['password'].length < 8) {
+      // Show an error message
+      FlutterToastError("Password must be at least 8 characters long");
+      return;
+    }
+    else if (!hasSpecialCharacters(data['password'])) {
+      // Show an error message
+      FlutterToastError("Password must contain at least one special character");
+      return;
+    }
+
+    else if (!hasUpperCase(data['password'])) {
+      // Show an error message
+      FlutterToastError("Password must contain at least one uppercase letter");
+      return;
+    }
+
+    else if (data['password'] != data['confirmpassword']) {
+      // Show an error message
+      FlutterToastError("Passwords do not match");
+      return;
+    }
+    else {
+      EmailController().AddEmailDatabase(data, clearData, context);
     }
 
   }
