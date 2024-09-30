@@ -130,9 +130,9 @@ class AttendanceState extends State<Attendancescreen> {
             const SizedBox(height: 20),
             Expanded(
               child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(child: CircularProgressIndicator( backgroundColor: Colors.white,))
                   : _filteredAttendances.isEmpty
-                  ? Center(child: Text('No attendance found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                  ? const Center(child: Text('No attendance found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
                   : ListView.builder(
                 itemCount: _filteredAttendances.length,
                 itemBuilder: (context, index) {

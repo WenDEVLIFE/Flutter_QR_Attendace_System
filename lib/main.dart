@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 50,
                 height: 50,
                 child: CircularProgressIndicator(
-                  color: Colors.deepPurple,
+                  color: Colors.white,
                 ),
               )
                   : const Text(''),
