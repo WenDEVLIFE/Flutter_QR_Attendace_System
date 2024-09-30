@@ -35,6 +35,7 @@ class UserState extends State<Userscreen> {
     super.dispose();
   }
 
+  // Filter the user
   void _filterUsers() {
     final query = _searchController.text.toLowerCase();
     setState(() {
@@ -44,6 +45,7 @@ class UserState extends State<Userscreen> {
     });
   }
 
+  // Fetch the user
   Future<void> _fetchUsers() async {
     List<UserDataModel> users = await _retrieveController.fetchUser();
     setState(() {
@@ -53,6 +55,7 @@ class UserState extends State<Userscreen> {
     });
   }
 
+  // This is for delete the user
   Future<void> _deleteUser(String id) async {
     try {
       await FirebaseFirestore.instance.collection('Users').doc(id).delete();
@@ -154,6 +157,7 @@ class UserState extends State<Userscreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
+                            leading: const Icon(Icons.person, color: Colors.black, size: 64),
                             title: Text(
                               'Username: ${user.username}',
                               style: const TextStyle(

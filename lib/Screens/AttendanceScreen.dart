@@ -32,6 +32,7 @@ class AttendanceState extends State<Attendancescreen> {
     super.dispose();
   }
 
+  // This is for fetcing the attendance
   Future<void> _fetchAttendances() async {
     List<AttendanceModel> attendances = await _retrieveController.fetchAttendances();
     setState(() {
@@ -41,6 +42,7 @@ class AttendanceState extends State<Attendancescreen> {
     });
   }
 
+  // Filter the attendance
   void _filterAttendances() {
     final query = _searchController.text.toLowerCase();
     setState(() {
@@ -145,6 +147,7 @@ class AttendanceState extends State<Attendancescreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
+                      leading: const Icon(Icons.verified_user, color: Colors.black, size: 64),
                       title: Text(
                         'Name: ${attendance.firstName} ${attendance.lastName}',
                         style: const TextStyle(
