@@ -17,7 +17,7 @@ dependencies:
   convex_bottom_bar: ^3.0.0
   curved_navigation_bar: ^1.0.3
   cupertino_icons: ^1.0.8
-  qr_code_scanner: ^1.0.1  # Keep this for scanning
+  qr_code_scanner: ^1.0.1
   bcrypt: ^1.1.3
   cloud_firestore: ^5.4.2
   firebase_storage: ^12.3.2
