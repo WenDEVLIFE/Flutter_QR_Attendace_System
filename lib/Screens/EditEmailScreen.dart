@@ -64,7 +64,7 @@ class _EditEmailScreenState extends State<EditEmailScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Edit Password',
+            'Edit Email',
             style: TextStyle(
               color: Colors.white,
               fontFamily: 'Roboto',
@@ -98,7 +98,7 @@ class _EditEmailScreenState extends State<EditEmailScreen> {
                     // Add 20 pixels of space on the left
                     child: Align(
                       alignment: Alignment(-1.00, 0.0), // Align to the left
-                      child: Text('Change password', style: TextStyle(
+                      child: Text('Change email', style: TextStyle(
                           fontSize: 30,
                           color: Colors.black,
                           fontWeight: FontWeight.bold
@@ -112,7 +112,7 @@ class _EditEmailScreenState extends State<EditEmailScreen> {
                     child: Align(
                       alignment: Alignment(0.0, 0.0), // Center align
                       child: Text(
-                          'Enter a new password to change your password',
+                          'Enter a email password to change your email',
                           style: TextStyle(
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
