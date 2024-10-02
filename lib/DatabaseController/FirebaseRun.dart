@@ -8,7 +8,7 @@ class FirebaseRun {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
           apiKey: 'AIzaSyBVhVZIGWKvPagJgX0QW7to_U7FcjqVpXo',
-          appId: '914861841567',
+          appId: '1:914861841567:android:19d176eb2fc13c7c1b56aa',
           messagingSenderId: '914861841567',
           projectId: 'qr-attendance-database',
           storageBucket: 'gs://qr-attendance-database.appspot.com',  // Add this line
