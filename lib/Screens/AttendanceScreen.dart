@@ -2,6 +2,7 @@ import 'package:attendance_qr_system/model/AttendanceModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../DatabaseController/DeleteFirebase.dart';
 import '../DatabaseController/RetrieveController.dart'; // Adjust the import path as needed
 
 class Attendancescreen extends StatefulWidget {
@@ -53,16 +54,6 @@ class AttendanceState extends State<Attendancescreen> {
     });
   }
 
-  Future<void> _deleteAttendance(String id) async {
-    try {
-      await FirebaseFirestore.instance.collection('Attendance').doc(id).delete();
-      _showToast('Attendance deleted successfully', Colors.green);
-      _fetchAttendances(); // Refresh the list
-    } catch (e) {
-      print('Error deleting attendance: $e');
-      _showToast('Error deleting attendance', Colors.red);
-    }
-  }
 
   void _showToast(String message, Color backgroundColor) {
     Fluttertoast.showToast(
@@ -164,7 +155,9 @@ class AttendanceState extends State<Attendancescreen> {
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _deleteAttendance(attendance.id),
+                        onPressed: (){
+                          DeleteFirebase().DeleteAttendance(attendance.id, _fetchAttendances(), _showToast);
+                        },
                       ),
                     ),
                   );

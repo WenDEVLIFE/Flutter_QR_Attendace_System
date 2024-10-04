@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/DatabaseController/DeleteFirebase.dart';
 import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
 import 'package:attendance_qr_system/model/UserDataModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -59,39 +60,6 @@ class UserState extends State<Userscreen> {
     });
   }
 
-  // This is for delete the user
-  Future<void> _deleteUser(String id) async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users').where('username', isEqualTo: username).get();
-      if (querySnapshot.docs.isNotEmpty) {
-        var userdoc = querySnapshot.docs.first;
-        var user = userdoc['username'];
-
-        if (user == username) {
-          _showToast('Cannot delete yourself', Colors.red);
-          return;
-        }
-        else{
-          await FirebaseFirestore.instance.collection('Users').doc(id).delete();
-          _showToast('User deleted successfully', Colors.green);
-          _fetchUsers(); // Refresh the list
-        }
-      }else{
-        Fluttertoast.showToast(
-          msg: 'User not found',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-      }
-    } catch (e) {
-      print('Error deleting user: $e');
-      _showToast('Error deleting user', Colors.red);
-    }
-  }
 
   void _showToast(String message, Color backgroundColor) {
     Fluttertoast.showToast(
@@ -200,7 +168,9 @@ class UserState extends State<Userscreen> {
                             ),
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _deleteUser(user.id),
+                              onPressed: () {
+                                DeleteFirebase().DeleteUser(user.id, _fetchUsers, _showToast, username);
+                              },
                             ),
                           ),
                         );
