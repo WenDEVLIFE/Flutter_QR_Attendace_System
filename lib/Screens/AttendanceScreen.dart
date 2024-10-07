@@ -2,6 +2,7 @@ import 'package:attendance_qr_system/model/AttendanceModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import '../DatabaseController/DeleteFirebase.dart';
 import '../DatabaseController/RetrieveController.dart'; // Adjust the import path as needed
 
@@ -159,6 +160,7 @@ class AttendanceState extends State<Attendancescreen> {
                           ElevatedButton(
                             onPressed: () {
                               // Add your button action here`
+                              context.push('/Map');
                             },
                             child: const Text('View location'),
                           ),
