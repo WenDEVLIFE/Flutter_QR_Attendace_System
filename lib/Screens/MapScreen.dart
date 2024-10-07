@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -17,6 +18,12 @@ class MapState extends State<MapScreen> {
     // Handle the back button press
     Navigator.pop(context);
     return false; // Prevent the default back button action
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    showProgressDialog();
   }
 
   @override
@@ -63,8 +70,18 @@ class MapState extends State<MapScreen> {
             Positioned(
               top: 10,
               left: 10,
-              child: DropdownButton<String>(
+              child:  Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+              child: Container(
+              width: 200,
+              decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.transparent),
+              ), child: DropdownButton<String>(
                 value: _mapType,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 items: [
                   DropdownMenuItem(
                     value: 'satellite',
@@ -99,14 +116,39 @@ class MapState extends State<MapScreen> {
                 ],
                 onChanged: (value) {
                   setState(() {
+                    showProgressDialog();
                     _mapType = value!;
                   });
                 },
               ),
             ),
+
+        ),
+      ),
+    ),
           ],
         ),
       ),
     );
+
+  }
+  Future<void> showProgressDialog() async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      max: 100,
+      msg: 'Loading Terrain...',
+      backgroundColor: const Color(0xFF6E738E),
+      progressBgColor: Colors.transparent,
+      progressValueColor: Colors.blue,
+      msgColor: Colors.white,
+      valueColor: Colors.white,
+    );
+
+    for (int loading = 0; loading <= 100; loading++) {
+      await Future.delayed(const Duration(milliseconds: 50)); // Simulate some work
+      pd.update(value: loading);
+    }
+
+    pd.close();
   }
 }

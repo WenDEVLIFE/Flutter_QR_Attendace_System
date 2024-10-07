@@ -150,20 +150,21 @@ class AttendanceState extends State<Attendancescreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Date: ${attendance.date}\nStatus: ${attendance.status}\nTimeIn: ${attendance.timeIn}',
+                            'Date: ${attendance.date}\nStatus: ${attendance.status}\nTime: ${attendance.timeIn}',
                             style: const TextStyle(
                               color: Colors.black,
                               fontFamily: 'Roboto',
                             ),
                           ),
                           const SizedBox(height: 8),
-                          ElevatedButton(
+                          ElevatedButton.icon(
                             onPressed: () {
-                              // Add your button action here`
+                              // Add your button action here
                               context.push('/Map');
                             },
-                            child: const Text('View location'),
-                          ),
+                            icon: const Icon(Icons.location_on), // Add your desired icon here
+                            label: const Text('View location'),
+                          )
                         ],
                       ),
                       trailing: IconButton(
