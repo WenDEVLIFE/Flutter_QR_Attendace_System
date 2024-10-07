@@ -54,7 +54,6 @@ class AttendanceState extends State<Attendancescreen> {
     });
   }
 
-
   void _showToast(String message, Color backgroundColor) {
     Fluttertoast.showToast(
       msg: message,
@@ -146,12 +145,24 @@ class AttendanceState extends State<Attendancescreen> {
                           fontFamily: 'Roboto',
                         ),
                       ),
-                      subtitle: Text(
-                        'Date: ${attendance.date}\nStatus: ${attendance.status}\nTimeIn: ${attendance.timeIn}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Roboto',
-                        ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Date: ${attendance.date}\nStatus: ${attendance.status}\nTimeIn: ${attendance.timeIn}',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Add your button action here`
+                            },
+                            child: const Text('View location'),
+                          ),
+                        ],
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),

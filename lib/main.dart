@@ -17,6 +17,7 @@ import 'DatabaseController/FirebaseRun.dart';
 import 'Function/SessionManager.dart';
 import 'Screens/EditEmailScreen.dart';
 import 'Screens/EditPasswordScreen.dart';
+import 'Screens/MapScreen.dart';
 import 'Screens/OTPScreen.dart';
 
 void main() async {
@@ -110,6 +111,10 @@ class MyApp extends StatelessWidget {
             final profileData = state.extra as Map<String, dynamic>;
             return UpdateProfileScreen(profileData:profileData);
           },
+        ),
+        GoRoute(
+          path: '/Map',
+          builder: (context, state) => const MapScreen(),
         )
       ],
     );
