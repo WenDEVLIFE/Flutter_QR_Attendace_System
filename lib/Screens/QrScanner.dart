@@ -1,11 +1,13 @@
 import 'package:attendance_qr_system/DatabaseController/ScanQR.dart';
+import 'package:attendance_qr_system/Function/GeoMapper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_ml_kit/google_ml_kit.dart' as mlkit; // Alias for google_ml_kit
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart' as qr; // Alias for qr_code_scanner
 import 'dart:io';
-
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class QrScanner extends StatefulWidget {
@@ -20,6 +22,9 @@ class QrState extends State<QrScanner> {
   qr.Barcode? result; // Use the alias for qr_code_scanner
   qr.QRViewController? controller;
   String? _selectedValue;
+  double long = 0.0;
+  double lat = 0.0;
+  String locationMessage = '';
 
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
 
@@ -32,7 +37,48 @@ class QrState extends State<QrScanner> {
   @override
   void initState() {
     super.initState();
+    _requestPermissions();
     _selectedValue = _items.isNotEmpty ? _items[0] : null;
+  }
+
+  Future<void> _requestPermissions() async {
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      _getLocation();
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Location permissions are denied.',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future<void> _getLocation() async {
+    await Geolocator.checkPermission();
+    await Geolocator.requestPermission();
+    Position? position = await GeoMapper().getLocation();
+    if (position != null) {
+      setState(() {
+        long = position.longitude;
+        lat = position.latitude;
+        locationMessage = 'Latitude: $lat, Longitude: $long';
+      });
+
+      Fluttertoast.showToast(
+        msg: locationMessage,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 
   @override
@@ -280,5 +326,4 @@ class QrState extends State<QrScanner> {
       controller!.resumeCamera();
     }
   }
-
 }
