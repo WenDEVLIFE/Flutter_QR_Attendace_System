@@ -159,7 +159,12 @@ class AttendanceState extends State<Attendancescreen> {
                           ElevatedButton.icon(
                             onPressed: () {
                               // Add your button action here
-                              context.push('/Map');
+                              Map <String , dynamic> locationData = {
+                                'latitude': attendance.latitude,
+                                'longitude': attendance.longitude,
+                                 'userID': attendance.userID,
+                              };
+                              context.push('/Map', extra: locationData);
                             },
                             icon: const Icon(Icons.location_on), // Add your desired icon here
                             label: const Text('View location'),

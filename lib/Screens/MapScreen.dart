@@ -8,11 +8,17 @@ class MapScreen extends StatefulWidget {
   @override
   MapState createState() => MapState();
 
-  const MapScreen({super.key,});
+  const MapScreen({super.key, required this.data});
+
+  final Map<String, dynamic> data;
 }
 
 class MapState extends State<MapScreen> {
   String _mapType = 'satellite';
+
+  double latitude = 0.0;
+  double longitude = 0.0;
+  late Map<String, dynamic> data;
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
@@ -24,6 +30,9 @@ class MapState extends State<MapScreen> {
   void initState() {
     super.initState();
     showProgressDialog();
+    data = widget.data;
+    latitude = data['latitude'];
+    longitude = data['longitude'];
   }
 
   @override
@@ -53,7 +62,7 @@ class MapState extends State<MapScreen> {
           children: [
             FlutterMap(
               options: MapOptions(
-                center: LatLng(51.509865, -0.118092),
+                center: LatLng(latitude, longitude),
                 zoom: 13.0,
               ),
               children: [
@@ -65,73 +74,87 @@ class MapState extends State<MapScreen> {
                     'key': '2FeRdU4DmzOy7sPnsesD',
                   },
                 ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: LatLng(latitude, longitude),
+                      builder: (ctx) => const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 40.0,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             Positioned(
               top: 10,
               left: 10,
-              child:  Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-              child: Container(
-              width: 200,
-              decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.transparent),
-              ), child: DropdownButton<String>(
-                value: _mapType,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                items: [
-                  DropdownMenuItem(
-                    value: 'satellite',
-                    onTap: () {
-                     Fluttertoast.showToast(
-                        msg: 'Satellite Mode',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey,
-                        textColor: Colors.white,
-                        fontSize: 16.0
-                     );
-                    },
-                    child: const Text('Satellite'),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Container(
+                    width: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.transparent),
+                    ),
+                    child: DropdownButton<String>(
+                      value: _mapType,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      items: [
+                        DropdownMenuItem(
+                          value: 'satellite',
+                          onTap: () {
+                            Fluttertoast.showToast(
+                              msg: 'Satellite Mode',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          },
+                          child: const Text('Satellite'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'street',
+                          onTap: () {
+                            Fluttertoast.showToast(
+                              msg: 'Street Mode',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          },
+                          child: const Text('Street'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          showProgressDialog();
+                          _mapType = value!;
+                        });
+                      },
+                    ),
                   ),
-                  DropdownMenuItem(
-                    value: 'street',
-                    onTap: () {
-                      Fluttertoast.showToast(
-                          msg: 'Street Mode',
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.grey,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
-                    },
-                    child: const Text('Street'),
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    showProgressDialog();
-                    _mapType = value!;
-                  });
-                },
+                ),
               ),
             ),
-
-        ),
-      ),
-    ),
           ],
         ),
       ),
     );
-
   }
+
   Future<void> showProgressDialog() async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(

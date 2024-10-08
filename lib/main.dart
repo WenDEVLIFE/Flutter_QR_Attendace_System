@@ -114,7 +114,10 @@ class MyApp extends StatelessWidget {
         ),
         GoRoute(
           path: '/Map',
-          builder: (context, state) => const MapScreen(),
+          builder: (context, state){
+            final data = state.extra as Map<String, dynamic>;
+            return MapScreen(data: data);
+          },
         )
       ],
     );
