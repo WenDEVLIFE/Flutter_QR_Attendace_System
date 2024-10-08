@@ -30,11 +30,13 @@ class QrState extends State<QrScanner> {
   Timer? debounceTimer;
   final Duration debounceDuration = const Duration(seconds: 2); // Set debounce duration
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
+  ProgressDialog? pd;
 
   @override
   void dispose() {
     controller?.dispose();
     debounceTimer?.cancel();
+    pd?.close();
     super.dispose();
   }
 
@@ -43,6 +45,7 @@ class QrState extends State<QrScanner> {
     super.initState();
     _requestPermissions();
     _selectedValue = _items.isNotEmpty ? _items[0] : null;
+    pd = ProgressDialog(context: context);
   }
 
   Future<void> _requestPermissions() async {
@@ -244,12 +247,9 @@ class QrState extends State<QrScanner> {
       'attendance': _selectedValue,
     };
 
-    ProgressDialog pd = ProgressDialog(context: context);
-
     if (code != null) {
       print('Processing QR Code: $code'); // Debug statement
       if (_selectedValue == 'Select to attendance') {
-        pd.close();
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -314,29 +314,23 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
+
+        showProgressDialog();
+        ScanQr().CheckAttendance(data, context);
       }
-
-      ScanQr().CheckAttendance(data, context);
-      pd.show(
-        max: 100,
-        msg: 'Scanning...',
-        backgroundColor: const Color(0xFF6E738E),
-        progressBgColor: Colors.transparent,
-        progressValueColor: Colors.blue,
-        msgColor: Colors.white,
-        valueColor: Colors.white,
-      );
-
-      Future.delayed(const Duration(seconds: 3), () {
-        pd.close();
-      });
     } else {
       print('QR Code is null');
+      Fluttertoast.showToast(
+        msg: 'Scanned QR Code: $code',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      showProgressDialog();
     }
-
-    Future.delayed(const Duration(seconds: 3), () {
-      pd.close();
-    });
 
     // Start debounce timer
     debounceTimer?.cancel();
@@ -354,5 +348,28 @@ class QrState extends State<QrScanner> {
       controller!.pauseCamera();
       controller!.resumeCamera();
     }
+  }
+
+  void showProgressDialog() {
+    if (pd != null && pd!.isOpen()) {
+      pd!.close();
+    }
+
+    pd!.show(
+      max: 100,
+      msg: 'Scanning...',
+      backgroundColor: const Color(0xFF6E738E),
+      progressBgColor: Colors.transparent,
+      progressValueColor: Colors.blue,
+      msgColor: Colors.white,
+      valueColor: Colors.white,
+    );
+
+    Future.delayed(const Duration(seconds: 3), () {
+      pd!.close();
+      setState(() {
+        isProcessing = false;
+      });
+    });
   }
 }

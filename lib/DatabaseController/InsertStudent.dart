@@ -78,7 +78,7 @@ class InsertStudent {
         );
       }
     } catch (e) {
-      FlutterError('An error occurred. Please try again.');
+     print('An error occurred. Please try again.');
     }
   }
 
@@ -146,7 +146,7 @@ class InsertStudent {
        FlutterError('User already exists');
       }
     } catch (e) {
-     FlutterError('An error occurred. Please try again.');
+      print('An error occurred. Please try again.');
     }
     finally {
       pd.close();
