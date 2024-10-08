@@ -163,6 +163,9 @@ class AttendanceState extends State<Attendancescreen> {
                                 'latitude': attendance.latitude,
                                 'longitude': attendance.longitude,
                                  'userID': attendance.userID,
+                                  'Time': attendance.timeIn,
+                                'Date': attendance.date,
+                                'Status': attendance.status,
                               };
                               context.push('/Map', extra: locationData);
                             },

@@ -1,3 +1,6 @@
+import 'package:attendance_qr_system/Key/ApiKey.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,24 +18,34 @@ class MapScreen extends StatefulWidget {
 
 class MapState extends State<MapScreen> {
   String _mapType = 'satellite';
-
+  String Time = '';
+  String Date = '';
+  String FullName = '';
+  String ImageURL = '';
+  String Status = '';
   double latitude = 0.0;
   double longitude = 0.0;
+  String api = ApiKey.key;
   late Map<String, dynamic> data;
+  bool _showPopup = false;
+  Offset _markerPosition = Offset.zero;
 
   Future<bool> _onBackPressed() async {
-    // Handle the back button press
     Navigator.pop(context);
-    return false; // Prevent the default back button action
+    return false;
   }
 
   @override
   void initState() {
     super.initState();
-    showProgressDialog();
     data = widget.data;
     latitude = data['latitude'];
     longitude = data['longitude'];
+    Time = data['Time'];
+    Date = data['Date'];
+    Status = data['Status'];
+    showProgressDialog();
+    LoadData();
   }
 
   @override
@@ -64,14 +77,15 @@ class MapState extends State<MapScreen> {
               options: MapOptions(
                 center: LatLng(latitude, longitude),
                 zoom: 13.0,
+                onTap: (_, __) => setState(() => _showPopup = false),
               ),
               children: [
                 TileLayer(
                   urlTemplate: _mapType == 'satellite'
-                      ? 'https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=2FeRdU4DmzOy7sPnsesD'
-                      : 'https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.jpg?key=2FeRdU4DmzOy7sPnsesD',
-                  additionalOptions: const {
-                    'key': '2FeRdU4DmzOy7sPnsesD',
+                      ? 'https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=$api'
+                      : 'https://api.maptiler.com/maps/openstreetmap/{z}/{x}/{y}.jpg?key=$api',
+                  additionalOptions: {
+                    'key': api,
                   },
                 ),
                 MarkerLayer(
@@ -80,16 +94,51 @@ class MapState extends State<MapScreen> {
                       width: 80.0,
                       height: 80.0,
                       point: LatLng(latitude, longitude),
-                      builder: (ctx) => const Icon(
-                        Icons.location_on,
-                        color: Colors.red,
-                        size: 40.0,
+                      builder: (ctx) => GestureDetector(
+                        onTapDown: (details) {
+                          setState(() {
+                            _markerPosition = details.globalPosition;
+                            _showPopup = true;
+                          });
+                        },
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 20.0,
+                              backgroundColor: Colors.white,
+                              backgroundImage: ImageURL.isNotEmpty
+                                  ? CachedNetworkImageProvider(ImageURL)
+                                  : const AssetImage('Assets/fufu.jpg') as ImageProvider, // Replace with your image path
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
-                ),
+                )
               ],
             ),
+            if (_showPopup)
+              Positioned(
+                left: _markerPosition.dx - 40, // Adjust the horizontal position
+                top: _markerPosition.dy - 300, // Adjust the vertical position to be above the marker
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Latitude: $latitude'),
+                        Text('Longitude: $longitude'),
+                        Text('Name: $FullName'),
+                        Text('Time: $Time'),
+                        Text('Date: $Date'),
+                        Text('Status: $Status'),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             Positioned(
               top: 10,
               left: 10,
@@ -168,10 +217,50 @@ class MapState extends State<MapScreen> {
     );
 
     for (int loading = 0; loading <= 100; loading++) {
-      await Future.delayed(const Duration(milliseconds: 50)); // Simulate some work
+      await Future.delayed(const Duration(milliseconds: 50));
       pd.update(value: loading);
     }
 
     pd.close();
+  }
+
+  Future<void> LoadData() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users')
+          .where("ID", isEqualTo: data['userID'])
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        var firstName = doc['firstName'];
+        var lastName = doc['lastName'];
+        var Image = doc['imageURL'];
+
+        setState(() {
+          FullName = '$firstName $lastName';
+          ImageURL = Image;
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: 'No data found',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error: $e',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 }
