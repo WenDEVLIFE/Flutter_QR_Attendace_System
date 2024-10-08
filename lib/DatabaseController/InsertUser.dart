@@ -64,7 +64,7 @@ class InsertUser{
             });
 
             Fluttertoast.showToast(
-            msg: 'Student added successfully',
+            msg: 'User added successfully',
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
