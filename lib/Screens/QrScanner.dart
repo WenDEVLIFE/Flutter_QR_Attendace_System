@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:attendance_qr_system/DatabaseController/ScanQR.dart';
 import 'package:attendance_qr_system/Function/GeoMapper.dart';
 import 'package:flutter/material.dart';
@@ -25,12 +26,15 @@ class QrState extends State<QrScanner> {
   double long = 0.0;
   double lat = 0.0;
   String locationMessage = '';
-
+  bool isProcessing = false;
+  Timer? debounceTimer;
+  final Duration debounceDuration = const Duration(seconds: 2); // Set debounce duration
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
 
   @override
   void dispose() {
     controller?.dispose();
+    debounceTimer?.cancel();
     super.dispose();
   }
 
@@ -66,7 +70,7 @@ class QrState extends State<QrScanner> {
       setState(() {
         long = position.longitude;
         lat = position.latitude;
-        locationMessage = 'Latitude: $lat, Longitude: $long';
+        locationMessage = 'Your location Latitude: $lat, Longitude: $long';
       });
 
       Fluttertoast.showToast(
@@ -205,11 +209,14 @@ class QrState extends State<QrScanner> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-        print('Scanned QR Code: ${scanData.code}'); // Debug statement
-      });
-      _processQRCode(scanData.code);
+      if (!isProcessing) {
+        setState(() {
+          isProcessing = true;
+          result = scanData;
+          print('Scanned QR Code: ${scanData.code}'); // Debug statement
+        });
+        _processQRCode(scanData.code);
+      }
     });
   }
 
@@ -230,15 +237,19 @@ class QrState extends State<QrScanner> {
   }
 
   void _processQRCode(String? code) {
-    Map <String, dynamic> data = {
+    Map<String, dynamic> data = {
       'code': code,
       'latitude': lat,
       'longitude': long,
       'attendance': _selectedValue,
     };
+
+    ProgressDialog pd = ProgressDialog(context: context);
+
     if (code != null) {
       print('Processing QR Code: $code'); // Debug statement
       if (_selectedValue == 'Select to attendance') {
+        pd.close();
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -281,7 +292,6 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[2]; // Time out
                     });
                     Navigator.pop(context);
-
                     ScanQr().CheckAttendance(data, context); // Process time out
                   },
                   child: const Text(
@@ -304,25 +314,37 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        ScanQr().CheckAttendance(data, context);
-        ProgressDialog pd = ProgressDialog(context: context);
-        pd.show(
-          max: 100,
-          msg: 'Scanning...',
-          backgroundColor: const Color(0xFF6E738E),
-          progressBgColor: Colors.transparent,
-          progressValueColor: Colors.blue,
-          msgColor: Colors.white,
-          valueColor: Colors.white,
-        );
-
-        Future.delayed(const Duration(seconds: 3), () {
-          pd.close();
-        });
       }
+
+      ScanQr().CheckAttendance(data, context);
+      pd.show(
+        max: 100,
+        msg: 'Scanning...',
+        backgroundColor: const Color(0xFF6E738E),
+        progressBgColor: Colors.transparent,
+        progressValueColor: Colors.blue,
+        msgColor: Colors.white,
+        valueColor: Colors.white,
+      );
+
+      Future.delayed(const Duration(seconds: 3), () {
+        pd.close();
+      });
     } else {
       print('QR Code is null');
     }
+
+    Future.delayed(const Duration(seconds: 3), () {
+      pd.close();
+    });
+
+    // Start debounce timer
+    debounceTimer?.cancel();
+    debounceTimer = Timer(debounceDuration, () {
+      setState(() {
+        isProcessing = false;
+      });
+    });
   }
 
   @override
