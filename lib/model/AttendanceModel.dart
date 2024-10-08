@@ -10,6 +10,8 @@ class AttendanceModel {
   final String userType;
   final String firstName;
   final String lastName;
+  final double latitude;
+  final double longitude;
 
   AttendanceModel({
     required this.id,
@@ -21,6 +23,8 @@ class AttendanceModel {
     required this.userType,
     required this.firstName,
     required this.lastName,
+    required this.latitude,
+    required this.longitude,
   });
 
   factory AttendanceModel.fromDocument(DocumentSnapshot doc) {
@@ -30,10 +34,12 @@ class AttendanceModel {
       date: doc['Date'],
       userID: doc['ID'],
       status: doc['Status'],
-      timeIn: doc['TimeIn'],
+      timeIn: doc['Time'],
       userType: doc['UserType'],
       firstName: doc['firstName'],
       lastName: doc['lastName'],
+      latitude: doc['latitude'],
+      longitude: doc['longitude'],
     );
   }
 }

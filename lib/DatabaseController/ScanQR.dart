@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math';
 
-
 class ScanQr {
-  Future<void> CheckAttendance(String id, String selectedValue, BuildContext context) async {
+  Future<void> CheckAttendance(Map<String, dynamic> data, BuildContext context) async {
     try {
+      int id = int.parse(data['code']);
+      double latitude = data['latitude'];
+      double longitude = data['longitude'];
+      String selectedValue = data['attendance'];
       print("Starting Attendance method with ID: $id");
       DateTime now = DateTime.now();
       int hour = now.hour;
       int minute = now.minute;
-      int ID = int.parse(id);
-      print("Parsed ID: $ID");
 
       // Generate a random 9-digit ID
       int min = 100000000;
@@ -25,10 +26,10 @@ class ScanQr {
       print("Formatted Date: $formattedDate");
 
       // Query for user
-      print("Querying for user with ID: $ID");
+      print("Querying for user with ID: $id");
       QuerySnapshot query = await FirebaseFirestore.instance
           .collection('Users')
-          .where('ID', isEqualTo: ID)
+          .where('ID', isEqualTo: id)
           .get();
 
       if (query.docs.isNotEmpty) {
@@ -38,9 +39,21 @@ class ScanQr {
         var lastname = userDoc['lastName'];
         var role = userDoc['role'];
         print("User: $firstname $lastname");
-        await InsertAttendance(ID, attendanceID, firstname, lastname, formattedDate, hour, minute, selectedValue, role);
 
-
+        Map<String, dynamic> attendancedata = {
+          'ID': id,
+          'AttendanceID': attendanceID,
+          'firstName': firstname,
+          'lastName': lastname,
+          'Date': formattedDate,
+          'hour': hour,
+          'minute': minute,
+          'UserType': role,
+          'Status': selectedValue,
+          'latitude': latitude,
+          'longitude': longitude,
+        };
+        await InsertAttendance(attendancedata);
       } else {
         print("User not found");
         _showToast("User not found", Colors.red);
@@ -48,11 +61,8 @@ class ScanQr {
     } catch (e) {
       print("Error in Attendance method: $e");
       _showToast("Error: ${e.toString()}", Colors.red);
-
     }
-
   }
-
 
   void _showToast(String message, Color backgroundColor) {
     print("Showing toast: $message");
@@ -67,65 +77,79 @@ class ScanQr {
     );
   }
 
-  Future <void> InsertAttendance(int id , int attendanceID, String firstname, String lastname, String formattedDate, int hour, int minute, String selectedValue, String role) async {
-  if (selectedValue == 'Time in') {
-    QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
-        .collection('Attendance')
-        .where('ID', isEqualTo: id)
-        .where('Date', isEqualTo: formattedDate)
-        .where("Status", isEqualTo: "Time In")
-        .get();
+  Future<void> InsertAttendance(Map<String, dynamic> attendancedata) async {
+    String formattedDate = attendancedata['Date'];
+    int id = attendancedata['ID'];
+    String firstname = attendancedata['firstName'];
+    String lastname = attendancedata['lastName'];
+    String role = attendancedata['UserType'];
+    String selectedValue = attendancedata['Status'];
+    int attendanceID = attendancedata['AttendanceID'];
+    int hour = attendancedata['hour'];
+    int minute = attendancedata['minute'];
+    double latitude = attendancedata['latitude'];
+    double longitude = attendancedata['longitude'];
 
-    if (checkSnapshot.docs.isNotEmpty) {
-      print("Attendance already exists");
-      _showToast("You have already timed in", Colors.red);
-    } else {
-      print("Adding new attendance");
-      // Add attendance
-      await FirebaseFirestore.instance.collection('Attendance').add({
-        'AttendanceID': attendanceID,
-        'ID': id,
-        'firstName': firstname,
-        'lastName': lastname,
-        'Date': formattedDate,
-        'UserType': role,
-        'Status': 'Time In',
-        'TimeIn': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
-      });
+    if (selectedValue == 'Time in') {
+      QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
+          .collection('Attendance')
+          .where('ID', isEqualTo: id)
+          .where('Date', isEqualTo: formattedDate)
+          .where("Status", isEqualTo: "Time In")
+          .get();
 
-      print("Attendance added successfully");
-      _showToast("Time in successful: $firstname $lastname", Colors.green);
+      if (checkSnapshot.docs.isNotEmpty) {
+        print("Attendance already exists");
+        _showToast("You have already timed in", Colors.red);
+      } else {
+        print("Adding new attendance");
+        // Add attendance
+        await FirebaseFirestore.instance.collection('Attendance').add({
+          'AttendanceID': attendanceID,
+          'ID': id,
+          'firstName': firstname,
+          'lastName': lastname,
+          'Date': formattedDate,
+          'UserType': role,
+          'Status': 'Time In',
+          'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+
+        print("Attendance added successfully");
+        _showToast("Time in successful: $firstname $lastname", Colors.green);
+      }
+    } else if (selectedValue == 'Time out') {
+      QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
+          .collection('Attendance')
+          .where('ID', isEqualTo: id)
+          .where('Date', isEqualTo: formattedDate)
+          .where("Status", isEqualTo: "Time out")
+          .get();
+
+      if (checkSnapshot.docs.isNotEmpty) {
+        print("Attendance already exists");
+        _showToast("You have already timed out", Colors.red);
+      } else {
+        print("Adding new attendance");
+        // Add attendance
+        await FirebaseFirestore.instance.collection('Attendance').add({
+          'AttendanceID': attendanceID,
+          'ID': id,
+          'firstName': firstname,
+          'lastName': lastname,
+          'Date': formattedDate,
+          'UserType': role,
+          'Status': 'Time out',
+          'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
+          'latitude': latitude,
+          'longitude': longitude,
+        });
+
+        print("Attendance added successfully");
+        _showToast("Time out successful: $firstname $lastname", Colors.green);
+      }
     }
-
-  } else if (selectedValue == 'Time out') {
-    QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
-        .collection('Attendance')
-        .where('ID', isEqualTo: id)
-        .where('Date', isEqualTo: formattedDate)
-        .where("Status", isEqualTo: "Time out")
-        .get();
-
-    if (checkSnapshot.docs.isNotEmpty) {
-      print("Attendance already exists");
-      _showToast("You have already timed out", Colors.red);
-    } else {
-      print("Adding new attendance");
-      // Add attendance
-      await FirebaseFirestore.instance.collection('Attendance').add({
-        'AttendanceID': attendanceID,
-        'ID': id,
-        'firstName': firstname,
-        'lastName': lastname,
-        'Date': formattedDate,
-        'UserType': role,
-        'Status': 'Time out',
-        'TimeIn': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
-      });
-
-      print("Attendance added successfully");
-      _showToast("Time out successful: $firstname $lastname", Colors.green);
-    }
-  }
-
   }
 }

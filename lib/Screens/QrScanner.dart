@@ -230,6 +230,12 @@ class QrState extends State<QrScanner> {
   }
 
   void _processQRCode(String? code) {
+    Map <String, dynamic> data = {
+      'code': code,
+      'latitude': lat,
+      'longitude': long,
+      'attendance': _selectedValue,
+    };
     if (code != null) {
       print('Processing QR Code: $code'); // Debug statement
       if (_selectedValue == 'Select to attendance') {
@@ -262,7 +268,7 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[1]; // Time in
                     });
                     Navigator.pop(context);
-                    ScanQr().CheckAttendance(code, _selectedValue!, context); // Process time out
+                    ScanQr().CheckAttendance(data, context); // Process time out
                   },
                   child: const Text(
                     'Time in',
@@ -275,7 +281,8 @@ class QrState extends State<QrScanner> {
                       _selectedValue = _items[2]; // Time out
                     });
                     Navigator.pop(context);
-                    ScanQr().CheckAttendance(code, _selectedValue!, context); // Process time out
+
+                    ScanQr().CheckAttendance(data, context); // Process time out
                   },
                   child: const Text(
                     'Time out',
@@ -297,7 +304,7 @@ class QrState extends State<QrScanner> {
           textColor: Colors.white,
           fontSize: 16.0,
         );
-        ScanQr().CheckAttendance(code, _selectedValue!, context);
+        ScanQr().CheckAttendance(data, context);
         ProgressDialog pd = ProgressDialog(context: context);
         pd.show(
           max: 100,
