@@ -1,11 +1,14 @@
+import 'package:attendance_qr_system/Key/EmailKey.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 
 class YahooMail {
-  String username = 'newbie_gwapo@yahoo.com';
-  String password = 'mpmeoscumtccejps';
+
+  // get the api key from EmailKey.dart
+  String username = EmailKey().emailKey;
+  String password = EmailKey().appkey;
 
   void sendEmail(int otp, String recipient, Function(bool) setLoading, BuildContext context) async {
     setLoading(true); // Start loading
