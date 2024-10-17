@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Screens/EventScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -77,7 +78,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ];
     } else {
       items = [
-        _buildNavItem(0, Icons.qr_code),
+        _buildNavItem(0, Icons.event),
         _buildNavItem(1, Icons.settings),
         _buildNavItem(2, Icons.qr_code_scanner),
         _buildNavItem(3, FontAwesomeIcons.powerOff),
@@ -97,7 +98,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ];
     } else {
       pages = [
-        Container(), // we will put the event page here
+        const EventScreen(),
         Container(), // Automatically select this for Student
         const QrScanner(),
         Container(), // Placeholder for settings page

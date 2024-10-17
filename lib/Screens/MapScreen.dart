@@ -101,14 +101,12 @@ class MapState extends State<MapScreen> {
                             _showPopup = true;
                           });
                         },
-                        child: Column(
+                        child: const Column(
                           children: [
                             CircleAvatar(
                               radius: 20.0,
                               backgroundColor: Colors.white,
-                              backgroundImage: ImageURL.isNotEmpty
-                                  ? CachedNetworkImageProvider(ImageURL)
-                                  : const AssetImage('Assets/fufu.jpg') as ImageProvider, // Replace with your image path
+                              backgroundImage: AssetImage('Assets/user.png') as ImageProvider, // Replace with your image path
                             ),
                           ],
                         ),
