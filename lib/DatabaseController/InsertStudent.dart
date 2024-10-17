@@ -1,11 +1,9 @@
 import 'package:bcrypt/bcrypt.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
-import 'package:uuid/uuid.dart';
 
 class InsertStudent {
   InsertStudent({required this.extra});
@@ -13,17 +11,13 @@ class InsertStudent {
   // get the received data from the previous page
   Map<String, dynamic> extra;
 
-  void InsertFirebase({required void Function() clearData}) async {
-
-
+  void InsertFirebase({required void Function() clearData, required BuildContext context}) async {
     try {
       // Generate a random 9-digit ID
       int min = 100000000;
       int max = 999999999;
       int ID = min + (DateTime.now().millisecond % (max - min));
 
-      // hashed the password
-      String hashedPassword = BCrypt.hashpw(extra['password'], BCrypt.gensalt());
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('UserData')
@@ -31,29 +25,28 @@ class InsertStudent {
           .get();
 
       if (querySnapshot.docs.isEmpty) {
-
         // Add the student to the database
         await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
           'Email': extra['email'],
           'FullName': extra['fullName'],
-          "Gender": extra['gender'],
+          'Gender': extra['gender'],
           'Grade': extra['grade'],
           'Section': extra['section'],
         });
 
         FlutterSuccess('Student added successfully');
-
+        context.go('/QRPage', extra: extra['fullName']);
       } else {
         FlutterError('Name already exists');
       }
     } catch (e) {
-      print('An error occurred. Please try again.');
+      print('An error occurred. Please try again. $e');
+      FlutterError('An error occurred. Please try again.');
     }
   }
 
-  Future <void> AddStudent(BuildContext context) async {
-
+  Future<void> AddStudent(BuildContext context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
       max: 100,
@@ -71,62 +64,60 @@ class InsertStudent {
       int max = 999999999;
       int ID = min + (DateTime.now().millisecond % (max - min));
 
-      // hashed the password
+      // Hash the password
       String hashedPassword = BCrypt.hashpw(extra['password'], BCrypt.gensalt());
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('UserData')
-          .where('Firstname', isEqualTo: extra['firstName'])
+          .where('FirstName', isEqualTo: extra['firstName'])
           .get();
 
       if (querySnapshot.docs.isEmpty) {
-
         // Add the student to the database
         await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
           'Email': extra['email'],
           'FirstName': extra['firstName'],
           'LastName': extra['lastName'],
-          "Gender": extra['gender'],
+          'Gender': extra['gender'],
           'Grade': extra['grade'],
           'Section': extra['section'],
+          'Password': hashedPassword,
         });
 
         FlutterSuccess('Student added successfully');
-
       } else {
-       FlutterError('Name already exists');
+        FlutterError('Name already exists');
       }
     } catch (e) {
-      print('An error occurred. Please try again.');
-    }
-    finally {
+      print('An error occurred. Please try again. $e');
+      FlutterError('An error occurred. Please try again.');
+    } finally {
       pd.close();
     }
-
   }
 
   void FlutterError(String message) {
     Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
   }
 
   void FlutterSuccess(String message) {
     Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
   }
 }

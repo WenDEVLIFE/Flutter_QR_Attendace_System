@@ -57,12 +57,11 @@ class VerifyDataClass {
           'grade': userData['grade'],
           'section': userData['section'],
           'gender': userData['gender'],
-          'password': userData['password'],
         });
       }
 
       else if (send=="CreateStudent"){
-        InsertStudent(extra: userData).InsertFirebase(clearData: clearData);
+        InsertStudent(extra: userData).InsertFirebase(clearData: clearData, context: context);
       }
     }
   }

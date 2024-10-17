@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                         context.go('/Signuppage');
                       },
                       child: const Text(
-                        'Don\'t have an account? Sign up here',
+                        'For students, click me to generate your QR code',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,

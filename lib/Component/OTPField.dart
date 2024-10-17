@@ -48,11 +48,9 @@ class OTPField extends StatelessWidget {
 
   void OTPVerification(int otp, BuildContext context, Map<String, dynamic> extra) {
     String enteredOTP = controllers.map((controller) => controller.text).join();
-    String fullname = extra['fullName'];
     if (enteredOTP == otp.toString()) {
       print('OTP is correct');
-      InsertStudent(extra: extra).InsertFirebase(clearData: clearData);
-      context.go('/QRPage', extra: fullname);
+      InsertStudent(extra: extra).InsertFirebase(clearData: clearData, context: context);
     } else {
       Fluttertoast.showToast(
           msg: 'Incorrect OTP. Please try again.',

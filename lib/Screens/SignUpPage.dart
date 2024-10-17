@@ -14,10 +14,10 @@ class _SignupState extends State<Signup> {
   bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
-  String? selectedGrade, selectedSection ,selectedGender; // The selected value for the spinner
+  String? selectedGrade, selectedSection, selectedGender; // The selected value for the spinner
   final List<String> _items = ['Select a grade', 'Grade 11', 'Grade 12'];
   final List<String> _gender = ['Select a gender', 'Male', 'Female'];
-  final List<String>  _sections = ['Select a section', 'Curiosity', 'Resilience'];
+  final List<String> _sections = ['Select a section', 'Curiosity', 'Resilience'];
 
   // TextEditingControllers for each TextField
   final TextEditingController _usernameController = TextEditingController();
@@ -28,18 +28,6 @@ class _SignupState extends State<Signup> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  void _togglePasswordVisibility1() {
-    setState(() {
-      passwordVisibility1 = !passwordVisibility1;
-    });
-  }
-
-  void _togglePasswordVisibility2() {
-    setState(() {
-      passwordVisibility2 = !passwordVisibility2;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,10 +37,7 @@ class _SignupState extends State<Signup> {
   }
 
   Future<bool> _onBackPressed() async {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
+    context.pop();
     return false; // Prevent the default back button action
   }
 
@@ -94,23 +79,6 @@ class _SignupState extends State<Signup> {
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
                           )
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Username',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
                       ),
                     ),
                   ),
@@ -180,7 +148,7 @@ class _SignupState extends State<Signup> {
                           isExpanded: true,
                           value: selectedSection,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          items: _items.map((String value) {
+                          items: _sections.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
@@ -238,9 +206,9 @@ class _SignupState extends State<Signup> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          value: selectedGrade,
+                          value: selectedGender,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          items: _items.map((String value) {
+                          items: _gender.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
@@ -248,7 +216,7 @@ class _SignupState extends State<Signup> {
                           }).toList(),
                           onChanged: (String? value) {
                             setState(() {
-                              selectedGrade = value;
+                              selectedGender = value;
                             });
                           },
                         ),
@@ -294,10 +262,11 @@ class _SignupState extends State<Signup> {
                           context.go('/Loginpage');
                         },
                         child: const Text(
-                          'Already have an account? Sign in here',
+                          'Already have an account? Login',
                           style: TextStyle(
-                              fontSize: 18, color: Colors.white,
-                              fontWeight: FontWeight.w600
+                            fontSize: 16,
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
@@ -312,7 +281,6 @@ class _SignupState extends State<Signup> {
     );
   }
 
-
   // This will check if the data is valid
   void VerifyData() {
     // Get the values from the TextFields
@@ -324,21 +292,16 @@ class _SignupState extends State<Signup> {
       'section': selectedSection,
       'grade': selectedGrade,
       'gender': selectedGender,
-      'password': _passwordController.text,
-      'confirmPassword': _confirmPasswordController.text,
     };
 
-    var send ="OTP";
-    VerifyDataClass().CheckData(UserData,context,send,clearData);
+    var send = "OTP";
+    VerifyDataClass().CheckData(UserData, context, send, clearData);
   }
 
   void clearData() {
-    _usernameController.clear();
     _emailController.clear();
     _firstNameController.clear();
     _lastNameController.clear();
     _courseController.clear();
-    _passwordController.clear();
-    _confirmPasswordController.clear();
   }
 }
