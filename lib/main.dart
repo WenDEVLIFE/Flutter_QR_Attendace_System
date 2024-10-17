@@ -2,7 +2,7 @@ import 'package:attendance_qr_system/Screens/UpdateProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:attendance_qr_system/Screens/AttendanceScreen.dart';
-import 'package:attendance_qr_system/Screens/CreateStudentScreen.dart';
+import 'package:attendance_qr_system/Screens/GenerateQR.dart';
 import 'package:attendance_qr_system/Screens/CreateUserScreen.dart';
 import 'package:attendance_qr_system/Screens/QRPage.dart';
 import 'package:attendance_qr_system/Screens/QrScanner.dart';
@@ -51,9 +51,8 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/QRPage',
           builder: (context, state) {
-            final username = state.extra as String;
             final firstname = state.extra as String;
-            return Qrpage(username: username, firstname: firstname);
+            return Qrpage(firstname: firstname);
           },
         ),
         GoRoute(

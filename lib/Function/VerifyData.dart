@@ -12,19 +12,7 @@ class VerifyDataClass {
     // Email pattern or regex
     final emailPattern = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
-    if (userData['username'].isEmpty) {
-      // Show an error message
-      FlutterToastError("Username is empty");
-      return;
-    }
-
-    else if (userData['username'].length < 6) {
-      // Show an error message
-      FlutterToastError("Username must be at least 6 characters long");
-      return;
-    }
-
-    else if (userData['email'].isEmpty) {
+    if (userData['email'].isEmpty) {
       // Show an error message
       FlutterToastError("Email is empty");
       return;
@@ -39,29 +27,19 @@ class VerifyDataClass {
       FlutterToastError("Last name is empty");
       return;
     }
-    else if (userData['course'].isEmpty) {
+    else if (userData['grade'] == 'Select a grade') {
       // Show an error message
-      FlutterToastError("Course is empty");
+      FlutterToastError("Please select a grade");
       return;
     }
-    else if (userData['year'] == 'Select Year') {
+    else if (userData['section'] == 'Select a section') {
       // Show an error message
-      FlutterToastError("Please select a year");
+      FlutterToastError("Please select a section");
       return;
     }
-    else if (userData['password'].isEmpty) {
+    else if (userData['gender'] == 'Select a gender') {
       // Show an error message
-      FlutterToastError("Password is empty");
-      return;
-    }
-    else if (userData['confirmPassword'].isEmpty) {
-      // Show an error message
-      FlutterToastError("Confirm password is empty");
-      return;
-    }
-    else if (userData['password'] != userData['confirmPassword']) {
-      // Show an error message
-      FlutterToastError("Passwords do not match");
+      FlutterToastError("Please select a gender");
       return;
     }
     else if (!emailPattern.hasMatch(userData['email'])) {
@@ -69,32 +47,17 @@ class VerifyDataClass {
       FlutterToastError("Invalid email address");
       return;
     }
-    else if (userData['password'].length < 8 || userData['confirmPassword'].length < 8) {
-      // Show an error message
-      FlutterToastError("Password must be at least 8 characters long");
-      return;
-    }
-    else if (!hasSpecialCharacters(userData['password'])) {
-      // Show an error message
-      FlutterToastError("Password must contain at least one special character");
-      return;
-    }
-    else if (!hasUpperCase(userData['password'])) {
-      // Show an error message
-      FlutterToastError("Password must contain at least one uppercase letter");
-      return;
-    }
     else {
 
       if (send=="OTP") {
         // Proceed to the next screen
         context.push('/Otp', extra: {
-          'username': userData['username'],
           'email': userData['email'],
           'firstName': userData['firstName'],
           'lastName': userData['lastName'],
-          'course': userData['course'],
-          'year': userData['year'],
+          'grade': userData['grade'],
+          'section': userData['section'],
+          'gender': userData['gender'],
           'password': userData['password'],
         });
       }

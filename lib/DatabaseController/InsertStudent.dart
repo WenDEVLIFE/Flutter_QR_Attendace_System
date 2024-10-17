@@ -15,6 +15,7 @@ class InsertStudent {
 
   void InsertFirebase({required void Function() clearData}) async {
 
+
     try {
       // Generate a random 9-digit ID
       int min = 100000000;
@@ -25,60 +26,30 @@ class InsertStudent {
       String hashedPassword = BCrypt.hashpw(extra['password'], BCrypt.gensalt());
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .where('username', isEqualTo: extra['username'])
+          .collection('UserData')
+          .where('Firstname', isEqualTo: extra['firstName'])
           .get();
 
       if (querySnapshot.docs.isEmpty) {
 
-        // Get Image from Assets
-        ByteData data = await rootBundle.load('Assets/nature.jpg');
-        Uint8List bytes = data.buffer.asUint8List();
-
-        var fileid = Uuid();
-        // Upload Image to Firebase Storage
-        String fileName = '${fileid.v1()}.jpg';
-        Reference reference = FirebaseStorage.instance.ref().child('profile').child(fileName);
-        UploadTask uploadTask = reference.putData(bytes);
-        TaskSnapshot storageTaskSnapshot = await uploadTask;
-
-        // Get the download URL after upload is complete
-        String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
-
         // Add the student to the database
-        await FirebaseFirestore.instance.collection('Users').add({
+        await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
-          'username': extra['username'],
-          'email': extra['email'],
-          'firstName': extra['firstName'],
-          'lastName': extra['lastName'],
-          'course': extra['course'],
-          'year': extra['year'],
-          'password': hashedPassword,
-          "role": "Student",
-        'imageURL': downloadUrl,
-        'imageFileName': fileName,
-
+          'Email': extra['email'],
+          'FirstName': extra['firstName'],
+          'LastName': extra['lastName'],
+          "Gender": extra['gender'],
+          'Grade': extra['grade'],
+          'Section': extra['section'],
         });
 
         FlutterSuccess('Student added successfully');
 
-        // Clear the data
-        clearData();
-
       } else {
-        Fluttertoast.showToast(
-            msg: 'User already exists',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-        );
+        FlutterError('Name already exists');
       }
     } catch (e) {
-     print('An error occurred. Please try again.');
+      print('An error occurred. Please try again.');
     }
   }
 
@@ -87,7 +58,7 @@ class InsertStudent {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
       max: 100,
-      msg: 'Creating user...',
+      msg: 'Generating QR...',
       backgroundColor: const Color(0xFF6E738E),
       progressBgColor: Colors.transparent,
       progressValueColor: Colors.blue,
@@ -105,45 +76,27 @@ class InsertStudent {
       String hashedPassword = BCrypt.hashpw(extra['password'], BCrypt.gensalt());
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .where('username', isEqualTo: extra['username'])
+          .collection('UserData')
+          .where('Firstname', isEqualTo: extra['firstName'])
           .get();
 
       if (querySnapshot.docs.isEmpty) {
 
-        // Get Image from Assets
-        ByteData data = await rootBundle.load('Assets/nature.jpg');
-        Uint8List bytes = data.buffer.asUint8List();
-
-        var fileid = Uuid();
-        // Upload Image to Firebase Storage
-        String fileName = '${fileid.v1()}.jpg';
-        Reference reference = FirebaseStorage.instance.ref().child('profile').child(fileName);
-        UploadTask uploadTask = reference.putData(bytes);
-        TaskSnapshot storageTaskSnapshot = await uploadTask;
-
-        // Get the download URL after upload is complete
-        String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
-
         // Add the student to the database
-        await FirebaseFirestore.instance.collection('Users').add({
+        await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
-          'username': extra['username'],
-          'email': extra['email'],
-          'firstName': extra['firstName'],
-          'lastName': extra['lastName'],
-          'course': extra['course'],
-          'year': extra['year'],
-          'password': hashedPassword,
-          "role": "Student",
-        'imageURL': downloadUrl,
-        'imageFileName': fileName,
+          'Email': extra['email'],
+          'FirstName': extra['firstName'],
+          'LastName': extra['lastName'],
+          "Gender": extra['gender'],
+          'Grade': extra['grade'],
+          'Section': extra['section'],
         });
 
         FlutterSuccess('Student added successfully');
 
       } else {
-       FlutterError('User already exists');
+       FlutterError('Name already exists');
       }
     } catch (e) {
       print('An error occurred. Please try again.');

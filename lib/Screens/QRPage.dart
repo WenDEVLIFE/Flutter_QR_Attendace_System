@@ -8,17 +8,16 @@ import 'package:gallery_saver/gallery_saver.dart';
 import '../Function/QrCodeInit.dart';
 
 class Qrpage extends StatefulWidget {
-  final String username;
   final String firstname;
 
-  const Qrpage({super.key, required this.username, required this.firstname});
+  const Qrpage({super.key, required this.firstname});
 
   @override
   QrState createState() => QrState();
 }
 
 class QrState extends State<Qrpage> {
-  late String username;
+  late String firstname;
   int qrData = 0;
   ScreenshotController screenshotController = ScreenshotController();
   bool _isMounted = false;
@@ -27,8 +26,8 @@ class QrState extends State<Qrpage> {
   void initState() {
     super.initState();
     _isMounted = true;
-    username = widget.username;
-    QrCodeInit().LoadQr(username, updateQrData, context);
+    firstname = widget.firstname;
+    QrCodeInit().LoadQr(firstname, updateQrData, context);
   }
 
   @override
@@ -53,18 +52,6 @@ class QrState extends State<Qrpage> {
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'My Qr Code',
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF6E738E),
-        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -75,21 +62,21 @@ class QrState extends State<Qrpage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
+              const Padding(
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      '  ${_getGreeting()}, ${widget.firstname}',
-                      style: const TextStyle(
+                      'Successfully Registered',
+                      style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Roboto',
                         fontSize: 35,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Here is your Qr Code',
                       style: TextStyle(
                         color: Colors.black,
@@ -98,7 +85,7 @@ class QrState extends State<Qrpage> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),

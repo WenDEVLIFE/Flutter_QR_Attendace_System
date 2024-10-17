@@ -97,7 +97,7 @@ class _MaincontrollerState extends State<Maincontroller> {
       ];
     } else {
       pages = [
-        Qrpage(username: username, firstname: firstName),
+        Qrpage(firstname: firstName),
         Container(), // Automatically select this for Student
         const QrScanner(),
         Container(), // Placeholder for settings page

@@ -14,8 +14,9 @@ class _SignupState extends State<Signup> {
   bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
-  String? selectedGrade, selectedSection; // The selected value for the spinner
+  String? selectedGrade, selectedSection ,selectedGender; // The selected value for the spinner
   final List<String> _items = ['Select a grade', 'Grade 11', 'Grade 12'];
+  final List<String> _gender = ['Select a gender', 'Male', 'Female'];
   final List<String>  _sections = ['Select a section', 'Curiosity', 'Resilience'];
 
   // TextEditingControllers for each TextField
@@ -43,6 +44,8 @@ class _SignupState extends State<Signup> {
   void initState() {
     super.initState();
     selectedGrade = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
+    selectedSection = _sections.isNotEmpty ? _sections[0] : null; // Auto-select the first item if the list is not empty
+    selectedGender = _gender.isNotEmpty ? _gender[0] : null; // Auto-select the first item if the list is not empty
   }
 
   Future<bool> _onBackPressed() async {
@@ -73,7 +76,7 @@ class _SignupState extends State<Signup> {
                     padding: EdgeInsets.only(left: 40.0),
                     child: Align(
                       alignment: Alignment(-1.00, 0.0),
-                      child: Text('Create Account', style: TextStyle(
+                      child: Text('Generate QR', style: TextStyle(
                           fontSize: 30,
                           color: Colors.black,
                           fontWeight: FontWeight.bold
@@ -86,7 +89,7 @@ class _SignupState extends State<Signup> {
                     child: Align(
                       alignment: Alignment(0.0, 0.0),
                       child: Text(
-                          'Sign up to create an account',
+                          'Sign up to generate your QR code',
                           style: TextStyle(
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
@@ -163,19 +166,62 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.deepPurple),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: selectedSection,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          items: _items.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedSection = value;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    child: TextField(
-                      controller: _courseController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Course',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.deepPurple),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: selectedGrade,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          items: _items.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedGrade = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -227,7 +273,7 @@ class _SignupState extends State<Signup> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF),
                         ),
-                        child: const Text('Sign up',
+                        child: const Text('Generate QR Code',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -272,12 +318,12 @@ class _SignupState extends State<Signup> {
     // Get the values from the TextFields
     final email = _emailController.text;
     final Map<String, dynamic> UserData = {
-      'username': _usernameController.text,
       'email': email,
       'firstName': _firstNameController.text,
       'lastName': _lastNameController.text,
-      'course': _courseController.text,
-      'year': selectedGrade,
+      'section': selectedSection,
+      'grade': selectedGrade,
+      'gender': selectedGender,
       'password': _passwordController.text,
       'confirmPassword': _confirmPasswordController.text,
     };
