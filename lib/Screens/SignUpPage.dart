@@ -14,8 +14,9 @@ class _SignupState extends State<Signup> {
   bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
-  String? _selectedValue; // The selected value for the spinner
-  final List<String> _items = ['Select a year', '1st year', '2nd year', '3rd year', '4th year'];
+  String? selectedGrade, selectedSection; // The selected value for the spinner
+  final List<String> _items = ['Select a grade', 'Grade 11', 'Grade 12'];
+  final List<String>  _sections = ['Select a section', 'Curiosity', 'Resilience'];
 
   // TextEditingControllers for each TextField
   final TextEditingController _usernameController = TextEditingController();
@@ -41,7 +42,7 @@ class _SignupState extends State<Signup> {
   @override
   void initState() {
     super.initState();
-    _selectedValue = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
+    selectedGrade = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
   }
 
   Future<bool> _onBackPressed() async {
@@ -191,7 +192,7 @@ class _SignupState extends State<Signup> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          value: _selectedValue,
+                          value: selectedGrade,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           items: _items.map((String value) {
                             return DropdownMenuItem<String>(
@@ -201,61 +202,11 @@ class _SignupState extends State<Signup> {
                           }).toList(),
                           onChanged: (String? value) {
                             setState(() {
-                              _selectedValue = value;
+                              selectedGrade = value;
                             });
                           },
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Password',
-                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility1 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility1,
-                        ),
-                      ),
-                      obscureText: passwordVisibility1,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _confirmPasswordController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Confirm Password',
-                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility2 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility2,
-                        ),
-                      ),
-                      obscureText: passwordVisibility2,
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -326,7 +277,7 @@ class _SignupState extends State<Signup> {
       'firstName': _firstNameController.text,
       'lastName': _lastNameController.text,
       'course': _courseController.text,
-      'year': _selectedValue,
+      'year': selectedGrade,
       'password': _passwordController.text,
       'confirmPassword': _confirmPasswordController.text,
     };
