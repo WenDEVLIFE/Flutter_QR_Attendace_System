@@ -1,5 +1,5 @@
 class EmailKey{
 
-  String emailKey = 'newbie_gwapo@yahoo.com'; // email
-  String appkey = 'mpmeoscumtccejps'; // password app
+  String emailKey = ''; // email
+  String appkey = ''; // password app
 }
