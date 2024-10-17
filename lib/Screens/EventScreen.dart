@@ -187,19 +187,11 @@ class EventState extends State<EventScreen> {
                     backgroundColor: const Color(0xFF6E738E),
                     children: [
                       SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
+                        child: const Icon(Icons.add, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Admin',
+                        label: 'Add Event/Room',
                         onTap: () {
-                          context.push('/CreateUser');
-                        },
-                      ),
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Teacher',
-                        onTap: () {
-                          context.push('/CreateUser');
+                          context.push('/CreateEventRoom');
                         },
                       ),
                     ],

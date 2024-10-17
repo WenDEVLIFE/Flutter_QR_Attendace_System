@@ -15,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'DatabaseController/FirebaseRun.dart';
 import 'Function/SessionManager.dart';
+import 'Screens/CreateRoomEvent.dart';
 import 'Screens/EditEmailScreen.dart';
 import 'Screens/EditPasswordScreen.dart';
 import 'Screens/MapScreen.dart';
@@ -117,6 +118,10 @@ class MyApp extends StatelessWidget {
             final data = state.extra as Map<String, dynamic>;
             return MapScreen(data: data);
           },
+        ),
+        GoRoute(
+          path:'/CreateEventRoom',
+          builder: (context, state) => CreateEventRoomScreen(),
         )
       ],
     );
