@@ -48,13 +48,12 @@ class VerifyDataClass {
       return;
     }
     else {
-
+     String fullName = userData['firstName'] + " " + userData['lastName'];
       if (send=="OTP") {
         // Proceed to the next screen
         context.push('/Otp', extra: {
           'email': userData['email'],
-          'firstName': userData['firstName'],
-          'lastName': userData['lastName'],
+          'fullName': fullName,
           'grade': userData['grade'],
           'section': userData['section'],
           'gender': userData['gender'],

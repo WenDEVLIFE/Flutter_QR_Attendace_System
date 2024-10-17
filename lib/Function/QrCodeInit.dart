@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class QrCodeInit {
-  Future<void> LoadQr(String username, Function(int) updateQrData, BuildContext context) async {
+  Future<void> LoadQr(String fullname, Function(int) updateQrData, BuildContext context) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users')
-          .where('username', isEqualTo: username)
+          .collection('UserData')
+          .where('FullName', isEqualTo: fullname)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {

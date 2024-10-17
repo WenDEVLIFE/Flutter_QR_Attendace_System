@@ -27,7 +27,7 @@ class InsertStudent {
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('UserData')
-          .where('Firstname', isEqualTo: extra['firstName'])
+          .where('FullName', isEqualTo: extra['fullName'])
           .get();
 
       if (querySnapshot.docs.isEmpty) {
@@ -36,8 +36,7 @@ class InsertStudent {
         await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
           'Email': extra['email'],
-          'FirstName': extra['firstName'],
-          'LastName': extra['lastName'],
+          'FullName': extra['fullName'],
           "Gender": extra['gender'],
           'Grade': extra['grade'],
           'Section': extra['section'],
