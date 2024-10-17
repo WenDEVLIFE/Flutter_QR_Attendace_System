@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         // Add your onTap function here
                         print('Sign up text clicked');
                         // Go to the main page
-                        context.go('/Signuppage');
+                        context.push('/Signuppage');
                       },
                       child: const Text(
                         'For students, click me to generate your QR code',

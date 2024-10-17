@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../Function/VerifyData.dart';
 
-class CreateStudentScreen extends StatefulWidget {
+class GenerateQr extends StatefulWidget {
   @override
-  StudentState createState() => StudentState();
+  GenerateQrState createState() => GenerateQrState();
 
-  const CreateStudentScreen({super.key});
+  const GenerateQr({super.key});
 }
 
-class StudentState extends State<CreateStudentScreen> {
-  bool  passwordVisibility1 = true;
+class GenerateQrState extends State<GenerateQr> {
+  bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
 
-  String? _selectedValue; // The selected value for the spinner
-
-  // List of items for the spinner
-  final List<String> _items = ['Select a year', '1st year', '2nd year', '3rd year', '4th year'];
+  String? selectedGrade, selectedSection, selectedGender; // The selected value for the spinner
+  final List<String> _items = ['Select a grade', 'Grade 11', 'Grade 12'];
+  final List<String> _gender = ['Select a gender', 'Male', 'Female'];
+  final List<String> _sections = ['Select a section', 'Curiosity', 'Resilience'];
 
   // TextEditingControllers for each TextField
   final TextEditingController _usernameController = TextEditingController();
@@ -27,25 +27,14 @@ class StudentState extends State<CreateStudentScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-  // Function to toggle the password show status
-  void _togglePasswordVisibility1() {
-    setState(() {
-      passwordVisibility1 = !passwordVisibility1;
-    });
-  }
-
-  void _togglePasswordVisibility2() {
-    setState(() {
-      passwordVisibility2 = !passwordVisibility2;
-    });
-  }
-
-  // This will auto select the drop down value
   @override
   void initState() {
     super.initState();
-    _selectedValue = _items.isNotEmpty ? _items [0] : null; // Auto-select the first item if the list is not empty
+    selectedGrade = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
+    selectedSection = _sections.isNotEmpty ? _sections[0] : null; // Auto-select the first item if the list is not empty
+    selectedGender = _gender.isNotEmpty ? _gender[0] : null; // Auto-select the first item if the list is not empty
   }
+
 
   Future<bool> _onBackPressed() async {
     // Handle the back button press
@@ -53,32 +42,11 @@ class StudentState extends State<CreateStudentScreen> {
     return false; // Prevent the default back button action
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Create User',
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Roboto',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              print('Back button clicked');
-              Navigator.pop(context);
-
-            },
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF6E738E),
-        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -92,10 +60,9 @@ class StudentState extends State<CreateStudentScreen> {
                 children: <Widget>[
                   const Padding(
                     padding: EdgeInsets.only(left: 40.0),
-                    // Add 20 pixels of space on the left
                     child: Align(
-                      alignment: Alignment(-1.00, 0.0), // Align to the left
-                      child: Text('Create Student Account', style: TextStyle(
+                      alignment: Alignment(-1.00, 0.0),
+                      child: Text('Generate QR', style: TextStyle(
                           fontSize: 30,
                           color: Colors.black,
                           fontWeight: FontWeight.bold
@@ -105,31 +72,14 @@ class StudentState extends State<CreateStudentScreen> {
                   const SizedBox(height: 20),
                   const Padding(
                     padding: EdgeInsets.only(left: 40.0),
-                    // Add 20 pixels of space on the left
                     child: Align(
-                      alignment: Alignment(0.0, 0.0), // Center align
+                      alignment: Alignment(0.0, 0.0),
                       child: Text(
-                          'Enter user details to create an account            ',
+                          'Sign up to generate your QR code',
                           style: TextStyle(
                               fontSize: 18, color: Colors.black,
                               fontWeight: FontWeight.w600
-                          )),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Username',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          )
                       ),
                     ),
                   ),
@@ -185,19 +135,32 @@ class StudentState extends State<CreateStudentScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _courseController,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Course',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.deepPurple),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: selectedSection,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          items: _sections.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedSection = value;
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -214,7 +177,7 @@ class StudentState extends State<CreateStudentScreen> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           isExpanded: true,
-                          value: _selectedValue,
+                          value: selectedGrade,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           items: _items.map((String value) {
                             return DropdownMenuItem<String>(
@@ -224,7 +187,7 @@ class StudentState extends State<CreateStudentScreen> {
                           }).toList(),
                           onChanged: (String? value) {
                             setState(() {
-                              _selectedValue = value;
+                              selectedGrade = value;
                             });
                           },
                         ),
@@ -232,53 +195,33 @@ class StudentState extends State<CreateStudentScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Password',
-                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility1 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility1,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.deepPurple),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          value: selectedGender,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          items: _gender.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value, style: const TextStyle(color: Colors.black, fontFamily: 'Roboto')),
+                            );
+                          }).toList(),
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedGender = value;
+                            });
+                          },
                         ),
                       ),
-                      obscureText: passwordVisibility1,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple),
-                    ),
-                    child: TextField(
-                      controller: _confirmPasswordController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Confirm Password',
-                        counterStyle: const TextStyle(color: Colors.black, fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility2 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility2,
-                        ),
-                      ),
-                      obscureText: passwordVisibility2,
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -299,7 +242,7 @@ class StudentState extends State<CreateStudentScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF),
                         ),
-                        child: const Text('Add Student',
+                        child: const Text('Generate QR Code',
                             style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.black,
@@ -325,14 +268,12 @@ class StudentState extends State<CreateStudentScreen> {
     // Get the values from the TextFields
     final email = _emailController.text;
     final Map<String, dynamic> UserData = {
-      'username': _usernameController.text,
       'email': email,
       'firstName': _firstNameController.text,
       'lastName': _lastNameController.text,
-      'course': _courseController.text,
-      'year': _selectedValue,
-      'password': _passwordController.text,
-      'confirmPassword': _confirmPasswordController.text,
+      'section': selectedSection,
+      'grade': selectedGrade,
+      'gender': selectedGender,
     };
 
     var send ="CreateStudent";
@@ -340,14 +281,14 @@ class StudentState extends State<CreateStudentScreen> {
   }
 
   void ClearData(){
-    _usernameController.clear();
     _emailController.clear();
     _firstNameController.clear();
     _lastNameController.clear();
     _courseController.clear();
-    _passwordController.clear();
-    _confirmPasswordController.clear();
-    _selectedValue = _items.isNotEmpty ? _items [0] : null;
+    _items.isNotEmpty ? _items[0] : null;
+    _sections.isNotEmpty ? _sections[0] : null;
+    _gender.isNotEmpty ? _gender[0] : null;
+
   }
 
 }

@@ -253,25 +253,6 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Align(
-                      alignment: const Alignment(0.0, 0.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          context.go('/Loginpage');
-                        },
-                        child: const Text(
-                          'Already have an account? Login',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

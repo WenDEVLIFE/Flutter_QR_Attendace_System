@@ -205,14 +205,6 @@ class UserState extends State<Userscreen> {
                           context.push('/CreateUser');
                         },
                       ),
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userGraduate, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Student',
-                        onTap: () {
-                          context.push('/CreateStudent');
-                        },
-                      ),
                     ],
                   ),
                 ),

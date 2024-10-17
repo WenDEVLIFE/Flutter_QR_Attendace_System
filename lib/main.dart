@@ -75,8 +75,8 @@ class MyApp extends StatelessWidget {
           builder: (context, state) => const CreateUserScreen(),
         ),
         GoRoute(
-          path: '/CreateStudent',
-          builder: (context, state) => const CreateStudentScreen(),
+          path: '/GenerateQr',
+          builder: (context, state) => const GenerateQr(),
         ),
         GoRoute(
           path: '/MainController',

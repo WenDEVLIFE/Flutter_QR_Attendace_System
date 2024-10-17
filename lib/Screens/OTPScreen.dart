@@ -44,7 +44,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   void GenerateOTP() {
     // Generate a random 6-digit OTP
-    int min = 100000;
+    int min = 234563;
     int max = 999999;
     otp = min + (DateTime.now().millisecond % (max - min));
     YahooMail().sendEmail(otp, widget.extra['email'], _setLoading, context);
