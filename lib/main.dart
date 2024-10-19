@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Screens/EventAttendanceScreen.dart';
 import 'package:attendance_qr_system/Screens/UpdateProfileScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -123,6 +124,13 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path:'/CreateEventRoom',
           builder: (context, state) => CreateEventRoomScreen(),
+        ),
+        GoRoute(
+          path:'/GoToEvent',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>;
+            return EventAttendanceScreen(data: data);
+          },
         )
       ],
     );
