@@ -24,7 +24,6 @@ class GenerateQrState extends State<GenerateQr> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _courseController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
