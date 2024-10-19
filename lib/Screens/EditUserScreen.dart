@@ -15,8 +15,6 @@ class EditUserState extends State<EditUserScreen>{
   final TextEditingController email = TextEditingController();
   final TextEditingController firstName = TextEditingController();
   final TextEditingController lastName = TextEditingController();
-  final TextEditingController password = TextEditingController();
-  final TextEditingController confirmPassword = TextEditingController();
   bool passwordVisibility1 = true;
   bool passwordVisibility2 = true;
   late String? _selectedValue;
@@ -204,55 +202,6 @@ class EditUserState extends State<EditUserScreen>{
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Container(
-                    width: 300, // Adjust the width as needed
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
-                    ),
-                    child: TextField(
-                      controller: password,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Password',
-                        counterStyle: const TextStyle(color: Colors.black    ,fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility1 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility1,
-                        ),
-                      ),
-                      obscureText: passwordVisibility1, // To obscure the password input
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 300, // Adjust the width as needed
-                    decoration: BoxDecoration(
-                      color: Colors.white, // Background color of the TextField
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.deepPurple), // Border color
-                    ),
-                    child: TextField(
-                      controller: confirmPassword,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Confirm Password',
-                        counterStyle: const TextStyle(color: Colors.black    ,fontFamily: 'Roboto'),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            passwordVisibility2 ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: _togglePasswordVisibility2,
-                        ),
-                      ),
-                      obscureText: passwordVisibility2, // To obscure the password input
-                    ),
-                  ),
                   const SizedBox(height: 40),
                   Container(
                     width: 300, // Adjust the width as needed
