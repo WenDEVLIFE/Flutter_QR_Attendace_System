@@ -18,12 +18,9 @@ class _EditStudentScreenState  extends State<EditStudentScreen>{
   final List<String> _sections = ['Select a section', 'Curiosity', 'Resilience'];
 
   // TextEditingControllers for each TextField
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _courseController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void initState() {
