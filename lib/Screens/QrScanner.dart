@@ -22,7 +22,7 @@ class QrState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   qr.Barcode? result; // Use the alias for qr_code_scanner
   qr.QRViewController? controller;
-  String? _selectedValue;
+  String? _selectedValue, _selectedEvent;
   double long = 0.0;
   double lat = 0.0;
   String locationMessage = '';
@@ -30,6 +30,7 @@ class QrState extends State<QrScanner> {
   Timer? debounceTimer;
   final Duration debounceDuration = const Duration(seconds: 2); // Set debounce duration
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
+  final List<String> _events = ['Select a event'];
   ProgressDialog? pd;
 
   @override
@@ -45,6 +46,7 @@ class QrState extends State<QrScanner> {
     super.initState();
     _requestPermissions();
     _selectedValue = _items.isNotEmpty ? _items[0] : null;
+    _selectedEvent = _events.isNotEmpty ? _events[0] : null;
     pd = ProgressDialog(context: context);
   }
 
@@ -157,6 +159,45 @@ class QrState extends State<QrScanner> {
                       onChanged: (String? value) {
                         setState(() {
                           _selectedValue = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Container(
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.transparent),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: _selectedEvent,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      items: _events.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Roboto',
+                              fontSize: 20,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          _selectedEvent = value;
                         });
                       },
                     ),
