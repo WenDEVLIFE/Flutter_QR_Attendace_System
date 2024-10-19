@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditStudentScreen extends StatefulWidget {
-  EditStudentScreen({super.key});
+  const EditStudentScreen({super.key, required this.data});
+
+  final Map<String, dynamic> data;
 
   @override
   _EditStudentScreenState createState() => _EditStudentScreenState();
 }
 // TODO: Implement the edit student data function and call this Screen
 class _EditStudentScreenState  extends State<EditStudentScreen>{
-  bool passwordVisibility1 = true;
-  bool passwordVisibility2 = true;
-
   String? selectedGrade, selectedSection, selectedGender; // The selected value for the spinner
   final List<String> _items = ['Select a grade', 'Grade 11', 'Grade 12'];
   final List<String> _gender = ['Select a gender', 'Male', 'Female'];
   final List<String> _sections = ['Select a section', 'Curiosity', 'Resilience'];
+  late Map<String, dynamic> data;
 
   // TextEditingControllers for each TextField
   final TextEditingController _emailController = TextEditingController();
@@ -25,6 +25,7 @@ class _EditStudentScreenState  extends State<EditStudentScreen>{
   @override
   void initState() {
     super.initState();
+    data = widget.data;
     selectedGrade = _items.isNotEmpty ? _items[0] : null; // Auto-select the first item if the list is not empty
     selectedSection = _sections.isNotEmpty ? _sections[0] : null; // Auto-select the first item if the list is not empty
     selectedGender = _gender.isNotEmpty ? _gender[0] : null; // Auto-select the first item if the list is not empty
