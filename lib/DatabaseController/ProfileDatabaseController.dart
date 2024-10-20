@@ -7,7 +7,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
-import 'package:path/path.dart' as p; // Import the path package
+import 'package:path/path.dart' as p;
+
+import '../Component/FlutterToast.dart'; // Import the path package
 
 class ProfileDatabaseController {
   Future<void> UpdateProfile(String username, String newImagePath, BuildContext context) async {
@@ -66,15 +68,7 @@ class ProfileDatabaseController {
             fontSize: 16.0,
           );
         } else {
-          Fluttertoast.showToast(
-            msg: 'No image selected',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          FlutterToast().showToast('No image selected', Colors.red);
         }
       } else {
         Fluttertoast.showToast(
@@ -89,15 +83,7 @@ class ProfileDatabaseController {
       }
     } catch (e) {
       print(e);
-      Fluttertoast.showToast(
-        msg: 'Error updating profile - $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      FlutterToast().showToast('Error updating profile: $e', Colors.red);
     } finally {
       pd.close();
     }

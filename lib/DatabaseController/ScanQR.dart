@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math';
 
+import '../Component/FlutterToast.dart';
+
 class ScanQr {
   Future<void> CheckAttendance(Map<String, dynamic> data, BuildContext context) async {
     try {
@@ -56,26 +58,14 @@ class ScanQr {
         await InsertAttendance(attendancedata);
       } else {
         print("User not found");
-        _showToast("User not found", Colors.red);
+        FlutterToast().showToast("User not found", Colors.red);
       }
     } catch (e) {
       print("Error in Attendance method: $e");
-      _showToast("Error: ${e.toString()}", Colors.red);
+      FlutterToast().showToast("Error: ${e.toString()}", Colors.red);
     }
   }
 
-  void _showToast(String message, Color backgroundColor) {
-    print("Showing toast: $message");
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
 
   Future<void> InsertAttendance(Map<String, dynamic> attendancedata) async {
     String formattedDate = attendancedata['Date'];
@@ -100,7 +90,7 @@ class ScanQr {
 
       if (checkSnapshot.docs.isNotEmpty) {
         print("Attendance already exists");
-        _showToast("You have already timed in", Colors.red);
+        FlutterToast().showToast("You have already timed in", Colors.red);
       } else {
         print("Adding new attendance");
         // Add attendance
@@ -118,7 +108,7 @@ class ScanQr {
         });
 
         print("Attendance added successfully");
-        _showToast("Time in successful: $firstname $lastname", Colors.green);
+        FlutterToast().showToast("Time in successful: $firstname $lastname", Colors.green);
       }
     } else if (selectedValue == 'Time out') {
       QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
@@ -130,7 +120,7 @@ class ScanQr {
 
       if (checkSnapshot.docs.isNotEmpty) {
         print("Attendance already exists");
-        _showToast("You have already timed out", Colors.red);
+        FlutterToast().showToast("You have already timed out", Colors.red);
       } else {
         print("Adding new attendance");
         // Add attendance
@@ -148,7 +138,7 @@ class ScanQr {
         });
 
         print("Attendance added successfully");
-        _showToast("Time out successful: $firstname $lastname", Colors.green);
+        FlutterToast().showToast("Time out successful: $firstname $lastname", Colors.green);
       }
     }
   }

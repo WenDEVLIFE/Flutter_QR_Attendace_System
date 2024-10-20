@@ -2,17 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../Component/FlutterToast.dart';
+
 class DeleteFirebase{
 
   // This is for delete attendance
   Future<void> DeleteAttendance(String id, Future<void> fetchAttendances, void Function(String message, Color backgroundColor) _showToast) async {
     try {
       await FirebaseFirestore.instance.collection('Attendance').doc(id).delete();
-      _showToast('Attendance deleted successfully', Colors.green);
+      FlutterToast().showToast('Attendance deleted successfully', Colors.green);
       fetchAttendances;
     } catch (e) {
       print('Error deleting attendance: $e');
-      _showToast('Error deleting attendance', Colors.red);
+      FlutterToast().showToast('Error deleting attendance', Colors.red);
     }
   }
 
@@ -30,15 +32,15 @@ class DeleteFirebase{
         }
         else{
           await FirebaseFirestore.instance.collection('Users').doc(id).delete();
-          showToast('User deleted successfully', Colors.green);
+          FlutterToast().showToast('User deleted successfully', Colors.green);
           fetchUsers(); // Refresh the list
         }
       }else{
-        showToast('User not found', Colors.green);
+        FlutterToast().showToast('User not found', Colors.red);
       }
     } catch (e) {
       print('Error deleting user: $e');
-      showToast('Error deleting user', Colors.red);
+      FlutterToast().showToast('Error deleting user', Colors.red);
     }
   }
 }

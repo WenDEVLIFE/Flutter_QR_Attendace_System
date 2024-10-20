@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
+import '../Component/FlutterToast.dart';
+
 class PasswordController{
   Future <void> PasswordDatabase(Map data, void Function() clearData, BuildContext context) async{
 
@@ -34,40 +36,16 @@ class PasswordController{
           var newPassword = BCrypt.hashpw(data['newpassword'], BCrypt.gensalt());
           await FirebaseFirestore.instance.collection('Users').doc(userdoc.id).update({'password': newPassword});
           clearData();
-          Fluttertoast.showToast(
-            msg: 'Password updated successfully',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0
-          );
+          FlutterToast().showToast('Password changed successfully', Colors.green);
         }
         else{
-          Fluttertoast.showToast(
-            msg: 'Incorrect password',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0
-          );
+          FlutterToast().showToast('Old password is incorrect', Colors.red);
         }
 
 
       }
       else{
-        Fluttertoast.showToast(
-          msg: 'User not found',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
+        FlutterToast().showToast('User not found', Colors.red);
       }
 
 

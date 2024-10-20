@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../DatabaseController/InsertStudent.dart';
+import 'FlutterToast.dart';
 
 class OTPField extends StatelessWidget {
   final List<TextEditingController> controllers;
@@ -52,15 +53,7 @@ class OTPField extends StatelessWidget {
       print('OTP is correct');
       InsertStudent(extra: extra).InsertFirebase(clearData: clearData, context: context);
     } else {
-      Fluttertoast.showToast(
-          msg: 'Incorrect OTP. Please try again.',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      FlutterToast().showToast('OTP is incorrect', Colors.red);
     }
   }
   void clearData() {

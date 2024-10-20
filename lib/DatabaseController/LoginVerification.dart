@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:attendance_qr_system/Function/SessionManager.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
+import '../Component/FlutterToast.dart';
+
 class LoginVerification {
   final SessionManager _sessionManager = SessionManager();
 
@@ -54,15 +56,7 @@ class LoginVerification {
 
           context.go('/MainController/', extra: userInfo);
 
-          Fluttertoast.showToast(
-            msg: "Login successful",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          FlutterToast().showToast('Login successful', Colors.green);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Password incorrect')),

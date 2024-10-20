@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../Component/FlutterToast.dart';
+
 class FirebaseRun {
   static Future<void> run() async {
     await Firebase.initializeApp(
@@ -16,25 +18,9 @@ class FirebaseRun {
     );
 
     if (Firebase.apps.isEmpty) {
-      Fluttertoast.showToast(
-          msg: "Firebase initialization failed",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      FlutterToast().showToast("Failed to connect in the database", Colors.red);
     } else {
-      Fluttertoast.showToast(
-          msg: "Firebase is already initialized",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
-      );
+      FlutterToast().showToast("App connected to database successfully", Colors.green);
     }
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
+import '../Component/FlutterToast.dart';
+
 class EmailController{
   Future <void> AddEmailDatabase(Map data, void Function() clearData, BuildContext context) async {
     // Email controller
@@ -35,51 +37,19 @@ class EmailController{
           if (checkPassword){
             await FirebaseFirestore.instance.collection('Users').doc(userdoc.id).update({'email': data['newEmail']});
             clearData();
-            Fluttertoast.showToast(
-                msg: 'Email updated successfully',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.green,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
+            FlutterToast().showToast('Email changed successfully', Colors.green);
 
           } else{
-            Fluttertoast.showToast(
-                msg: 'Incorrect password',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0
-            );
+            FlutterToast().showToast('Incorrect password', Colors.red);
           }
         } else{
-          Fluttertoast.showToast(
-              msg: 'old email is incorrect',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0
-          );
+          FlutterToast().showToast('Incorrect email', Colors.red);
 
         }
 
       }
       else{
-        Fluttertoast.showToast(
-          msg: 'User not found',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
+        FlutterToast().showToast('User not found', Colors.red);
       }
 
     } catch (e) {

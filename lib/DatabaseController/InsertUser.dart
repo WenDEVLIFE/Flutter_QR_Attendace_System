@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:uuid/uuid.dart';
 
+import '../Component/FlutterToast.dart';
+
 class InsertUser{
 
   Future  <void> InsertUsersDatabase({required Map<String, dynamic> extra, required BuildContext context, required void Function() clearData}) async {
@@ -63,31 +65,14 @@ class InsertUser{
               'imageFileName': fileName,
             });
 
-            Fluttertoast.showToast(
-            msg: 'User added successfully',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0
-            );
-
+          FlutterToast().showToast('User created successfully', Colors.green);
             clearData();
 
     } else {
-          Fluttertoast.showToast(
-          msg: 'User already exists',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0
-          );
+      FlutterToast().showToast('Username already exists', Colors.red);
     }
     } catch (e) {
-      print('Error creating user: $e');
+      FlutterToast().showToast('Error creating user: $e', Colors.red);
     } finally {
       Future.delayed(const Duration(seconds: 2), () {
         pd.close();

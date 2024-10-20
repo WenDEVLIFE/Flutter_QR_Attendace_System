@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
+import '../Component/FlutterToast.dart';
+
 class InsertStudent {
   InsertStudent({required this.extra});
 
@@ -35,14 +37,14 @@ class InsertStudent {
           'Section': extra['section'],
         });
 
-        FlutterSuccess('Student added successfully');
+        FlutterToast().showToast('Student added successfully', Colors.green);
         context.go('/QRPage', extra: extra['fullName']);
       } else {
-        FlutterError('Name already exists');
+        FlutterToast().showToast('Name already exists', Colors.red);
       }
     } catch (e) {
       print('An error occurred. Please try again. $e');
-      FlutterError('An error occurred. Please try again.');
+      FlutterToast().showToast('An error occurred. Please try again.', Colors.red);
     }
   }
 
@@ -85,39 +87,15 @@ class InsertStudent {
           'Password': hashedPassword,
         });
 
-        FlutterSuccess('Student added successfully');
+        FlutterToast().showToast('Student added successfully', Colors.green);
       } else {
-        FlutterError('Name already exists');
+        FlutterToast().showToast('Name already exists', Colors.red);
       }
     } catch (e) {
       print('An error occurred. Please try again. $e');
-      FlutterError('An error occurred. Please try again.');
+      FlutterToast().showToast('An error occurred. Please try again.', Colors.red);
     } finally {
       pd.close();
     }
-  }
-
-  void FlutterError(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
-
-  void FlutterSuccess(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
   }
 }
