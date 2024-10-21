@@ -43,4 +43,12 @@ class DeleteFirebase{
       FlutterToast().showToast('Error deleting user', Colors.red);
     }
   }
+
+  Future <void> DeleteEvent() async{
+
+  }
+
+  Future <void> DeleteStudent() async{
+
+  }
 }
