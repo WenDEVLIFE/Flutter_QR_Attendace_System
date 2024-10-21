@@ -1,7 +1,6 @@
 import 'dart:io'; // Import this for File usage
 import 'package:attendance_qr_system/DatabaseController/ProfileDatabaseController.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -110,7 +109,7 @@ class UpdateProfileState extends State<UpdateProfileScreen> {
                     ],
                   ),
                   const SizedBox(height: 40),
-                  Container(
+                  SizedBox(
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () {

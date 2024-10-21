@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
         ),
         GoRoute(
           path:'/CreateEventRoom',
-          builder: (context, state) => CreateEventRoomScreen(),
+          builder: (context, state) => const CreateEventRoomScreen(),
         ),
         GoRoute(
           path:'/GoToEvent',

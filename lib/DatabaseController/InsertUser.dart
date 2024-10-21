@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:uuid/uuid.dart';
 
@@ -43,7 +42,7 @@ class InsertUser{
           ByteData data = await rootBundle.load('Assets/nature.jpg');
           Uint8List bytes = data.buffer.asUint8List();
 
-          var fileid = Uuid();
+          var fileid = const Uuid();
           // Upload Image to Firebase Storage
           String fileName = '${fileid.v1()}.jpg';
           Reference reference = FirebaseStorage.instance.ref().child('profile').child(fileName);

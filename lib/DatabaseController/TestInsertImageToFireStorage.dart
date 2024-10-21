@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-import 'package:attendance_qr_system/DatabaseController/FirebaseRun.dart';
 import 'package:flutter/services.dart'; // For rootBundle
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';

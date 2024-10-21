@@ -8,7 +8,6 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 import '../DatabaseController/RetrieveController.dart';
 import '../Function/SessionManager.dart';
 import '../Screens/AttendanceScreen.dart';
-import '../Screens/QRPage.dart';
 import '../Screens/QrScanner.dart';
 import '../Screens/ShowProfile.dart';
 import '../Screens/UserScreen.dart';

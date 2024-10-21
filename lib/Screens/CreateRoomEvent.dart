@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CreateEventRoomScreen extends StatefulWidget {
+  const CreateEventRoomScreen({super.key});
+
   @override
   _CreateEVEventState createState() => _CreateEVEventState();
 }
@@ -11,6 +12,8 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
   final TextEditingController _eventlocation = TextEditingController();
   final TextEditingController _eventTimeController = TextEditingController();
   final TextEditingController _eventDateController = TextEditingController();
+  final TextEditingController _eventEndDateController = TextEditingController();
+  final TextEditingController _endEventTimeController = TextEditingController();
 
   Future<bool> _onBackPressed() async {
     Navigator.pop(context);
@@ -136,7 +139,25 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                       onTap: () => _selectDate(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Event Date',
+                        labelText: 'Start Event Date',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.deepPurple),
+                    ),
+                    child: TextField(
+                      controller: _eventDateController,
+                      readOnly: true,
+                      onTap: () => _selectDate(context),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'End Event Date',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                       ),
                     ),
@@ -155,7 +176,43 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                       onTap: () => _selectTime(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        labelText: 'Event Time',
+                        labelText: 'Start Event Time',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.deepPurple),
+                    ),
+                    child: TextField(
+                      controller: _endEventTimeController,
+                      readOnly: true,
+                      onTap: () => _selectTime(context),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'End Event Time',
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.deepPurple),
+                    ),
+                    child: TextField(
+                      controller: _eventlocation,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        labelText: 'Event Location',
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
                       ),
                     ),

@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Component/FlutterToast.dart';
 
 class DeleteFirebase{
 
   // This is for delete attendance
-  Future<void> DeleteAttendance(String id, Future<void> fetchAttendances, void Function(String message, Color backgroundColor) _showToast) async {
+  Future<void> DeleteAttendance(String id, Future<void> fetchAttendances, void Function(String message, Color backgroundColor) showToast) async {
     try {
       await FirebaseFirestore.instance.collection('Attendance').doc(id).delete();
       FlutterToast().showToast('Attendance deleted successfully', Colors.green);
