@@ -156,7 +156,7 @@ class EventState extends State<EventScreen> {
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {
-                                DeleteFirebase().DeleteEvent(event.id, fetchEvents);
+                                ShowDialog(event.id);
                               },
                             ),
                           ),
@@ -193,5 +193,24 @@ class EventState extends State<EventScreen> {
         ),
       ),
     );
+  }
+
+  void ShowDialog(String id){
+    showDialog(context: context, builder: (context){
+      return AlertDialog(
+        title: const Text('Delete Event', style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
+        backgroundColor: const Color(0xFF6E738E),
+        content: const Text('Are you sure you want to delete this event?' , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600)),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.of(context).pop();
+          }, child: const Text('No' , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),)),
+          TextButton(onPressed: (){
+            Navigator.of(context).pop();
+            DeleteFirebase().DeleteEvent(id, fetchEvents);
+          }, child: const Text('Yes' , style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontWeight: FontWeight.w600),)),
+        ],
+      );
+    });
   }
 }
