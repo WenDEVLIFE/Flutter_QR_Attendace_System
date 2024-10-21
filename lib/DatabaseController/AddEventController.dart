@@ -26,7 +26,12 @@ class AddEventController{
         var EventLocation = data['eventlocation'];
         var EventEndDate = data['eventEndDate'];
 
+        int min = 100000000;
+        int max = 999999999;
+        int eventID = min + (DateTime.now().millisecondsSinceEpoch % (max - min));
+
         Map <String, dynamic> event = {
+          'EventID': eventID,
           'EventName': EventName,
           'StartDate': EventDate,
           'EndDate': EventEndDate,
