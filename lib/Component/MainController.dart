@@ -71,9 +71,10 @@ class _MaincontrollerState extends State<Maincontroller> {
     if (role == 'Admin') {
       items = [
         _buildNavItem(0, Icons.settings),
-        _buildNavItem(1, Icons.document_scanner),
-        _buildNavItem(2, Icons.person),
-        _buildNavItem(3, FontAwesomeIcons.powerOff),
+        _buildNavItem(1, Icons.event),
+        _buildNavItem(2, Icons.document_scanner),
+        _buildNavItem(3, Icons.person),
+        _buildNavItem(4, FontAwesomeIcons.powerOff),
       ];
     } else {
       items = [
@@ -91,6 +92,7 @@ class _MaincontrollerState extends State<Maincontroller> {
     if (role == 'Admin') {
       pages = [
         Container(), // Placeholder for settings page
+        const EventScreen(),
         const Attendancescreen(), // Automatically select this for Admin
         Userscreen(username: username),
         Container(), // Placeholder for settings page

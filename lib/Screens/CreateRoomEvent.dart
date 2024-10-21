@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/DatabaseController/AddEventController.dart';
 import 'package:flutter/material.dart';
 
 class CreateEventRoomScreen extends StatefulWidget {
@@ -20,8 +21,8 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
     return false; // Prevent the default back button action
   }
 
-  // Select time and date
-  Future<void> _selectTime(BuildContext context) async {
+  // Select start time
+  Future<void> _selectStartTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -33,8 +34,21 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
     }
   }
 
-  // Select date
-  Future<void> _selectDate(BuildContext context) async {
+  // Select end time
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        _endEventTimeController.text = picked.format(context);
+      });
+    }
+  }
+
+  // Select start date
+  Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -43,7 +57,22 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
     );
     if (picked != null) {
       setState(() {
-        _eventDateController.text = "${picked.toLocal()}".split(' ')[0];
+        _eventDateController.text = picked.toString().substring(0, 10);
+      });
+    }
+  }
+
+  // Select end date
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        _eventEndDateController.text = picked.toString().substring(0, 10);
       });
     }
   }
@@ -136,7 +165,7 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                     child: TextField(
                       controller: _eventDateController,
                       readOnly: true,
-                      onTap: () => _selectDate(context),
+                      onTap: () => _selectStartDate(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Start Event Date',
@@ -144,6 +173,7 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
                   Container(
                     width: 300,
                     decoration: BoxDecoration(
@@ -152,9 +182,9 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                       border: Border.all(color: Colors.deepPurple),
                     ),
                     child: TextField(
-                      controller: _eventDateController,
+                      controller: _eventEndDateController,
                       readOnly: true,
-                      onTap: () => _selectDate(context),
+                      onTap: () => _selectEndDate(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'End Event Date',
@@ -173,7 +203,7 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                     child: TextField(
                       controller: _eventTimeController,
                       readOnly: true,
-                      onTap: () => _selectTime(context),
+                      onTap: () => _selectStartTime(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'Start Event Time',
@@ -192,7 +222,7 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                     child: TextField(
                       controller: _endEventTimeController,
                       readOnly: true,
-                      onTap: () => _selectTime(context),
+                      onTap: () => _selectEndTime(context),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelText: 'End Event Time',
@@ -231,6 +261,7 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           // Add your event/room creation logic here
+                          VerifyEvent();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFE9ECEF),
@@ -254,5 +285,63 @@ class _CreateEVEventState extends State<CreateEventRoomScreen> {
         ),
       ),
     );
+  }
+
+  void VerifyEvent() {
+    // Add your event verification logic here
+    var eventname = _eventname.text;
+    var eventlocation = _eventlocation.text;
+    var eventTime = _eventTimeController.text;
+    var eventDate = _eventDateController.text;
+    var eventEndDate = _eventEndDateController.text;
+    var endEventTime = _endEventTimeController.text;
+
+    if (eventname.isEmpty || eventlocation.isEmpty || eventTime.isEmpty || eventDate.isEmpty || eventEndDate.isEmpty || endEventTime.isEmpty) {
+      // Show error message
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              'Error',
+              style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 30),
+            ),
+            content: const Text(
+              'Please fill in all the fields',
+              style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 18),
+            ),
+            backgroundColor: const Color(0xFF6E738E),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: const Text('OK', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Proceed to create the event
+      Map data = {
+        'eventname': eventname,
+        'eventlocation': eventlocation,
+        'eventTime': eventTime,
+        'eventDate': eventDate,
+        'eventEndDate': eventEndDate,
+        'endEventTime': endEventTime,
+      };
+      AddEventController().addEvent(data, ClearFields, context);
+    }
+  }
+
+  void ClearFields() {
+    _eventname.clear();
+    _eventlocation.clear();
+    _eventTimeController.clear();
+    _eventDateController.clear();
+    _eventEndDateController.clear();
+    _endEventTimeController.clear();
   }
 }
