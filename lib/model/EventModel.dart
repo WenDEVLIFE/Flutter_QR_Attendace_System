@@ -27,11 +27,11 @@ class EventModel{
   factory EventModel.fromDocument(DocumentSnapshot doc){
     return EventModel(
       id: doc.id,
-      eventID: doc['eventID'],
-      eventName: doc['eventName'],
-      eventDate: doc['eventDate'],
-      eventTime: doc['eventTime'],
-      eventLocation: doc['eventLocation'],
+      eventID: doc['EventID'],
+      eventName: doc['EventName'],
+      eventDate: doc['StartDate'],
+      eventTime: doc['EventTime'],
+      eventLocation: doc['EventLocation'],
     );
   }
 

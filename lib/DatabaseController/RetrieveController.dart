@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/model/EventModel.dart';
 import 'package:attendance_qr_system/model/UserDataModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,17 @@ class RetrieveController {
       'role': role,
       'imageURL': imageURL,
     };
+  }
+
+  // This will fetch the event
+  Future <List<EventModel>> fetchEvent() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
+      return querySnapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
+    } catch (e) {
+      FlutterToast().showToast('Error fetching events: $e', Colors.red);
+      return [];
+    }
   }
 
 }

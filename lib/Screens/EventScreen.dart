@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/model/EventModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../DatabaseController/DeleteFirebase.dart';
 import '../DatabaseController/RetrieveController.dart';
-import '../model/UserDataModel.dart';
 
 class EventScreen extends StatefulWidget {
 
@@ -16,34 +16,35 @@ class EventScreen extends StatefulWidget {
 }
 
 class EventState extends State<EventScreen> {
-  List<UserDataModel> _users = [];
-  List<UserDataModel> _filteredUsers = [];
+  List<EventModel> events = [];
+  List<EventModel> filteredEvents = [];
   final TextEditingController _searchController = TextEditingController();
   final RetrieveController _retrieveController = RetrieveController();
   bool _isloading = true;
   @override
   void dispose() {
-    _searchController.removeListener(_filterUsers);
+    _searchController.removeListener(filterEvent);
     _searchController.dispose();
     super.dispose();
   }
 
   // Filter the user
-  void _filterUsers() {
+  void filterEvent() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredUsers = _users.where((user) {
-        return user.username.toLowerCase().contains(query);
+      filteredEvents = events.where((event) {
+        final eventData = event.eventName.toLowerCase();
+        return eventData.contains(query);
       }).toList();
     });
   }
 
   // Fetch the user
-  Future<void> _fetchUsers() async {
-    List<UserDataModel> users = await _retrieveController.fetchUser();
+  Future<void> fetchEvents() async {
+    List<EventModel> eventdata = await _retrieveController.fetchEvent();
     setState(() {
-      _users = users;
-      _filteredUsers = users;
+      events = eventdata;
+       filteredEvents= eventdata;
       _isloading = false;
     });
   }
@@ -51,22 +52,10 @@ class EventState extends State<EventScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchUsers();
-    _searchController.addListener(_filterUsers);
+    fetchEvents();
+    _searchController.addListener(filterEvent);
   }
 
-
-  void _showToast(String message, Color backgroundColor) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +121,12 @@ class EventState extends State<EventScreen> {
                   Expanded(
                     child: _isloading
                         ? const Center(child: CircularProgressIndicator(backgroundColor: Colors.white))
-                        : _filteredUsers.isEmpty
-                        ? const Center(child: Text('No user found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                        : filteredEvents.isEmpty
+                        ? const Center(child: Text('No event found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
                         : ListView.builder(
-                      itemCount: _filteredUsers.length,
+                      itemCount: filteredEvents.length,
                       itemBuilder: (context, index) {
-                        final user = _filteredUsers[index];
+                        final event = filteredEvents[index];
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           padding: const EdgeInsets.all(10),
@@ -148,23 +137,26 @@ class EventState extends State<EventScreen> {
                           child: ListTile(
                             leading: const Icon(Icons.person, color: Colors.black, size: 64),
                             title: Text(
-                              'Username: ${user.username}',
+                              'Event Name: ${event.eventName}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Roboto',
                               ),
                             ),
                             subtitle: Text(
-                              'Status: ${user.status}',
+                                  'Event Date: ${event.eventDate}' '\n'
+                                  'Event Time: ${event.eventTime}' '\n'
+                                  'Event Location: ${event.eventLocation}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Roboto',
                               ),
                             ),
+
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {
-                                DeleteFirebase().DeleteUser(user.id, _fetchUsers, _showToast, "username");
+                                DeleteFirebase().DeleteEvent(event.id, fetchEvents);
                               },
                             ),
                           ),
