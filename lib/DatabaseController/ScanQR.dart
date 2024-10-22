@@ -29,27 +29,27 @@ class ScanQr {
       // Query for user
       print("Querying for user with ID: $id");
       QuerySnapshot query = await FirebaseFirestore.instance
-          .collection('Users')
+          .collection('UserData')
           .where('ID', isEqualTo: id)
           .get();
 
       if (query.docs.isNotEmpty) {
         print("User found");
         var userDoc = query.docs.first;
-        var firstname = userDoc['firstName'];
-        var lastname = userDoc['lastName'];
-        var role = userDoc['role'];
-        print("User: $firstname $lastname");
+        var FullName = userDoc['FullName'];
+        var Grade = userDoc['Grade'];
+        var Section = userDoc['Section'];
+        print("User: $FullName");
 
         Map<String, dynamic> attendancedata = {
           'ID': id,
           'AttendanceID': attendanceID,
-          'firstName': firstname,
-          'lastName': lastname,
+          'Full Name': FullName,
           'Date': formattedDate,
           'hour': hour,
           'minute': minute,
-          'UserType': role,
+          'Section': Section,
+          'Grade': Grade,
           'Status': selectedValue,
           'latitude': latitude,
           'longitude': longitude,
@@ -69,15 +69,16 @@ class ScanQr {
   Future<void> InsertAttendance(Map<String, dynamic> attendancedata) async {
     String formattedDate = attendancedata['Date'];
     int id = attendancedata['ID'];
-    String firstname = attendancedata['firstName'];
-    String lastname = attendancedata['lastName'];
-    String role = attendancedata['UserType'];
+    String fullname = attendancedata['Full Name'];
+    String grade = attendancedata['Grade'];
+    String section = attendancedata['Section'];
     String selectedValue = attendancedata['Status'];
     int attendanceID = attendancedata['AttendanceID'];
     int hour = attendancedata['hour'];
     int minute = attendancedata['minute'];
     double latitude = attendancedata['latitude'];
     double longitude = attendancedata['longitude'];
+
 
     if (selectedValue == 'Time in') {
       QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
@@ -96,18 +97,18 @@ class ScanQr {
         await FirebaseFirestore.instance.collection('Attendance').add({
           'AttendanceID': attendanceID,
           'ID': id,
-          'firstName': firstname,
-          'lastName': lastname,
+          'Full Name': fullname,
           'Date': formattedDate,
-          'UserType': role,
           'Status': 'Time In',
+          'Grade': grade,
+          'Section': section,
           'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
           'latitude': latitude,
           'longitude': longitude,
         });
 
         print("Attendance added successfully");
-        FlutterToast().showToast("Time in successful: $firstname $lastname", Colors.green);
+        FlutterToast().showToast("Time in successful: $fullname", Colors.green);
       }
     } else if (selectedValue == 'Time out') {
       QuerySnapshot checkSnapshot = await FirebaseFirestore.instance
@@ -126,18 +127,17 @@ class ScanQr {
         await FirebaseFirestore.instance.collection('Attendance').add({
           'AttendanceID': attendanceID,
           'ID': id,
-          'firstName': firstname,
-          'lastName': lastname,
+          'Full Name': fullname,
           'Date': formattedDate,
-          'UserType': role,
           'Status': 'Time out',
+          'Grade': grade,
+          'Section': section,
           'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
           'latitude': latitude,
           'longitude': longitude,
         });
-
         print("Attendance added successfully");
-        FlutterToast().showToast("Time out successful: $firstname $lastname", Colors.green);
+        FlutterToast().showToast("Time out successful: $fullname", Colors.green);
       }
     }
   }
