@@ -8,8 +8,9 @@ class AttendanceModel {
   final String status;
   final String timeIn;
   final String userType;
-  final String firstName;
-  final String lastName;
+  final String fullname;
+  final String grade;
+  final String section;
   final double latitude;
   final double longitude;
 
@@ -21,8 +22,9 @@ class AttendanceModel {
     required this.status,
     required this.timeIn,
     required this.userType,
-    required this.firstName,
-    required this.lastName,
+    required this.fullname,
+    required this.grade,
+    required this.section,
     required this.latitude,
     required this.longitude,
   });
@@ -36,8 +38,9 @@ class AttendanceModel {
       status: doc['Status'],
       timeIn: doc['Time'],
       userType: doc['UserType'],
-      firstName: doc['firstName'],
-      lastName: doc['lastName'],
+      fullname: doc['Full Name'],
+      grade: doc['Grade'],
+      section: doc['Section'],
       latitude: doc['latitude'],
       longitude: doc['longitude'],
     );

@@ -48,7 +48,7 @@ class AttendanceState extends State<Attendancescreen> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredAttendances = _attendances.where((attendance) {
-        final fullName = '${attendance.firstName} ${attendance.lastName}'.toLowerCase();
+        final fullName = attendance.fullname.toLowerCase();
         return fullName.contains(query);
       }).toList();
     });
@@ -139,7 +139,7 @@ class AttendanceState extends State<Attendancescreen> {
                     child: ListTile(
                       leading: const Icon(Icons.verified_user, color: Colors.black, size: 64),
                       title: Text(
-                        'Name: ${attendance.firstName} ${attendance.lastName}',
+                        'Name: ${attendance.fullname}',
                         style: const TextStyle(
                           color: Colors.black,
                           fontFamily: 'Roboto',
@@ -149,7 +149,7 @@ class AttendanceState extends State<Attendancescreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Date: ${attendance.date}\nStatus: ${attendance.status}\nTime: ${attendance.timeIn}',
+                            'Date: ${attendance.date}\nStatus: ${attendance.status}\nTime: ${attendance.timeIn} \nGrade: ${attendance.grade}\nSection: ${attendance.section}',
                             style: const TextStyle(
                               color: Colors.black,
                               fontFamily: 'Roboto',
