@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Component/FlutterToast.dart';
 import 'package:attendance_qr_system/model/EventModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -143,14 +144,55 @@ class EventState extends State<EventScreen> {
                                 fontFamily: 'Roboto',
                               ),
                             ),
-                            subtitle: Text(
-                                  'Event Date: ${event.eventDate}' '\n'
-                                  'Event Time: ${event.eventTime}' '\n'
-                                  'Event Location: ${event.eventLocation}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Roboto',
-                              ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Room Name: ${event.eventName}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                Text(
+                                  'Date: ${event.eventDate}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                Text(
+                                  'Time: ${event.eventTime}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                Text(
+                                  'Time: ${event.eventLocation}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    // Add your button action here
+                                    FlutterToast().showToast('View Event', Colors.green);
+                                    Map <String, dynamic> eventData = {
+                                      'eventName': event.eventName,
+                                      'eventDate': event.eventDate,
+                                      'eventTime': event.eventTime,
+                                      'eventLocation': event.eventLocation,
+                                      'eventID': event.id,
+                                    };
+                                    context.push('/GoToEvent', extra: eventData);
+                                  },
+                                  icon: const Icon(Icons.remove_red_eye_sharp), // Add your desired icon here
+                                  label: const Text('View Event'),
+                                )
+                              ],
                             ),
 
                             trailing: IconButton(

@@ -14,7 +14,7 @@ class EventAttendanceScreen extends StatefulWidget {
   final Map<String, dynamic> data;
 }
 
-class EventAttendanceState extends State<EventAttendanceScreen>{
+class EventAttendanceState extends State<EventAttendanceScreen> {
   List<UserDataModel> _users = [];
   List<UserDataModel> _filteredUsers = [];
   final TextEditingController _searchController = TextEditingController();
@@ -22,11 +22,12 @@ class EventAttendanceState extends State<EventAttendanceScreen>{
   bool _isloading = true;
   late String username;
   late String eventName;
+  late Map<String, dynamic> data;
 
   @override
   void initState() {
     super.initState();
-    final data = widget.data;
+    data = widget.data;
     eventName = data['eventName'];
     _fetchUsers();
     _searchController.addListener(_filterUsers);
@@ -59,7 +60,6 @@ class EventAttendanceState extends State<EventAttendanceScreen>{
     });
   }
 
-
   void _showToast(String message, Color backgroundColor) {
     Fluttertoast.showToast(
       msg: message,
@@ -81,13 +81,19 @@ class EventAttendanceState extends State<EventAttendanceScreen>{
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Event Name: Event Attendance',
-            style: TextStyle(
+          title: Text(
+            'Event Name: $eventName',
+            style: const TextStyle(
               color: Colors.white,
               fontFamily: 'Roboto',
               fontWeight: FontWeight.w600,
             ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFF6E738E),
