@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:path_provider/path_provider.dart';
@@ -60,7 +61,7 @@ class QrState extends State<Qrpage> {
             ),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
                 'Successfully Registered',
@@ -153,6 +154,28 @@ class QrState extends State<Qrpage> {
                             SizedBox(width: 10),
                             Text(
                               'Download Me',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                                fontSize: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(onPressed: () {
+                        context.go('/Signuppage');
+                      },
+                        child:const Column(
+                          children: [
+                            Icon(
+                              Icons.qr_code,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Generate New Qr',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Roboto',
