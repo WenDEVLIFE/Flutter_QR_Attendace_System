@@ -26,7 +26,7 @@ class StudentModel {
   factory StudentModel.fromDocument(DocumentSnapshot doc) {
     return StudentModel(
       id: doc.id,
-      studentID: doc['StudentID'],
+      studentID: doc['ID'],
       FullName: doc['FullName'],
       Grade: doc['Grade'],
       Section: doc['Section'],

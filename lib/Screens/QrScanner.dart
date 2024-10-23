@@ -180,7 +180,7 @@ class QrState extends State<QrScanner> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: _selectedEvent,
+                      value: _selectedEvent,  // TODO: Use the selected event and retrieve the data from the database
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       items: _events.map((String value) {
                         return DropdownMenuItem<String>(

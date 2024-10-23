@@ -1,4 +1,5 @@
 import 'package:attendance_qr_system/Screens/EventScreen.dart';
+import 'package:attendance_qr_system/Screens/StudentScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -74,7 +75,8 @@ class _MaincontrollerState extends State<Maincontroller> {
         _buildNavItem(1, Icons.event),
         _buildNavItem(2, Icons.document_scanner),
         _buildNavItem(3, Icons.person),
-        _buildNavItem(4, FontAwesomeIcons.powerOff),
+        _buildNavItem(4, Icons.group),
+        _buildNavItem(5, FontAwesomeIcons.powerOff),
       ];
     } else {
       items = [
@@ -94,6 +96,7 @@ class _MaincontrollerState extends State<Maincontroller> {
         Container(), // Placeholder for settings page
         const EventScreen(),
         const Attendancescreen(), // Automatically select this for Admin
+        const StudentScreen(),
         Userscreen(username: username),
         Container(), // Placeholder for settings page
       ];
@@ -164,7 +167,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                   ShowProfile(context).showProfile(username: username, fullname: fullname, role: role, imageURL: ImageUrl, Load: Load);
                   return;
                 }
-                if (index == 4) {
+                if (index == 6) {
                   Logout();
                   return;
                 } else {
