@@ -136,7 +136,7 @@ class EventState extends State<EventScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
-                            leading: const Icon(Icons.person, color: Colors.black, size: 64),
+                            leading: const Icon(Icons.event_sharp, color: Colors.black, size: 64),
                             title: Text(
                               'Event Name: ${event.eventName}',
                               style: const TextStyle(
@@ -147,13 +147,6 @@ class EventState extends State<EventScreen> {
                             subtitle: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Room Name: ${event.eventName}',
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Roboto',
-                                  ),
-                                ),
                                 Text(
                                   'Date: ${event.eventDate}',
                                   style: const TextStyle(
@@ -169,7 +162,7 @@ class EventState extends State<EventScreen> {
                                   ),
                                 ),
                                 Text(
-                                  'Time: ${event.eventLocation}',
+                                  'Location: ${event.eventLocation}',
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'Roboto',
