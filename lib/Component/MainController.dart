@@ -167,7 +167,7 @@ class _MaincontrollerState extends State<Maincontroller> {
                   ShowProfile(context).showProfile(username: username, fullname: fullname, role: role, imageURL: ImageUrl, Load: Load);
                   return;
                 }
-                if (index == 6) {
+                if (index == 5) {
                   Logout();
                   return;
                 } else {
