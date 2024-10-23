@@ -1,4 +1,5 @@
 import 'package:attendance_qr_system/model/EventModel.dart';
+import 'package:attendance_qr_system/model/StudentModel.dart';
 import 'package:attendance_qr_system/model/UserDataModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -69,5 +70,16 @@ class RetrieveController {
       return [];
     }
   }
+
+  Future <List<StudentModel>> fetchStudent() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('UserData').get();
+      return querySnapshot.docs.map((doc) => StudentModel.fromDocument(doc)).toList();
+    } catch (e) {
+      FlutterToast().showToast('Error fetching students: $e', Colors.red);
+      return [];
+    }
+
+}
 
 }

@@ -54,7 +54,15 @@ class DeleteFirebase{
     }
   }
 
-  Future <void> DeleteStudent() async{
+  Future <void> DeleteStudent(String id, Future<void> Function() fetchStudent) async{
+    try {
+      await FirebaseFirestore.instance.collection('UserData').doc(id).delete();
+      FlutterToast().showToast('Student deleted successfully', Colors.green);
+      fetchStudent();
+    } catch (e) {
+      print('Error deleting student: $e');
+      FlutterToast().showToast('Error deleting student', Colors.red);
+    }
 
   }
 }

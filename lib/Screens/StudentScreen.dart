@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/model/StudentModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -17,8 +18,8 @@ class StudentScreen extends StatefulWidget {
 }
 
 class _StudentScreenState extends State<StudentScreen> {
-  List<UserDataModel> _users = [];
-  List<UserDataModel> _filteredUsers = [];
+  List<StudentModel> student = [];
+  List<StudentModel> filteredStudent = [];
   final TextEditingController _searchController = TextEditingController();
   final RetrieveController _retrieveController = RetrieveController();
   bool _isloading = true;
@@ -27,49 +28,38 @@ class _StudentScreenState extends State<StudentScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchUsers();
-    _searchController.addListener(_filterUsers);
+    fetchStudent();
+    _searchController.addListener(FilterStudent);
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_filterUsers);
+    _searchController.removeListener(FilterStudent);
     _searchController.dispose();
     super.dispose();
   }
 
   // Filter the user
-  void _filterUsers() {
+  void FilterStudent() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredUsers = _users.where((user) {
-        return user.username.toLowerCase().contains(query);
+      filteredStudent = student.where((studentdata) {
+        final students = studentdata.FullName.toLowerCase();
+        return students.contains(query);
       }).toList();
     });
   }
 
   // Fetch the user
-  Future<void> _fetchUsers() async {
-    List<UserDataModel> users = await _retrieveController.fetchUser();
+  Future<void> fetchStudent() async {
+    List<StudentModel> students   = await _retrieveController.fetchStudent();
     setState(() {
-      _users = users;
-      _filteredUsers = users;
+      student = students;
+      filteredStudent = students;
       _isloading = false;
     });
   }
 
-
-  void _showToast(String message, Color backgroundColor) {
-    Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,13 +124,13 @@ class _StudentScreenState extends State<StudentScreen> {
                   const SizedBox(height: 20),
                   Expanded(
                     child: _isloading
-                        ? const Center(child: CircularProgressIndicator(backgroundColor: Colors.white))
-                        : _filteredUsers.isEmpty
-                        ? const Center(child: Text('No user found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                        ? const Center(child: CircularProgressIndicator( backgroundColor: Colors.white,))
+                        : filteredStudent.isEmpty
+                        ? const Center(child: Text('No attendance found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
                         : ListView.builder(
-                      itemCount: _filteredUsers.length,
+                      itemCount: filteredStudent.length,
                       itemBuilder: (context, index) {
-                        final user = _filteredUsers[index];
+                        final studentUser = filteredStudent[index];
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           padding: const EdgeInsets.all(10),
@@ -149,25 +139,38 @@ class _StudentScreenState extends State<StudentScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
-                            leading: const Icon(Icons.person, color: Colors.black, size: 64),
+                            leading: const Icon(Icons.verified_user, color: Colors.black, size: 64),
                             title: Text(
-                              'Username: ${user.username}',
+                              'Name: ${studentUser.FullName}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Roboto',
                               ),
                             ),
-                            subtitle: Text(
-                              'Status: ${user.status}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Roboto',
-                              ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Gender: ${studentUser.Gender}\n Grade: ${studentUser.Gender} \n Section: ${studentUser.Section}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    // Add your button action here
+                                  },
+                                  icon: const Icon(Icons.remove_red_eye_sharp),
+                                  label: const Text('View Student Data'),
+                                )
+                              ],
                             ),
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () {
-                                DeleteFirebase().DeleteUser(user.id, _fetchUsers, _showToast, username);
+                              onPressed: (){
+                                 DeleteFirebase().DeleteStudent(studentUser.id, fetchStudent);
                               },
                             ),
                           ),
@@ -188,17 +191,9 @@ class _StudentScreenState extends State<StudentScreen> {
                     backgroundColor: const Color(0xFF6E738E),
                     children: [
                       SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
+                        child: const FaIcon(FontAwesomeIcons.graduationCap, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Admin',
-                        onTap: () {
-                          context.push('/CreateUser');
-                        },
-                      ),
-                      SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.chalkboardTeacher, color: Colors.white),
-                        backgroundColor: const Color(0xFF6E738E),
-                        label: 'Add Teacher',
+                        label: 'Create Student',
                         onTap: () {
                           context.push('/CreateUser');
                         },
