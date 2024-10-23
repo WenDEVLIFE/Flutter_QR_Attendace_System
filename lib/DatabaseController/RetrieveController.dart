@@ -13,8 +13,10 @@ class RetrieveController {
   // This is for fetch the attendance
   Future<List<AttendanceModel>> fetchAttendances() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Attendance').get();
-      return querySnapshot.docs.map((doc) => AttendanceModel.fromDocument(doc)).toList();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(
+          'Attendance').get();
+      return querySnapshot.docs.map((doc) => AttendanceModel.fromDocument(doc))
+          .toList();
     } catch (e) {
       FlutterToast().showToast('Error fetching attendance: $e', Colors.red);
       return [];
@@ -24,8 +26,10 @@ class RetrieveController {
   // This is for fetching user
   Future<List<UserDataModel>> fetchUser() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users').get();
-      return querySnapshot.docs.map((doc) => UserDataModel.fromDocument(doc)).toList();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(
+          'Users').get();
+      return querySnapshot.docs.map((doc) => UserDataModel.fromDocument(doc))
+          .toList();
     } catch (e) {
       FlutterToast().showToast('Error fetching users: $e', Colors.red);
       return [];
@@ -40,13 +44,15 @@ class RetrieveController {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
-          .where('username', isEqualTo: username) // Use the variable `username` instead of the string 'username'
+          .where('username',
+          isEqualTo: username) // Use the variable `username` instead of the string 'username'
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var userDoc = querySnapshot.docs.first;
         role = userDoc['role'];
-        fullname = '${userDoc['firstName']} ${userDoc['lastName']}'; // Construct fullname
+        fullname =
+        '${userDoc['firstName']} ${userDoc['lastName']}'; // Construct fullname
         imageURL = userDoc['imageURL'];
       }
     } catch (e) {
@@ -63,8 +69,10 @@ class RetrieveController {
   // This will fetch the event
   Future <List<EventModel>> fetchEvent() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
-      return querySnapshot.docs.map((doc) => EventModel.fromDocument(doc)).toList();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(
+          'Events').get();
+      return querySnapshot.docs.map((doc) => EventModel.fromDocument(doc))
+          .toList();
     } catch (e) {
       FlutterToast().showToast('Error fetching events: $e', Colors.red);
       return [];
@@ -73,13 +81,25 @@ class RetrieveController {
 
   Future <List<StudentModel>> fetchStudent() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('UserData').get();
-      return querySnapshot.docs.map((doc) => StudentModel.fromDocument(doc)).toList();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(
+          'UserData').get();
+      return querySnapshot.docs.map((doc) => StudentModel.fromDocument(doc))
+          .toList();
     } catch (e) {
       FlutterToast().showToast('Error fetching students: $e', Colors.red);
       return [];
     }
+  }
 
-}
+  Future<List<String>> LoadEvent() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Events').get();
+      return querySnapshot.docs.map((doc) => doc['EventName'] as String).toList();
+    } catch (e) {
+      FlutterToast().showToast('Error fetching events: $e', Colors.red);
+      return [];
+    }
+  }
+
 
 }

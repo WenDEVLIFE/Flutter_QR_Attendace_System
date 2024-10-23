@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
 import 'package:attendance_qr_system/DatabaseController/ScanQR.dart';
 import 'package:attendance_qr_system/Function/GeoMapper.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,8 @@ class QrState extends State<QrScanner> {
   Timer? debounceTimer;
   final Duration debounceDuration = const Duration(seconds: 2); // Set debounce duration
   final List<String> _items = ['Select to attendance', 'Time in', 'Time out'];
-  final List<String> _events = ['Select a event'];
+  List<String> _events = ['Select a event'];
+  final RetrieveController retrieveController = RetrieveController();
   ProgressDialog? pd;
 
   @override
@@ -45,9 +47,18 @@ class QrState extends State<QrScanner> {
   void initState() {
     super.initState();
     _requestPermissions();
+    InitializeEvents();
     _selectedValue = _items.isNotEmpty ? _items[0] : null;
     _selectedEvent = _events.isNotEmpty ? _events[0] : null;
     pd = ProgressDialog(context: context);
+  }
+
+  Future<void> InitializeEvents() async {
+    List<String> events = await retrieveController.LoadEvent();
+    setState(() {
+      _events = ['Select a event', ...events];
+      _selectedEvent = _events.isNotEmpty ? _events[0] : null;
+    });
   }
 
   Future<void> _requestPermissions() async {
@@ -180,7 +191,7 @@ class QrState extends State<QrScanner> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: _selectedEvent,  // TODO: Use the selected event and retrieve the data from the database
+                      value: _selectedEvent,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       items: _events.map((String value) {
                         return DropdownMenuItem<String>(
