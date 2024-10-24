@@ -1,24 +1,27 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 
 import '../Function/QrCodeInit.dart';
 
-class Qrpage extends StatefulWidget {
-  final String firstname;
+class ViewStudentQr extends StatefulWidget{
 
-  const Qrpage({super.key, required this.firstname});
+  const ViewStudentQr({super.key, required this.id});
+
+  final int id;
+
 
   @override
-  QrState createState() => QrState();
+  ViewState createState() => ViewState();
 }
 
-class QrState extends State<Qrpage> {
-  late String firstname;
+class ViewState extends State<ViewStudentQr> {
+  late int id;
   int qrData = 0;
   ScreenshotController screenshotController = ScreenshotController();
   bool _isMounted = false;
@@ -26,9 +29,9 @@ class QrState extends State<Qrpage> {
   @override
   void initState() {
     super.initState();
+    id = widget.id;
     _isMounted = true;
-    firstname = widget.firstname;
-    QrCodeInit().LoadQr(firstname, updateQrData, context);
+    QrCodeInit().LoadQrID(id, updateQrData, context);
   }
 
   @override
@@ -163,28 +166,6 @@ class QrState extends State<Qrpage> {
                           ],
                         ),
                       ),
-                      ElevatedButton(onPressed: () {
-                        context.go('/Signuppage');
-                      },
-                        child:const Column(
-                          children: [
-                            Icon(
-                              Icons.qr_code,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Generate New Qr',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Roboto',
-                                fontSize: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -195,6 +176,18 @@ class QrState extends State<Qrpage> {
       ),
     );
   }
+
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  }
+
   void showToast(String message) {
     Fluttertoast.showToast(
       msg: message,

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../Component/FlutterToast.dart';
+
 class QrCodeInit {
   Future<void> LoadQr(String fullname, Function(int) updateQrData, BuildContext context) async {
     try {
@@ -15,40 +17,33 @@ class QrCodeInit {
         var userID = userDoc['ID'].toInt();
         updateQrData(userID);
 
-        Fluttertoast.showToast(
-          msg: "QR code loaded successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        FlutterToast().showToast('Qr Code Loaded', Colors.green);
       } else {
-        Fluttertoast.showToast(
-          msg: "User not found",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        FlutterToast().showToast('User not found', Colors.red);
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'An error occurred. Please try again.',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      FlutterToast().showToast('Error fetching user profile: $e', Colors.red);
     }
   }
 
-  void DownloadQr(){
+  Future<void> LoadQrID(int id, Function(int) updateQrData, BuildContext context) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('UserData')
+          .where('ID', isEqualTo: id)
+          .get();
 
+      if (querySnapshot.docs.isNotEmpty) {
+        var userDoc = querySnapshot.docs.first;
+        var userID = userDoc['ID'].toInt();
+        updateQrData(userID);
+
+        FlutterToast().showToast('Qr Code Loaded', Colors.green);
+      } else {
+        FlutterToast().showToast('User not found', Colors.red);
+      }
+    } catch (e) {
+      FlutterToast().showToast('Error fetching user profile: $e', Colors.red);
+    }
   }
 }
