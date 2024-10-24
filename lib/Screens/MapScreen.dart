@@ -229,12 +229,11 @@ class MapState extends State<MapScreen> {
 
       if (querySnapshot.docs.isNotEmpty) {
         var doc = querySnapshot.docs.first;
-        var firstName = doc['firstName'];
-        var lastName = doc['lastName'];
+        var FullNameData = doc['Full Name'];
         var Image = doc['imageURL'];
 
         setState(() {
-          FullName = '$firstName $lastName';
+          FullName = FullNameData;
           ImageURL = Image;
         });
       } else {

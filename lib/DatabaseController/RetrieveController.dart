@@ -13,8 +13,7 @@ class RetrieveController {
   // This is for fetch the attendance
   Future<List<AttendanceModel>> fetchAttendances() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(
-          'Attendance').get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Attendance').get();
       return querySnapshot.docs.map((doc) => AttendanceModel.fromDocument(doc))
           .toList();
     } catch (e) {

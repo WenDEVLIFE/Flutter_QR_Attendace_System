@@ -7,7 +7,6 @@ class AttendanceModel {
   final int userID;
   final String status;
   final String timeIn;
-  final String userType;
   final String fullname;
   final String grade;
   final String section;
@@ -21,7 +20,6 @@ class AttendanceModel {
     required this.userID,
     required this.status,
     required this.timeIn,
-    required this.userType,
     required this.fullname,
     required this.grade,
     required this.section,
@@ -37,7 +35,6 @@ class AttendanceModel {
       userID: doc['ID'],
       status: doc['Status'],
       timeIn: doc['Time'],
-      userType: doc['UserType'],
       fullname: doc['Full Name'],
       grade: doc['Grade'],
       section: doc['Section'],
