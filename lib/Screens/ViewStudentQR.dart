@@ -166,6 +166,56 @@ class ViewState extends State<ViewStudentQr> {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                        ),
+                        onPressed: () async {
+                          if (qrData != 0) {
+                            final directory = (await getExternalStorageDirectory())
+                                ?.path;
+                            if (directory != null) {
+                              final filePath = '$directory/qr_code.png';
+                              screenshotController.captureAndSave(
+                                  directory, fileName: 'qr_code.png').then((_) {
+                                GallerySaver.saveImage(filePath).then((
+                                    bool? success) {
+                                  showToast(success == true
+                                      ? "QR code saved to gallery"
+                                      : "Failed to save QR code to gallery");
+                                });
+                              }).catchError((error) {
+                                showToast("Failed to save QR code: $error");
+                              });
+                            } else {
+                              showToast("Failed to get storage directory");
+                            }
+                          } else {
+                            showToast("QR code is not available");
+                          }
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.download_rounded,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            Text(
+                              'Send me to the student email',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                                fontSize: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
