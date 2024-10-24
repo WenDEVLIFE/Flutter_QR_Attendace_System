@@ -223,18 +223,15 @@ class MapState extends State<MapScreen> {
 
   Future<void> LoadData() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users')
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('UserData')
           .where("ID", isEqualTo: data['userID'])
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         var doc = querySnapshot.docs.first;
-        var FullNameData = doc['Full Name'];
-        var Image = doc['imageURL'];
-
+        var FullNameData = doc['FullName'];
         setState(() {
           FullName = FullNameData;
-          ImageURL = Image;
         });
       } else {
         Fluttertoast.showToast(

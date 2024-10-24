@@ -137,7 +137,7 @@ class AttendanceState extends State<Attendancescreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
-                      leading: const Icon(Icons.verified_user, color: Colors.black, size: 64),
+                      leading: const Icon(Icons.qr_code, color: Colors.black, size: 64),
                       title: Text(
                         'Name: ${attendance.fullname}',
                         style: const TextStyle(
