@@ -1,6 +1,7 @@
 import 'package:attendance_qr_system/Screens/EditStudentScreen.dart';
 import 'package:attendance_qr_system/Screens/EventAttendanceScreen.dart';
 import 'package:attendance_qr_system/Screens/UpdateProfileScreen.dart';
+import 'package:attendance_qr_system/Screens/ViewStudentQR.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:attendance_qr_system/Screens/AttendanceScreen.dart';
@@ -138,6 +139,13 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             final data = state.extra as Map<String, dynamic>;
             return EditStudentScreen(data: data);
+          },
+        ),
+        GoRoute(
+          path:'/ViewStudent',
+          builder: (context, state) {
+            final data = state.extra as Map<String, dynamic>;
+            return ViewStudentQr(data: data);
           },
         )
       ],

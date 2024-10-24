@@ -161,6 +161,12 @@ class _StudentScreenState extends State<StudentScreen> {
                                 ElevatedButton.icon(
                                   onPressed: () {
                                     // Add your button action here
+                                    Map <String , dynamic> data = {
+                                      'FullName': studentUser.FullName,
+                                      'ID': studentUser.studentID,
+                                    };
+
+                                    context.push("/ViewStudent", extra: data);
                                   },
                                   icon: const Icon(Icons.remove_red_eye_sharp),
                                   label: const Text('View Student Data'),

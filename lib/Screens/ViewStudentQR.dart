@@ -9,27 +9,29 @@ import 'package:screenshot/screenshot.dart';
 
 import '../Function/QrCodeInit.dart';
 
-class ViewStudentQr extends StatefulWidget{
+class ViewStudentQr extends StatefulWidget {
+  const ViewStudentQr({super.key, required this.data});
 
-  const ViewStudentQr({super.key, required this.id});
-
-  final int id;
-
+  final Map<String, dynamic> data;
 
   @override
   ViewState createState() => ViewState();
 }
 
 class ViewState extends State<ViewStudentQr> {
-  late int id;
+  late Map<String, dynamic> data;
   int qrData = 0;
   ScreenshotController screenshotController = ScreenshotController();
   bool _isMounted = false;
+  late int id;
+  late String fullname;
 
   @override
   void initState() {
     super.initState();
-    id = widget.id;
+    data = widget.data;
+    id = data['ID'];
+    fullname = data['FullName'];
     _isMounted = true;
     QrCodeInit().LoadQrID(id, updateQrData, context);
   }
@@ -48,14 +50,34 @@ class ViewState extends State<ViewStudentQr> {
     }
   }
 
+  Future<bool> _onBackPressed() async {
+    Navigator.pop(context);
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        // Prevent going back to the main page
-        return false;
-      },
+      onWillPop: _onBackPressed,
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'View Student',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Roboto',
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFF6E738E),
+        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -66,22 +88,14 @@ class ViewState extends State<ViewStudentQr> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Successfully Registered',
-                style: TextStyle(
+              const SizedBox(height: 20),
+              Text(
+                'Student Name: $fullname',
+                style: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'Roboto',
-                  fontSize: 35,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Text(
-                'Here is your Qr Code',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Roboto',
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 10),
@@ -124,17 +138,12 @@ class ViewState extends State<ViewStudentQr> {
                         ),
                         onPressed: () async {
                           if (qrData != 0) {
-                            final directory = (await getExternalStorageDirectory())
-                                ?.path;
+                            final directory = (await getExternalStorageDirectory())?.path;
                             if (directory != null) {
                               final filePath = '$directory/qr_code.png';
-                              screenshotController.captureAndSave(
-                                  directory, fileName: 'qr_code.png').then((_) {
-                                GallerySaver.saveImage(filePath).then((
-                                    bool? success) {
-                                  showToast(success == true
-                                      ? "QR code saved to gallery"
-                                      : "Failed to save QR code to gallery");
+                              screenshotController.captureAndSave(directory, fileName: 'qr_code.png').then((_) {
+                                GallerySaver.saveImage(filePath).then((bool? success) {
+                                  showToast(success == true ? "QR code saved to gallery" : "Failed to save QR code to gallery");
                                 });
                               }).catchError((error) {
                                 showToast("Failed to save QR code: $error");
@@ -174,17 +183,12 @@ class ViewState extends State<ViewStudentQr> {
                         ),
                         onPressed: () async {
                           if (qrData != 0) {
-                            final directory = (await getExternalStorageDirectory())
-                                ?.path;
+                            final directory = (await getExternalStorageDirectory())?.path;
                             if (directory != null) {
                               final filePath = '$directory/qr_code.png';
-                              screenshotController.captureAndSave(
-                                  directory, fileName: 'qr_code.png').then((_) {
-                                GallerySaver.saveImage(filePath).then((
-                                    bool? success) {
-                                  showToast(success == true
-                                      ? "QR code saved to gallery"
-                                      : "Failed to save QR code to gallery");
+                              screenshotController.captureAndSave(directory, fileName: 'qr_code.png').then((_) {
+                                GallerySaver.saveImage(filePath).then((bool? success) {
+                                  showToast(success == true ? "QR code saved to gallery" : "Failed to save QR code to gallery");
                                 });
                               }).catchError((error) {
                                 showToast("Failed to save QR code: $error");
@@ -210,7 +214,7 @@ class ViewState extends State<ViewStudentQr> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Roboto',
-                                fontSize: 30,
+                                fontSize: 18,
                               ),
                             ),
                           ],
