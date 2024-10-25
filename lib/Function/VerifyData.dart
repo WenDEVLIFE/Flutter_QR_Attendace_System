@@ -47,8 +47,20 @@ class VerifyDataClass {
       FlutterToastError("Invalid email address");
       return;
     }
+
+
+
     else {
      String fullName = userData['firstName'] + " " + userData['lastName'];
+
+     final Map<String, dynamic> UserData1 = {
+       'email': userData['email'],
+       'fullName': fullName,
+       'grade': userData['grade'],
+       'section': userData['section'],
+       'gender': userData['gender'],
+     };
+
       if (send=="OTP") {
         // Proceed to the next screen
         context.push('/Otp', extra: {
@@ -61,7 +73,7 @@ class VerifyDataClass {
       }
 
       else if (send=="CreateStudent"){
-        InsertStudent(extra: userData).InsertFirebase(clearData: clearData, context: context);
+        InsertStudent(extra: UserData1).AddStudent(clearData: clearData, context: context);
       }
     }
   }

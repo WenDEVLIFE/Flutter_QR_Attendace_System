@@ -208,7 +208,7 @@ class _StudentScreenState extends State<StudentScreen> {
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Create Student',
                         onTap: () {
-                          context.push('/CreateUser');
+                          context.push('/GenerateQr');
                         },
                       ),
                     ],

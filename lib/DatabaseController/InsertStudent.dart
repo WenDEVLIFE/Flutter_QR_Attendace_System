@@ -47,7 +47,7 @@ class InsertStudent {
     }
   }
 
-  Future<void> AddStudent(BuildContext context) async {
+  Future<void> AddStudent({required void Function() clearData, required BuildContext context}) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
       max: 100,
@@ -65,12 +65,10 @@ class InsertStudent {
       int max = 999999999;
       int ID = min + (DateTime.now().millisecond % (max - min));
 
-      // Hash the password
-      String hashedPassword = BCrypt.hashpw(extra['password'], BCrypt.gensalt());
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('UserData')
-          .where('FirstName', isEqualTo: extra['firstName'])
+          .where('FullName', isEqualTo: extra['fullName'])
           .get();
 
       if (querySnapshot.docs.isEmpty) {
@@ -78,12 +76,10 @@ class InsertStudent {
         await FirebaseFirestore.instance.collection('UserData').add({
           'ID': ID,
           'Email': extra['email'],
-          'FirstName': extra['firstName'],
-          'LastName': extra['lastName'],
+          'FullName': extra['fullName'],
           'Gender': extra['gender'],
           'Grade': extra['grade'],
           'Section': extra['section'],
-          'Password': hashedPassword,
         });
 
         FlutterToast().showToast('Student added successfully', Colors.green);
