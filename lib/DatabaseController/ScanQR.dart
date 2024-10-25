@@ -122,6 +122,7 @@ class ScanQr {
           .where('ID', isEqualTo: id)
           .where('Date', isEqualTo: formattedDate)
           .where("Status", isEqualTo: "Time out")
+          .where("EventName", isEqualTo: eventName)
           .get();
 
       if (checkSnapshot.docs.isNotEmpty) {
