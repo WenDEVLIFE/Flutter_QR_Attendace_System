@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:attendance_qr_system/model/StudentModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +8,8 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../DatabaseController/DeleteFirebase.dart';
 import '../DatabaseController/RetrieveController.dart';
@@ -38,6 +43,7 @@ class _StudentScreenState extends State<StudentScreen> {
     _searchController.dispose();
     super.dispose();
   }
+
 
   // Filter the user
   void FilterStudent() {
@@ -164,6 +170,7 @@ class _StudentScreenState extends State<StudentScreen> {
                                     Map <String , dynamic> data = {
                                       'FullName': studentUser.FullName,
                                       'ID': studentUser.studentID,
+                                       'Email': studentUser.Email,
                                     };
 
                                     context.push("/ViewStudent", extra: data);

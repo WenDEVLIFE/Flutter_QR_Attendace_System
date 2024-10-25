@@ -13,6 +13,8 @@ class StudentModel {
 
   String Gender;
 
+  String Email;
+
 
   StudentModel({
     required this.id,
@@ -21,6 +23,7 @@ class StudentModel {
     required this.Grade,
     required this.Section,
     required this.Gender,
+    required this.Email
   });
 
   factory StudentModel.fromDocument(DocumentSnapshot doc) {
@@ -30,7 +33,8 @@ class StudentModel {
       FullName: doc['FullName'],
       Grade: doc['Grade'],
       Section: doc['Section'],
-      Gender: doc['Gender']
+      Gender: doc['Gender'],
+      Email: doc['Email']
     );
   }
 }

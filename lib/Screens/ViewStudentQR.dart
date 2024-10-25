@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../EmailAPI/YahooAPI.dart';
 import '../Function/QrCodeInit.dart';
 
 class ViewStudentQr extends StatefulWidget {
@@ -19,12 +23,14 @@ class ViewStudentQr extends StatefulWidget {
 }
 
 class ViewState extends State<ViewStudentQr> {
+  bool _isLoading = false;
   late Map<String, dynamic> data;
   int qrData = 0;
   ScreenshotController screenshotController = ScreenshotController();
   bool _isMounted = false;
   late int id;
   late String fullname;
+  late String email;
 
   @override
   void initState() {
@@ -32,6 +38,7 @@ class ViewState extends State<ViewStudentQr> {
     data = widget.data;
     id = data['ID'];
     fullname = data['FullName'];
+    email = data['Email'];
     _isMounted = true;
     QrCodeInit().LoadQrID(id, updateQrData, context);
   }
@@ -48,6 +55,12 @@ class ViewState extends State<ViewStudentQr> {
         qrData = data;
       });
     }
+  }
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
   }
 
   Future<bool> _onBackPressed() async {
@@ -183,19 +196,7 @@ class ViewState extends State<ViewStudentQr> {
                         ),
                         onPressed: () async {
                           if (qrData != 0) {
-                            final directory = (await getExternalStorageDirectory())?.path;
-                            if (directory != null) {
-                              final filePath = '$directory/qr_code.png';
-                              screenshotController.captureAndSave(directory, fileName: 'qr_code.png').then((_) {
-                                GallerySaver.saveImage(filePath).then((bool? success) {
-                                  showToast(success == true ? "QR code saved to gallery" : "Failed to save QR code to gallery");
-                                });
-                              }).catchError((error) {
-                                showToast("Failed to save QR code: $error");
-                              });
-                            } else {
-                              showToast("Failed to get storage directory");
-                            }
+                            YahooMail().SendEmailQR(email, _setLoading, context, fullname, qrData.toString());
                           } else {
                             showToast("QR code is not available");
                           }
@@ -210,7 +211,7 @@ class ViewState extends State<ViewStudentQr> {
                             ),
                             SizedBox(width: 10),
                             Text(
-                              'Send me to the student email',
+                              'Send to the student email',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Roboto',
@@ -231,17 +232,6 @@ class ViewState extends State<ViewStudentQr> {
     );
   }
 
-  String _getGreeting() {
-    final hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 17) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
-  }
-
   void showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
@@ -253,4 +243,6 @@ class ViewState extends State<ViewStudentQr> {
       fontSize: 16.0,
     );
   }
+
+
 }
