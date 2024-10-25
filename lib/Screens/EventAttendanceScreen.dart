@@ -124,7 +124,7 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                       style: const TextStyle(color: Colors.black, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
                       controller: _searchController,
                       decoration: const InputDecoration(
-                        labelText: 'Search a user',
+                        labelText: 'Search a name, grade, or section',
                         prefixIcon: Icon(Icons.search, color: Colors.black),
                         labelStyle: TextStyle(color: Colors.black),
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),
