@@ -105,7 +105,7 @@ class _StudentScreenState extends State<StudentScreen> {
                       style: const TextStyle(color: Colors.black, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
                       controller: _searchController,
                       decoration: const InputDecoration(
-                        labelText: 'Search a user',
+                        labelText: 'Search a student',
                         prefixIcon: Icon(Icons.search, color: Colors.black),
                         labelStyle: TextStyle(color: Colors.black),
                         contentPadding: EdgeInsets.symmetric(horizontal: 10),

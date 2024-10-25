@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Component/FlutterToast.dart';
 import 'package:attendance_qr_system/Key/ApiKey.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
+
+import '../Component/FlutterToast.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -28,6 +31,8 @@ class MapState extends State<MapScreen> {
   late Map<String, dynamic> data;
   bool _showPopup = false;
   Offset _markerPosition = Offset.zero;
+
+  FlutterToast toast = FlutterToast();
 
   Future<bool> _onBackPressed() async {
     Navigator.pop(context);
@@ -234,26 +239,10 @@ class MapState extends State<MapScreen> {
           FullName = FullNameData;
         });
       } else {
-        Fluttertoast.showToast(
-          msg: 'No data found',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
+        toast.showToast('User not found', Colors.red);
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: 'Error: $e',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+      toast.showToast('Error fetching user profile', Colors.red);
     }
   }
 }
