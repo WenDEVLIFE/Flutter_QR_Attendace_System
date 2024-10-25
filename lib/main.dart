@@ -268,6 +268,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               )
                   : const Text(''),
+              const Text(
+                'Made by: WenDEVLIFE @2024',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
         ),
