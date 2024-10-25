@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:attendance_qr_system/Component/FlutterToast.dart';
 import 'package:attendance_qr_system/DatabaseController/RetrieveController.dart';
 import 'package:attendance_qr_system/DatabaseController/ScanQR.dart';
 import 'package:attendance_qr_system/Function/GeoMapper.dart';
@@ -297,64 +298,70 @@ class QrState extends State<QrScanner> {
       'latitude': lat,
       'longitude': long,
       'attendance': _selectedValue,
+      'event': _selectedEvent,
     };
 
     if (code != null) {
       print('Processing QR Code: $code'); // Debug statement
       if (_selectedValue == 'Select to attendance') {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: const Color(0xFF6E738E),
-              title: const Text(
-                'Select to attendance',
-                style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 30),
-              ),
-              content: const Text(
-                'Please select the attendance type',
-                style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
-                  ),
+        if (_selectedEvent == 'Select a event') {
+          print('Please select an event');
+          FlutterToast().showToast('Please select an event', Colors.red);
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                backgroundColor: const Color(0xFF6E738E),
+                title: const Text(
+                  'Select to attendance',
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 30),
                 ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedValue = _items[1]; // Time in
-                    });
-                    Navigator.pop(context);
-                    ScanQr().CheckAttendance(data, context); // Process time out
-                  },
-                  child: const Text(
-                    'Time in',
-                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
-                  ),
+                content: const Text(
+                  'Please select the attendance type',
+                  style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
                 ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      _selectedValue = _items[2]; // Time out
-                    });
-                    Navigator.pop(context);
-                    ScanQr().CheckAttendance(data, context); // Process time out
-                  },
-                  child: const Text(
-                    'Time out',
-                    style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
-        );
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedValue = _items[1]; // Time in
+                      });
+                      Navigator.pop(context);
+                      ScanQr().CheckAttendance(data, context); // Process time out
+                    },
+                    child: const Text(
+                      'Time in',
+                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedValue = _items[2]; // Time out
+                      });
+                      Navigator.pop(context);
+                      ScanQr().CheckAttendance(data, context); // Process time out
+                    },
+                    child: const Text(
+                      'Time out',
+                      style: TextStyle(color: Colors.white, fontFamily: 'Roboto', fontSize: 20),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       } else {
         print('Scanned QR Code: $code');
         Fluttertoast.showToast(

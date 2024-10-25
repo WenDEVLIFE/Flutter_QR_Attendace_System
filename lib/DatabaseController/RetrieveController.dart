@@ -100,5 +100,20 @@ class RetrieveController {
     }
   }
 
+  // This is for fetch the attendance
+  Future<List<AttendanceModel>> fetchSpecifiedUser(String eventName) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Attendance').
+      where("EventName", isEqualTo: eventName).get();
+     if (querySnapshot.docs.isNotEmpty) {
+       return querySnapshot.docs.map((doc) => AttendanceModel.fromDocument(doc)).toList();
+     } else {
+       return [];
+     }
+    } catch (e) {
+      FlutterToast().showToast('Error fetching attendance: $e', Colors.red);
+      return [];
+    }
+  }
 
 }

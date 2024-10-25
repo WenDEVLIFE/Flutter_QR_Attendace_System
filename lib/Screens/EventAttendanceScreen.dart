@@ -1,5 +1,7 @@
+import 'package:attendance_qr_system/model/AttendanceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 import '../DatabaseController/DeleteFirebase.dart';
 import '../DatabaseController/RetrieveController.dart';
@@ -15,8 +17,8 @@ class EventAttendanceScreen extends StatefulWidget {
 }
 
 class EventAttendanceState extends State<EventAttendanceScreen> {
-  List<UserDataModel> _users = [];
-  List<UserDataModel> _filteredUsers = [];
+  List<AttendanceModel> _users = [];
+  List<AttendanceModel> _filteredUsers = [];
   final TextEditingController _searchController = TextEditingController();
   final RetrieveController _retrieveController = RetrieveController();
   bool _isloading = true;
@@ -29,7 +31,7 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
     super.initState();
     data = widget.data;
     eventName = data['eventName'];
-    _fetchUsers();
+    _fetchAttendances();
     _searchController.addListener(_filterUsers);
   }
 
@@ -45,14 +47,14 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredUsers = _users.where((user) {
-        return user.username.toLowerCase().contains(query);
+        return user.fullname.toLowerCase().contains(query) || user.section.toLowerCase().contains(query) || user.grade.toLowerCase().contains(query);
       }).toList();
     });
   }
 
   // Fetch the user
-  Future<void> _fetchUsers() async {
-    List<UserDataModel> users = await _retrieveController.fetchUser();
+  Future<void> _fetchAttendances() async {
+    List<AttendanceModel> users = await _retrieveController.fetchSpecifiedUser(eventName);
     setState(() {
       _users = users;
       _filteredUsers = users;
@@ -141,13 +143,13 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                   const SizedBox(height: 20),
                   Expanded(
                     child: _isloading
-                        ? const Center(child: CircularProgressIndicator(backgroundColor: Colors.white))
+                        ? const Center(child: CircularProgressIndicator( backgroundColor: Colors.white,))
                         : _filteredUsers.isEmpty
-                        ? const Center(child: Text('No user found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
+                        ? const Center(child: Text('No attendance found', style: TextStyle(color: Colors.white, fontFamily: 'Roboto')))
                         : ListView.builder(
                       itemCount: _filteredUsers.length,
                       itemBuilder: (context, index) {
-                        final user = _filteredUsers[index];
+                        final attendance = _filteredUsers[index];
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           padding: const EdgeInsets.all(10),
@@ -156,25 +158,47 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListTile(
-                            leading: const Icon(Icons.person, color: Colors.black, size: 64),
+                            leading: const Icon(Icons.qr_code, color: Colors.black, size: 64),
                             title: Text(
-                              'Username: ${user.username}',
+                              'Name: ${attendance.fullname}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontFamily: 'Roboto',
                               ),
                             ),
-                            subtitle: Text(
-                              'Status: ${user.status}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Roboto',
-                              ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Date: ${attendance.date}\nStatus: ${attendance.status}\nTime: ${attendance.timeIn} \nGrade: ${attendance.grade}\nSection: ${attendance.section}',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Roboto',
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    // Add your button action here
+                                    Map <String , dynamic> locationData = {
+                                      'latitude': attendance.latitude,
+                                      'longitude': attendance.longitude,
+                                      'userID': attendance.userID,
+                                      'Time': attendance.timeIn,
+                                      'Date': attendance.date,
+                                      'Status': attendance.status,
+                                    };
+                                    context.push('/Map', extra: locationData);
+                                  },
+                                  icon: const Icon(Icons.location_on), // Add your desired icon here
+                                  label: const Text('View location'),
+                                )
+                              ],
                             ),
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () {
-                                DeleteFirebase().DeleteUser(user.id, _fetchUsers, _showToast, username);
+                              onPressed: (){
+                                DeleteFirebase().DeleteAttendance(attendance.id, _fetchAttendances(), _showToast);
                               },
                             ),
                           ),

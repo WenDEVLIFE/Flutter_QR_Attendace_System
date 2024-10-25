@@ -11,6 +11,7 @@ class ScanQr {
       double latitude = data['latitude'];
       double longitude = data['longitude'];
       String selectedValue = data['attendance'];
+      String eventName = data['event'];
       print("Starting Attendance method with ID: $id");
       DateTime now = DateTime.now();
       int hour = now.hour;
@@ -53,6 +54,7 @@ class ScanQr {
           'Status': selectedValue,
           'latitude': latitude,
           'longitude': longitude,
+          'EventName':eventName,
         };
         await InsertAttendance(attendancedata);
       } else {
@@ -73,11 +75,13 @@ class ScanQr {
     String grade = attendancedata['Grade'];
     String section = attendancedata['Section'];
     String selectedValue = attendancedata['Status'];
+    String eventName = attendancedata['EventName'];
     int attendanceID = attendancedata['AttendanceID'];
     int hour = attendancedata['hour'];
     int minute = attendancedata['minute'];
     double latitude = attendancedata['latitude'];
     double longitude = attendancedata['longitude'];
+
 
 
     if (selectedValue == 'Time in') {
@@ -105,6 +109,7 @@ class ScanQr {
           'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
           'latitude': latitude,
           'longitude': longitude,
+          'EventName': eventName,
         });
 
         print("Attendance added successfully");
@@ -135,6 +140,7 @@ class ScanQr {
           'Time': '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}',
           'latitude': latitude,
           'longitude': longitude,
+          'EventName': eventName,
         });
         print("Attendance added successfully");
         FlutterToast().showToast("Time out successful: $fullname", Colors.green);
