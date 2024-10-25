@@ -90,11 +90,12 @@ class ScanQr {
           .where('ID', isEqualTo: id)
           .where('Date', isEqualTo: formattedDate)
           .where("Status", isEqualTo: "Time In")
+          .where("EventName", isEqualTo: eventName)
           .get();
 
       if (checkSnapshot.docs.isNotEmpty) {
-        print("Attendance already exists");
-        FlutterToast().showToast("You have already timed in", Colors.red);
+        print("Attendance already exists in $eventName");
+        FlutterToast().showToast("You have already timed in $eventName", Colors.red);
       } else {
         print("Adding new attendance");
         // Add attendance
@@ -125,7 +126,7 @@ class ScanQr {
 
       if (checkSnapshot.docs.isNotEmpty) {
         print("Attendance already exists");
-        FlutterToast().showToast("You have already timed out", Colors.red);
+        FlutterToast().showToast("You have already timed out in $eventName", Colors.red);
       } else {
         print("Adding new attendance");
         // Add attendance
