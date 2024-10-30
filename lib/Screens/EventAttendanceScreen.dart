@@ -1,6 +1,8 @@
 import 'package:attendance_qr_system/model/AttendanceModel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import '../DatabaseController/DeleteFirebase.dart';
@@ -207,6 +209,28 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                     ),
                   ),
                 ],
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SpeedDial(
+                    icon: Icons.edit,
+                    activeIcon: Icons.close,
+                    iconTheme: const IconThemeData(color: Colors.white),
+                    backgroundColor: const Color(0xFF6E738E),
+                    children: [
+                      SpeedDialChild(
+                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
+                        backgroundColor: const Color(0xFF6E738E),
+                        label: 'Print Attendance',
+                        onTap: () {
+
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
