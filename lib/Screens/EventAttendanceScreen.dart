@@ -217,13 +217,13 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: SpeedDial(
-                    icon: Icons.edit,
+                    icon: Icons.print,
                     activeIcon: Icons.close,
                     iconTheme: const IconThemeData(color: Colors.white),
                     backgroundColor: const Color(0xFF6E738E),
                     children: [
                       SpeedDialChild(
-                        child: const FaIcon(FontAwesomeIcons.userTie, color: Colors.white),
+                        child: const FaIcon(FontAwesomeIcons.print, color: Colors.white),
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Print Attendance',
                         onTap: () {
