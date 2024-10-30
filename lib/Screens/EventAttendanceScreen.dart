@@ -1,3 +1,4 @@
+import 'package:attendance_qr_system/Function/ExportExcel.dart';
 import 'package:attendance_qr_system/model/AttendanceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -62,6 +63,7 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
       _filteredUsers = users;
       _isloading = false;
     });
+
   }
 
   void _showToast(String message, Color backgroundColor) {
@@ -225,7 +227,7 @@ class EventAttendanceState extends State<EventAttendanceScreen> {
                         backgroundColor: const Color(0xFF6E738E),
                         label: 'Print Attendance',
                         onTap: () {
-
+                          ExportExcel().exportToCSV(_users, context , eventName);
                         },
                       ),
                     ],
