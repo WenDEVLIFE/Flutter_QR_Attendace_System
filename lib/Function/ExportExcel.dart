@@ -28,12 +28,12 @@ class ExportExcel {
 
       // Create CSV data
       List<List<dynamic>> rows = [
-        ['ID', 'Attendance ID', 'Date', 'User ID', 'Status', 'Time In', 'Full Name', 'Grade', 'Section', 'Latitude', 'Longitude']
+        ['ID', 'Attendance ID', 'Date', 'User ID', 'Status', 'Time In', 'Full Name', 'Grade', 'Section']
       ];
 
       for (var attendance in filteredUsers) {
         rows.add([
-          attendance.id, attendance.attendanceID, attendance.date, attendance.userID, attendance.status, attendance.timeIn, attendance.fullname, attendance.grade, attendance.section, attendance.latitude, attendance.longitude
+          attendance.id, attendance.attendanceID, attendance.date, attendance.userID, attendance.status, attendance.timeIn, attendance.fullname, attendance.grade, attendance.section
         ]);
       }
 
