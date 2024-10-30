@@ -168,7 +168,12 @@ class UserState extends State<Userscreen> {
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () {
-                                DeleteFirebase().DeleteUser(user.id, _fetchUsers, _showToast, username);
+                                Map <String, dynamic> userData = {
+                                  'username': user.username,
+                                  'id': user.id,
+                                  'EqualUsername': username,
+                                };
+                                DeleteFirebase().DeleteUser(userData, _fetchUsers);
                               },
                             ),
                           ),

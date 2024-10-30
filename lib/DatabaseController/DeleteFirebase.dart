@@ -18,15 +18,19 @@ class DeleteFirebase{
   }
 
   // This is for delete the user
-  Future<void> DeleteUser(String id, Future<void> Function() fetchUsers, void Function(String message, Color backgroundColor) showToast, String username) async {
+  Future<void> DeleteUser(Map <String, dynamic> userdata, Future<void> Function() fetchUsers) async {
+
+   var id = userdata['id'];
+   var username = userdata['username'];
+   var EqualTo = userdata['EqualUsername'];
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Users').where('username', isEqualTo: username).get();
       if (querySnapshot.docs.isNotEmpty) {
         var userdoc = querySnapshot.docs.first;
         var user = userdoc['username'];
 
-        if (user == username) {
-          showToast('Cannot delete yourself', Colors.red);
+        if (user == EqualTo) {
+          FlutterToast().showToast('You cannot delete your own account', Colors.red);
           return;
         }
         else{
